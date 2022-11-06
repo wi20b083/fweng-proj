@@ -1,6 +1,6 @@
 <template>
     <li class="nav-item">
-        <a class="nav-link" :href="link.url">{{link.name}}</a>
+        <router-link to="/" class="nav-link" >{{link.name}}</router-link>
     </li>
 </template>
 

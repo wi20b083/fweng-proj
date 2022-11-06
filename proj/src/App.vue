@@ -1,11 +1,11 @@
 <template>
   <div id="app">
-    <LoginFormVue/>
+    <OrganismFormEmailPassword/>
   </div>
 </template>
 
 <script>
-import LoginFormVue from './components/organisms/LoginForm.vue';
+import OrganismFormEmailPassword from './components/organisms/OrganismFormEmailPassword.vue';
   export default {
     name: 'App',
     data () {
@@ -13,6 +13,6 @@ import LoginFormVue from './components/organisms/LoginForm.vue';
         message: 'Hello, Vue!'
       }
     }, 
-    components: {LoginFormVue}
+    components: {OrganismFormEmailPassword}
 };
 </script>

@@ -7,7 +7,7 @@
 <script>
 
 export default{
-    name: 'A-NavItem',
+    name: 'AtomNavItem',
     props:['link']
 }
 </script>

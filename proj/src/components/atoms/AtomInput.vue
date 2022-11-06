@@ -4,7 +4,6 @@
     class="form-control"
     :id="id"
     :placeholder="placeholder"
-
     >
 </template>
 <script>

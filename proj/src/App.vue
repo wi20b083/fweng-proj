@@ -7,15 +7,24 @@
 
   <OrganismFormEmailPassword/>
 
+  <section>
+    <OrganismErrorModal/>
+    <AtomButton type="button" classname="btn btn-primary" data-bs-toggle="modal" data-bs-target="#errorModal" content="Toggle Modal"/>
+  </section>
+
 </template>
 
 <script>
 import OrganismFormEmailPassword from './components/organisms/OrganismFormEmailPassword.vue';
+import OrganismErrorModal from './components/organisms/OrganismErrorModal.vue';
+import AtomButton from './components/atoms/AtomButton.vue';
 
 export default {
   name: 'App', 
   components: {
-    OrganismFormEmailPassword
+    OrganismFormEmailPassword, 
+    OrganismErrorModal, 
+    AtomButton
   }
 }
 </script>

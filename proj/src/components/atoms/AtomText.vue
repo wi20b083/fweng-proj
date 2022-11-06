@@ -1,9 +1,9 @@
 <template>
-    <p :class="class">{{content}}</p>
+    <p :class="classname">{{content}}</p>
 </template>
 <script>
 export default {
     name: 'AtomText',
-    props: ['class', 'content']
+    props: ['classname', 'content']
 }
 </script>

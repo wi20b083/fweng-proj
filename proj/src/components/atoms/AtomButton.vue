@@ -1,14 +1,12 @@
 <template>
-    <button class="btn btn-primary">{{buttonText}}</button> 
+    <button :type="type" :class="classname" :data-bs-dismiss="target">{{content}}</button> 
 </template>
 
 <script>
 
 export default {
     name: 'AtomButton',
-    props:{
-        buttonText: String
-    }
+    props: ['type', 'classname', 'content', 'target']
 }
 </script>
 

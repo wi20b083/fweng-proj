@@ -2,7 +2,7 @@
 <form>
     <MoleculeLabelledInput id="test" inputType="email" label="E-Mail" placeholder="email@example.com" />
     <MoleculeLabelledInput id="test" inputType="password" label="Password" placeholder="" />
-    <AtomButton type="submit" buttonText="Submit"/>
+    <AtomButton type="submit" classname="btn btn-primary" content="Submit"/>
 </form>
 
 </template>

@@ -4,11 +4,28 @@
     <router-link to="/about">About</router-link>
   </nav>
   <router-view/>
+
+  <OrganismFormEmailPassword/>
+
 </template>
+
+<script>
+import OrganismFormEmailPassword from './components/organisms/OrganismFormEmailPassword.vue';
+
+export default {
+  name: 'App', 
+  components: {
+    OrganismFormEmailPassword
+  }
+}
+</script>
 
 <style>
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: Avenir, Helvetica
+  
+
+  , Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
@@ -17,6 +34,9 @@
 
 nav {
   padding: 30px;
+
+
+
 }
 
 nav a {

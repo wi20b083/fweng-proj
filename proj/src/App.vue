@@ -1,12 +1,11 @@
 <template>
   <div id="app">
-    {{ message }}
-    <MolLabelledInputVue></MolLabelledInputVue>
+    <LoginFormVue/>
   </div>
 </template>
 
 <script>
-import MolLabelledInputVue from './components/molecules/MolLabelledInput.vue';
+import LoginFormVue from './components/organisms/LoginForm.vue';
   export default {
     name: 'App',
     data () {
@@ -14,6 +13,6 @@ import MolLabelledInputVue from './components/molecules/MolLabelledInput.vue';
         message: 'Hello, Vue!'
       }
     }, 
-    components: {MolLabelledInputVue}
+    components: {LoginFormVue}
 };
 </script>

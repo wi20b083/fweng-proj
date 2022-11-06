@@ -31,11 +31,23 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 -register
 
 ### organisms
--register view
-    - register form
-    - header
-    - footer
--login view
-    -login form
-    -header
-    -footer
+- register form
+- login form
+- header
+- footer
+
+#### molecules
+
+-register form:
+ - input fname 
+ -label fname
+ -input lname
+ -label lname
+ -button submit
+
+-header
+ - logo
+ - nav
+ -..
+
+

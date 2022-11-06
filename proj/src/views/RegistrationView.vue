@@ -1,3 +1,3 @@
 <template>
-    <h1>Registration</h1>
+    <h1 class="centered">Registration</h1>
 </template>

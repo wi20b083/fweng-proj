@@ -22,3 +22,20 @@ npm run lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+## views
+-imprint
+-help
+-home
+-login
+-register
+
+### organisms
+-register view
+    - register form
+    - header
+    - footer
+-login view
+    -login form
+    -header
+    -footer

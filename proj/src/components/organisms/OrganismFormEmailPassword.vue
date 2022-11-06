@@ -12,7 +12,7 @@ import MoleculeLabelledInput from '../molecules/MoleculeLabelledInput.vue';
 import AtomButton from '../atoms/AtomButton.vue';
 
 export default {
-    name: 'LoginForm',
+    name: 'OrganismFormEmailPassword',
     components: { MoleculeLabelledInput, AtomButton}
 }
 </script>

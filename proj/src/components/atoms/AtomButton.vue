@@ -5,7 +5,7 @@
 <script>
 
 export default {
-    name: 'A-Button',
+    name: 'AtomButton',
     props:{
         buttonText: String
     }

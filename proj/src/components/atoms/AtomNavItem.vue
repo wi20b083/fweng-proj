@@ -1,6 +1,6 @@
 <template>
     
-        <router-link to="/" class="nav-link" >{{link.name}}</router-link>
+        <router-link :to="'/' + routeTo" class="nav-link" >{{link.name}}</router-link>
     
 </template>
 
@@ -8,6 +8,6 @@
 
 export default{
     name: 'AtomNavItem',
-    props:['link']
+    props:['routeTo']
 }
 </script>

@@ -1,5 +1,5 @@
 <template>
-    <nav class="navbar navbar-expand-lg bg-light">
+    <nav class="navbar navbar-expand-lg bg-light p-3">
         <div class="container-fluid">
             <router-link class="navbar-brand" to="/">
                 <AtomNavLogo/>
@@ -13,12 +13,22 @@
                 <router-link class="nav-link" aria-current="page" to="/">Home</router-link>
                 </li>
                 <li class="nav-item">
-                <router-link class="nav-link" to="/about">About</router-link>
+                <router-link class="nav-link" to="/imprint">Imprint</router-link>
+                </li>
+                <li class="nav-item">
+                <router-link class="nav-link" aria-current="page" to="/help">Help</router-link>
+                </li>
+                <li class="nav-item">
+                <router-link class="nav-link" to="/registration">Registration</router-link>
+                </li>
+                <li class="nav-item">
+                <router-link class="nav-link" to="/login">Login</router-link>
                 </li>
             </ul>
             </div>
         </div>
     </nav>
+    
 </template>
 
 <script>
@@ -31,3 +41,15 @@ export default{
    }
 }
 </script>
+
+<style scoped>
+
+nav a {
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+nav a.router-link-exact-active {
+  color: #42b983;
+}
+</style>

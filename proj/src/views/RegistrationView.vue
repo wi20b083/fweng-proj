@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid">
+  <div class="container-fluid p-3">
     <AtomHeader tag="h1" content="Registration" classname="centered"/>
     <OrganismFormUserData />
   </div>

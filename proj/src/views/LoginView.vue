@@ -1,5 +1,5 @@
 <template>
-    <div class="container-fluid bg-white">
+    <div class="container-fluid bg-white p-3">
         <AtomHeader tag="h1" classname="centered" content="Login"/>
         <div class="ps-5 pe-5">
             <OrganismFormEmailPassword/>

@@ -1,15 +1,19 @@
 <template>
-    <h1 class="centered">Registration</h1>
-    <OrganismFormUserData/>
+  <div class="container-fluid">
+    <AtomHeader tag="h1" content="Registration" classname="centered"/>
+    <OrganismFormUserData />
+  </div>
 </template>
 
 <script>
-import OrganismFormUserData from '../components/organisms/OrganismFormUserData.vue'
+import AtomHeader from "../components/atoms/AtomHeader.vue";
+import OrganismFormUserData from "../components/organisms/OrganismFormUserData.vue";
 
 export default {
-   name: 'RegistrationView',
-   components:{
-        OrganismFormUserData
-   }
-}
+  name: "RegistrationView",
+  components: {
+    OrganismFormUserData,
+    AtomHeader
+},
+};
 </script>

@@ -1,6 +1,6 @@
 <template>
 <div class="centered">
-    <div class="container-fluid bg-white">
+    <div class="container-fluid p-3">
         <h1>Help</h1>
         <div class="pt-3 ps-5 pe-5 pb-3">
         <div id="accordion">

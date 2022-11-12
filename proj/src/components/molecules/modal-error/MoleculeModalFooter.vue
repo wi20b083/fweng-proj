@@ -1,6 +1,6 @@
 <template>
     <div class="modal-footer">
-        <AtomButton type="button" classname="btn btn-secondary" dismiss="modal" content="Close"/>
+        <AtomButton type="button" classname="btn btn-secondary" content="Close" data-bs-dismiss="modal"/>
     </div>
 </template>
 

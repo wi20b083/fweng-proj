@@ -6,7 +6,7 @@
 
 export default {
     name: 'AtomButton',
-    props: ['type', 'classname', 'content', 'dismiss']
+    props: ['type', 'classname', 'content']
 }
 </script>
 

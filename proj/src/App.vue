@@ -1,5 +1,4 @@
 <template>
-  
   <MoleculeNavbar/>
   <router-view/>
 </template>
@@ -11,9 +10,8 @@ import MoleculeNavbar from './components/molecules/MoleculeNavbar.vue'
 export default {
   name: 'App', 
   components: {
-    //OrganismFormEmailPassword,
     MoleculeNavbar
-  }
+}
 }
 </script>
 

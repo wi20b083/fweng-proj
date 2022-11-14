@@ -1,5 +1,5 @@
 <template>
-    <component :is="tag" :class="classname">
+    <component :is="tag">
         {{content}}
     </component>
 </template>
@@ -7,6 +7,6 @@
 <script>
 export default {
     name: 'AtomHeader', 
-    props: ['tag', 'classname', 'content']
+    props: ['tag', 'content']
 }
 </script>

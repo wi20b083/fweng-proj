@@ -1,4 +1,5 @@
 <template>
+    
     <table class="table">
         <MoleculeTableHead/>
         <MoleculeTableBody/>
@@ -8,6 +9,7 @@
 <script>
 import MoleculeTableHead from '../molecules/table/MoleculeTableHead.vue'
 import MoleculeTableBody from '../molecules/table/MoleculeTableBody.vue'
+
 
 export default {
    name:'OrganismTable',

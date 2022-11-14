@@ -1,18 +1,11 @@
 <template>
-    <div class="row">
-        <div class="col">
-            <AtomThumbnail :src="imagesource" :alt="alttext"/>
-        </div>
-        <div class="col">
-            <AtomText :content="productname"/>
-        </div>
-        <div class="col">
-            <AtomInput inputType="number" min="0" step="1" value="1"/>
-        </div>
-        <div class="col">
-            <AtomButton content="Add" type="submit" classname="btn btn-success"/>
-        </div>
-    </div>
+    <tr>
+        <th scope="row"></th>
+        <td><AtomThumbnail :src="imagesource" :alt="alttext"/></td>
+        <td><AtomText :content="productname"/></td>
+        <td><AtomInput inputType="number" min="0" step="1" value="1"/></td>
+        <td><AtomButton content="Add" type="submit" classname="btn btn-success"/></td>
+    </tr>
 </template>
 
 <script>

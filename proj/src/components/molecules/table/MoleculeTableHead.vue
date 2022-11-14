@@ -1,7 +1,7 @@
 <template>
     <thead>
         <tr>
-            <th>table head</th>
+            <th scope="col"></th>
         </tr>
     </thead>
 </template>

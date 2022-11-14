@@ -1,13 +1,15 @@
 <template>
     <tbody>
-        <tr v-for="product in products" v-bind:key="product.id">
+        <!--<tr v-for="product in products" v-bind:key="product.id">
             <th scope="row">{{product.id}}</th>
             <td>{{product.name}}</td>
-        </tr>
+        </tr>-->
+        <MoleculeProductRow/>
     </tbody>
 </template>
 
 <script>
+import MoleculeProductRow from '../table/MolecuelProductRow.vue'
 
 export default {
    name:'MoleculeTableBody',
@@ -21,5 +23,8 @@ export default {
             ]
         }
     },
+    components:{
+        MoleculeProductRow
+    }
 }
 </script>

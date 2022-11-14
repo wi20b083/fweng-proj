@@ -5,6 +5,7 @@
 <script>
 import OrganismTable from '../components/organisms/OrganismTable.vue'
 
+
 export default {
     name: 'ProductListView',
     data() {
@@ -19,6 +20,7 @@ export default {
     },
     components:{
         OrganismTable,
+        
     }
 }
 

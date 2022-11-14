@@ -1,5 +1,5 @@
 <template>
-    <button :type="type" :class="classname" :data-bs-dismiss="dismiss">{{content}}</button> 
+    <button :type="type" :class="classname">{{content}}</button> 
 </template>
 
 <script>

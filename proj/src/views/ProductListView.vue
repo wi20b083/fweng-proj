@@ -1,9 +1,15 @@
 <template>
-  <OrganismTable :products="products" :colnames=colnames />
+  <div class="centered container-fluid mt-3">
+    <AtomHeader tag="h1" content="Products" />
+    <div class="m-3">
+      <OrganismTable :products="products" :colnames="colnames" />
+    </div>
+  </div>
 </template>
 
 <script>
-import OrganismTable from "../components/organisms/OrganismTable.vue";
+import AtomHeader from "@/components/atoms/AtomHeader.vue";
+import OrganismTable from "../components/organisms/OrganismProductTable.vue";
 
 export default {
   name: "ProductListView",
@@ -13,29 +19,22 @@ export default {
         {
           id: 1,
           name: "Beer",
-          imagesource:
-            require('../assets/beer.png'),
+          imagesource: require("../assets/beer.png"),
           alttext: "Image of beer",
         },
         {
           id: 2,
           name: "Wine",
-          imagesource:
-          require('../assets/wine.png'),
+          imagesource: require("../assets/wine.png"),
           alttext: "image of wine",
         },
       ],
-      colnames: [
-        'ID',
-        'Image', 
-        'Name', 
-        'Amount',
-        'Add'
-      ]
+      colnames: ["ID", "Image", "Name", "Amount", "Add"],
     };
   },
   components: {
     OrganismTable,
+    AtomHeader,
   },
 };
 </script>

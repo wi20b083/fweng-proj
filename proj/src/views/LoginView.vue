@@ -1,7 +1,7 @@
 <template>
-    <div class="container-fluid bg-white p-3">
-        <AtomHeader tag="h1" classname="centered" content="Login"/>
-        <div class="ps-5 pe-5">
+    <div class="centered container-fluid mt-3">
+        <AtomHeader tag="h1" content="Login"/>
+        <div class="ms-5 me-5">
             <OrganismFormEmailPassword/>
         </div>
     </div>

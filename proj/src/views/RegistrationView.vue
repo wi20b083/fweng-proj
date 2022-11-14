@@ -1,7 +1,7 @@
 <template>
-  <div class="container-fluid p-3">
-    <AtomHeader tag="h1" content="Registration" classname="centered"/>
-    <div class="ps-5 pe-5">
+  <div class="centered container-fluid mt-3">
+    <AtomHeader tag="h1" content="Registration"/>
+    <div class="ms-5 me-5">
       <OrganismFormUserData />
     </div>
   </div>

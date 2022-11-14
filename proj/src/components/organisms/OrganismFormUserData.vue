@@ -1,8 +1,8 @@
 <template>
   <form method="post">
-    <div class="mb-3">
+    <div class="mt-3 text-start">
       <div class="col">
-        <AtomHeader is="h3" content="General"/>
+        <AtomHeader is="h3" content="General" />
         <div class="row">
           <MoleculeLabelledInput
             id="fname"
@@ -27,8 +27,8 @@
             placeholder="email@example.com"
           />
         </div>
-        <hr/>
-        <AtomHeader is="h3" content="Login Data"/>
+        <hr />
+        <AtomHeader is="h3" content="Login Data" />
         <div class="row">
           <MoleculeLabelledInput
             id="uname"
@@ -52,8 +52,8 @@
             placeholder=""
           />
         </div>
-        <hr/>
-        <AtomHeader is="h3" content="Address"/>
+        <hr />
+        <AtomHeader is="h3" content="Address" />
         <div class="row">
           <div class="col">
             <MoleculeLabelledInput
@@ -90,11 +90,13 @@
             />
           </div>
         </div>
-        <AtomButton
-          type="submit"
-          classname="btn btn-primary"
-          content="Submit"
-        />
+        <div class="text-end">
+          <AtomButton
+            type="submit"
+            classname="btn btn-primary"
+            content="Submit"
+          />
+        </div>
       </div>
     </div>
   </form>

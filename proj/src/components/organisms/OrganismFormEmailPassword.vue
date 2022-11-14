@@ -1,19 +1,25 @@
 <template>
   <form>
-    <div class="mb-3">
+    <div class="mt-3 text-start">
       <MoleculeLabelledInput
-        id="test"
+        id="email"
         inputType="email"
         label="E-Mail"
         placeholder="email@example.com"
       />
       <MoleculeLabelledInput
-        id="test"
+        id="pw"
         inputType="password"
         label="Password"
         placeholder=""
       />
-      <AtomButton type="submit" classname="btn btn-primary" content="Submit" />
+      <div class="text-end">
+        <AtomButton
+          type="submit"
+          classname="btn btn-primary"
+          content="Submit"
+        />
+      </div>
     </div>
   </form>
 </template>

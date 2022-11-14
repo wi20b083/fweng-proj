@@ -12,10 +12,10 @@
 </template>
 
 <script>
-import MoleculeProductRow from "../product-table/MoleculeProductRow.vue";
+import MoleculeProductRow from "./MoleculeProductRow.vue";
 
 export default {
-  name: "MoleculeTableBody",
+  name: "MoleculeProductTableBody",
   props: {
     products: {
         type: Array

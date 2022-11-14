@@ -1,16 +1,16 @@
 <template>
   <table class="table">
     <MoleculeTableHead :colnames=colnames />
-    <MoleculeTableBody :products=products />
+    <MoleculeProductTableBody :products=products />
   </table>
 </template>
 
 <script>
-import MoleculeTableHead from "../molecules/product-table/MoleculeTableHead.vue";
-import MoleculeTableBody from "../molecules/product-table/MoleculeTableBody.vue";
+import MoleculeTableHead from "../molecules/MoleculeTableHead.vue";
+import MoleculeProductTableBody from "../molecules/product-table/MoleculeProductTableBody.vue";
 
 export default {
-  name: "OrganismTable",
+  name: "OrganismProductTable",
   props: {
     products: {
       type: Array
@@ -21,7 +21,7 @@ export default {
   },
   components: {
     MoleculeTableHead,
-    MoleculeTableBody,
+    MoleculeProductTableBody,
   },
 };
 </script>

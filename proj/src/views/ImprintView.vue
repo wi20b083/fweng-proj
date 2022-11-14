@@ -1,7 +1,8 @@
 <template>
-  <div class="centered">
-    <div class="container-fluid p-3">
-      <AtomHeader tag="h1" content="Imprint" />
+  <div class="centered container-fluid mt-3">
+    <AtomHeader tag="h1" content="Imprint" />
+
+    <div class="mt-3">
       <AtomText content="PubsBid GmbH - Company with limited liability" />
       <hr />
       <AtomText classname="lh-1" content="UID-Nr: ATU12345678" />
@@ -28,7 +29,6 @@
         classname="lh-1"
         content="Consumers have the option of submitting complaints to the EU's online dispute resolution platform"
       />
-      
     </div>
   </div>
 </template>

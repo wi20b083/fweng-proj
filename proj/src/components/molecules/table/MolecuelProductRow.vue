@@ -16,10 +16,10 @@
 </template>
 
 <script>
-import AtomInput from '../atoms/AtomInput.vue'
-import AtomText from '../atoms/AtomText.vue'
-import AtomThumbnail from '../atoms/AtomThumbnail.vue'
-import AtomButton from '../atoms/AtomButton.vue'
+import AtomInput from '../../atoms/AtomInput.vue'
+import AtomText from '../../atoms/AtomText.vue'
+import AtomThumbnail from '../../atoms/AtomThumbnail.vue'
+import AtomButton from '../../atoms/AtomButton.vue'
 
 export default {
     name:'MoleculeProductRow',

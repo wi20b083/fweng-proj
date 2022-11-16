@@ -30,20 +30,24 @@
                 <li class="nav-item">
                 <router-link class="nav-link" to="/auctions">Auctions</router-link>
                 </li>
+                <!--<AtomNavItem routeTo="products" linkName="Products"/>-->
             </ul>
             </div>
         </div>
     </nav>
     
+    
 </template>
 
 <script>
 import AtomNavLogo from '../atoms/AtomNavLogo.vue';
+//import AtomNavItem from '../atoms/AtomNavItem.vue'
 
 export default{
    name: 'MoleculeNavbar',
    components:{
-        AtomNavLogo
+        AtomNavLogo,
+        //AtomNavItem
    }
 }
 </script>
@@ -58,4 +62,5 @@ nav a {
 nav a.router-link-exact-active {
   color: #42b983;
 }
+
 </style>

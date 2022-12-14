@@ -10,12 +10,19 @@
 <script>
 import AtomHeader from '@/components/atoms/AtomHeader.vue';
 import OrganismFormEmailPassword from '../components/organisms/OrganismFormEmailPassword.vue'
+//import {mapGetters, mapActions} from 'vuex'
+
 
 export default {
-   name: 'LoginView',
-   components:{
-    OrganismFormEmailPassword,
-    AtomHeader
-}
+    name: 'LoginView',
+    components:{
+        OrganismFormEmailPassword,
+        AtomHeader
+    },
+    methods:{
+        //...mapActions(['fetchUser'])
+    },
+    //computed: mapGetters(['user']),
+    
 }
 </script>

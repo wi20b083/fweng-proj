@@ -5,65 +5,66 @@
       <div class="row m-3">
         <div class="col">
             <AtomLabel for="fname" content="First Name"/><br>
-            <AtomInput inputType="text" placeholder="Max" id="fname" v-model="fname"/>
-            <!--<p v-if="!!form.errors.fname">{{form.errors.fname}}</p>-->
+            <AtomInput inputType="text" placeholder="Max" id="fname" v-model="form.fname" @blur="validate('fname')"/>
+            <p v-if="!!errors.fname" class="errorMessage">{{errors.fname}}</p>
         </div>
         <div class="col">
           <AtomLabel for="lname" content="Last Name"/><br>
-          <AtomInput inputType="text" placeholder="Mustermann" id="lname" v-model="lname"/>
-          <!--<p v-if="!!form.errors.lname">{{form.errors.lname}}</p>-->
+          <AtomInput inputType="text" placeholder="Mustermann" id="lname" v-model="form.lname" @blur="validate('lname')"/>
+          <p v-if="!!errors.lname" class="errorMessage">{{errors.lname}}</p>
         </div>
       </div>
       <hr/>
       <div class="row m-3">
         <div class="col">
           <AtomLabel for="email" content="E-Mail"/><br>
-          <AtomInput inputType="email" placeholder="email@example.com" id="email" v-model="email"/>
-          <!--<p v-if="!!form.errors.email">{{form.errors.email}}</p>-->
+          <AtomInput inputType="email" placeholder="email@example.com" id="email" v-model="form.email" @blur="validate('email')"/>
+          <p v-if="!!errors.email" class="errorMessage">{{errors.email}}</p>
         </div>
         <div class="col">
           <AtomLabel for="username" content="Username"/><br>
-          <AtomInput inputType="text" placeholder="Mustermax99" id="username" v-model="username"/>
-          <!--<p v-if="!!form.errors.username">{{form.errors.username}}</p>-->
+          <AtomInput inputType="text" placeholder="Mustermax99" id="username" v-model="form.username" @blur="validate('username')"/>
+          <p v-if="!!errors.username" class="errorMessage">{{errors.username}}</p>
         </div>
       </div>
       <div class="row m-3">
         <div class="col">
           <AtomLabel for="password" content="Password"/><br>
-          <AtomInput inputType="password" placeholder="Enter Password" id="password" v-model="pw"/>
-          <!--<p v-if="!!form.errors.pw">{{form.errors.pw}}</p>-->
+          <AtomInput inputType="password" placeholder="Enter Password" id="password" v-model="form.pw" @blur="validate('pw')"/>
+          <p v-if="!!errors.pw" class="errorMessage">{{errors.pw}}</p>
         </div>
         <div class="col">
           <AtomLabel for="pwConfirm" content="Confirm your password"/><br>
-          <AtomInput inputType="password" placeholder="Enter Password again" id="pwConfirm" v-model="pwConfirm"/>
-          <!--p v-if="!!form.errors.pwConfirm">{{form.errors.pwConfirm}}</p>-->
+          <AtomInput inputType="password" placeholder="Enter Password again" id="pwConfirm" v-model="form.pwConfirm" @blur="validate('pwConfirm')"/>
+          <p v-if="!!errors.pwConfirm" class="errorMessage">{{errors.pwConfirm}}</p>
         </div>
       </div>
       <hr />
       <div class="row m-3">
         <div class="col">
           <AtomLabel for="street" content="Streetname"/><br>
-          <AtomInput inputType="text" placeholder="Höchstädtplatz" id="street" v-model="street"/>
-          <!--<p v-if="!!form.errors.street">{{form.errors.street}}</p>-->
+          <AtomInput inputType="text" placeholder="Höchstädtplatz" id="street" v-model="form.street" @blur="validate('street')"/>
+          <p v-if="!!errors.street" class="errorMessage">{{errors.street}}</p>
         </div>
         <div class="col">
-          <AtomLabel for="streetnr" content="Streetnumber"/><br>
-          <AtomInput inputType="text" placeholder="6" id="streetnr" v-model="streetNr"/>
-          <!--<p v-if="!!form.errors.streetNr">{{form.errors.streetNr}}</p>-->
+          <AtomLabel for="streetnr" content="House Number"/><br>
+          <AtomInput inputType="text" placeholder="6" id="streetnr" v-model="form.streetNr" @blur="validate('streetNr')"/>
+          <p v-if="!!errors.streetNr" class="errorMessage">{{errors.streetNr}}</p>
         </div>
       </div>
       <div class="row m-3">
         <div class="col">
           <AtomLabel for="zip" content="ZIP-Code"/><br>
-          <AtomInput inputType="text" placeholder="1200" id="zip" v-model="zip"/>
-          <!--<p v-if="!!form.errors.zip">{{form.errors.zip}}</p>-->
+          <AtomInput inputType="text" placeholder="1200" id="zip" v-model="form.zip" @blur="validate('zip')"/>
+          <p v-if="!!errors.zip" class="errorMessage">{{errors.zip}}</p>
         </div>
         <div class="col">
           <AtomLabel for="city" content="City"/><br>
-          <AtomInput inputType="text" placeholder="Vienna" id="city" v-model="city"/>
-          <!--<p v-if="!!form.errors.city">{{form.errors.city}}</p>-->
+          <AtomInput inputType="text" placeholder="Vienna" id="city" v-model="form.city" @blur="validate('city')"/>
+          <p v-if="!!errors.city" class="errorMessage">{{errors.city}}</p>
         </div>
       </div>
+      <p v-if="!!errors.general" class="errorMessage">{{errors.general}}</p>
       <div class="text-end m-3">
         <AtomButton type="button" classname="btn btn-primary" content="Submit" @click="doRegistration"/>
       </div>
@@ -72,53 +73,94 @@
 </template>
 
 <script>
-//import MoleculeLabelledInput from "../molecules/MoleculeLabelledInput.vue"
 import AtomButton from "../atoms/AtomButton.vue"
 import{mapActions} from 'vuex'
 import AtomInput from '../atoms/AtomInput.vue'
 import AtomLabel from "../atoms/AtomLabel.vue"
-//import { object, string} from 'yup'
+//import {object, string, number} from 'yup'
+import * as Yup from "yup"
 
-/*
-const registrationFormSchema = object().shape({
-  fname: string().required(),
-  lname: string().required(),
-  email: string().email().required(),
-  username: string().required(),
-  pw: string().min(8).required(),
-  pwConfirm: string().min(8).required(),
-  street: string().required(),
-  streetNr: string().required(),
-  zip: string().required(),
-  city:string().required(),
-})*/
+
+const registrationFormSchema = Yup.object().shape({
+  fname: Yup.string().required('First Name is required'),
+  lname: Yup.string().required('Last Name is required'),
+  email: Yup.string().email().required('E-Mail is required'),
+  username: Yup.string().required('Username is required'),
+  pw: Yup.string().min(8).required('Password is required').oneOf([Yup.ref('pwConfirm'), null], 'Passwords must match'),
+  pwConfirm: Yup.string().required('Password is required').oneOf([Yup.ref('pw'), null], 'Passwords must match'),
+  street: Yup.string().required('Street Name is required'),
+  streetNr: Yup.number().required('House Number is required').typeError('House Number must be a number').positive('House Number must be greater than zero'),
+  zip: Yup.number().required('Zip Code is required').typeError('Zip Code must be a number').positive('Zip Code must be greater than zero'),
+  city: Yup.string().required('City is required'),
+})
 
 export default {
   name: "OrganismFormUserData",
   components: { AtomButton , AtomInput, AtomLabel},
   data() {
     return{
-      fname: '',
-      lname: '',
-      email: '',
-      username: '',
-      pw: '',
-      pwConfirm: '',
-      street: '',
-      streetNr: '',
-      zip: '',
-      city:''
+      form:{
+        fname: '',
+        lname: '',
+        email: '',
+        username: '',
+        pw: '',
+        pwConfirm: '',
+        street: '',
+        streetNr: '',
+        zip: '',
+        city:''
+      },
+      errors:{
+        fname: '',
+        lname: '',
+        email: '',
+        username: '',
+        pw: '',
+        pwConfirm: '',
+        street: '',
+        streetNr: '',
+        zip: '',
+        city:'',
+        general: ''
+      }
     }
   },
   methods:{
     ...mapActions('userModule', {register: 'register'}),
     doRegistration(){
-      console.log('doRegistration method in OrganismRegistrationForm: '+ this.fname)
+      console.log('doRegistration method in OrganismRegistrationForm')
+      
+      const {fname, lname, email, username, pw, street, streetNr, zip, city} = this.form
 
-      const {fname, lname, email, username, pw, street, streetNr, zip, city} = this
+      if(fname != '' && lname!= '' && email!= '' && username!= '' && pw!= '' && street!= '' && streetNr!= '' && zip!= '' && city!= '' ){
+        this.errors.general = null
+        this.register({fname, lname, email, username, pw, street, streetNr, city, zip})
+      }else{
+        this.errors.general = 'Please fill out the whole form'
+      }
+    },
+    validate(field){
+      registrationFormSchema
+        .validateAt(field, this.form)
+        .then(()=>{
+          this.errors[field] = ''
+        })
+        .catch((error)=>{
+          console.log(error)
+          this.errors[field] = error.message
+        })
 
-      this.register({fname, lname, email, username, pw, street, streetNr, city, zip})
     }
   }
 };
 </script>
+
+<style scoped>
+
+.errorMessage{
+  color: red;
+  font-size: 85%;
+}
+
+</style>

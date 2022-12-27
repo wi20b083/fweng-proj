@@ -1,3 +1,5 @@
+//import { validationService } from "@/services/validationService"
+
 const state = {
     isLogin: false,
     //bei login überprüfen ob admin oder nicht
@@ -64,7 +66,11 @@ const actions = {
         //router.push('/')
     },
     register({commit}, {fname, lname, email, username, pw, street, streetNr, zip, city}){
-        console.log('registerAction in userModule' + fname)
+        console.log('registerAction in userModule')
+
+        //validationService.registrationValidation(fname, lname, email, username, pw, street, streetNr, city, zip)
+
+
         commit('register', {fname, lname, email, username, pw, street, streetNr, city, zip});
     },
     getAll({commit}){

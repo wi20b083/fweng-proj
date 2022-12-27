@@ -1,6 +1,6 @@
 <template>
   <!--@submit.prevent="register"-->
-  <div class="mt-3 text-start">
+  <div class="m-5 text-start">
     <form>
       <div class="row m-3">
         <div class="col">
@@ -14,7 +14,7 @@
           <p v-if="!!errors.lname" class="errorMessage">{{errors.lname}}</p>
         </div>
       </div>
-      <hr/>
+      <hr class="mt-4 mb-4"/>
       <div class="row m-3">
         <div class="col">
           <AtomLabel for="email" content="E-Mail"/><br>
@@ -39,7 +39,7 @@
           <p v-if="!!errors.pwConfirm" class="errorMessage">{{errors.pwConfirm}}</p>
         </div>
       </div>
-      <hr />
+      <hr class="mt-4 mb-4"/>
       <div class="row m-3">
         <div class="col">
           <AtomLabel for="street" content="Streetname"/><br>

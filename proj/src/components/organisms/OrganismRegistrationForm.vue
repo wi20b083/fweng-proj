@@ -133,7 +133,7 @@ export default {
       
       const {fname, lname, email, username, pw, street, streetNr, zip, city} = this.form
 
-      if(fname != '' && lname!= '' && email!= '' && username!= '' && pw!= '' && street!= '' && streetNr!= '' && zip!= '' && city!= '' ){
+      if(fname != '' && lname!= '' && email!= '' && username!= '' && pw!= '' && street!= '' && streetNr!= '' && zip!= '' && city!= ''){
         this.errors.general = null
         this.register({fname, lname, email, username, pw, street, streetNr, city, zip})
       }else{
@@ -156,11 +156,3 @@ export default {
 };
 </script>
 
-<style scoped>
-
-.errorMessage{
-  color: red;
-  font-size: 85%;
-}
-
-</style>

@@ -26,6 +26,12 @@ export default {
   color: #2c3e50;
 }
 
+.errorMessage{
+  color: red;
+  font-size: 85%;
+}
+
+
 .centered{text-align: center;}
 
 </style>

@@ -66,7 +66,7 @@
       </div>
       <p v-if="!!errors.general" class="errorMessage">{{errors.general}}</p>
       <div class="text-end m-3">
-        <AtomButton type="button" classname="btn btn-primary" content="Submit" @click="doRegistration"/>
+        <AtomButton type="button" classname="btn btnColor" content="Submit" @click="doRegistration"/>
       </div>
     </form>
   </div>

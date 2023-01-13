@@ -9,7 +9,7 @@
             <MoleculeFileUpload/>
         </div>
     </div>
-    <AtomButton class="btn btnEdit" content="Edit Personal Data"/>
+    <AtomButton class="btn btnColor" content="Edit Personal Data"/>
 </template>
 
 <script>
@@ -84,10 +84,6 @@ export default{
 
 <style scoped>
 
-.btnEdit{
-    background-color:  #42b983; 
-    color: white;
-}
 
 </style>
 

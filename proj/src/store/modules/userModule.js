@@ -1,4 +1,4 @@
-//import { validationService } from "@/services/validationService"
+import axios from "axios"
 
 const state = {
     isLogin: false,
@@ -29,19 +29,20 @@ const mutations = {
     },
     logout(state){
         state.isLogin = false
-        state.user.username = null
-        state.user.password = null
+        state.user = null
+        state.token = null
     },
-    register(state, {fname, lname, email, username, pw, street, streetNr, city, zip}){
-        state.user.fname = fname
-        state.user.lname = lname
-        state.user.email = email
-        state.user.username = username
-        state.user.pw = pw
-        state.user.street = street
-        state.user.streetNr = streetNr
-        state.user.zip = zip
-        state.user.city = city
+    register(state, {user, token}){
+        state.user.fname = user.fname
+        state.user.lname = user.lname
+        state.user.email = user.email
+        state.user.username = user.username
+        state.user.pw = user.pw
+        state.user.street = user.street
+        state.user.streetNr = user.streetNr
+        state.user.zip = user.zip
+        state.user.city = user.city
+        state.token = token
     },
     userProfileLoadOrganism(state, buttonClicked){
         state.userProfileActiveButton = buttonClicked
@@ -49,41 +50,86 @@ const mutations = {
 }
 
 // async is allowed, do api calls here -> dispatch actions
+
+// SAVE TOKEN IN STORE + SEND IT WITH REQUESTS !!!
 const actions = {
-    login({commit}, {username, password}){
-        //if ... call user service to get data like jwt etc
-        /*if(userService.login(username, password)){ // userservice gibt true oder false zurück, ODER objekt mit true/false und einer message je nach success oder möglichen errors
+    async login({commit}, {username, password}){
+        try{
+            const response = await axios.post('http://localhost:8080/register', {username, password})
+            // SET TOKEN HERE (GET IT FROM RESPONSE)
+
+
+            console.log('login: '+response)
             commit('login', {username, password})
-        }else{
-            console.log('login failed')
-            //hier error messages ausgeben bzw in view bringen
-        }*/
-        commit('login', {username, password})
-        console.log('loginAction: ' + username + ', '+ password)
+        }catch(error){
+            console.log(error)
+        }
     },
-    logout({commit}){
-        commit('logout');
-        //router.push('/')
-    },
-    register({commit}, {fname, lname, email, username, pw, street, streetNr, zip, city}){
-        console.log('registerAction in userModule')
-
-        //validationService.registrationValidation(fname, lname, email, username, pw, street, streetNr, city, zip)
+    // -> SEND TOKEN
+    async logout({commit}, token){
+        try{
+            const response = await axios.get('http://localhost:8080/login?logout=true', token)
+            // REMOVE TOKEN HERE FROM LOCAL STORAGE
 
 
-        commit('register', {fname, lname, email, username, pw, street, streetNr, city, zip});
+            console.log('logout: '+response)
+            commit('logout')
+        }catch(error){
+            console.log(error)
+        }
     },
-    getAll({commit}){
-        commit('getAll');
+    async register({commit}, {user}){
+        try{
+            const response = await axios.post('http://localhost:8080/register', {user})
+            console.log('register: '+response)
+            commit('register', {user});
+        }catch(error){
+            console.log(error)
+        }
+        
+
+        //const response = userService.register({fname, lname, email, username, pw, street, streetNr, zip, city})
     },
-    getById({commit}){
-        commit('getById');
+    // -> SEND TOKEN
+    async getAll({commit}){
+        try{
+            const response = await axios.get('http://localhost:8080/users/all')
+            console.log('getAll: ' + response)
+            commit('getAll')
+        }catch(error){
+            console.log(error)
+        }
+        
     },
-    update({commit}){
-        commit('update');
+    // -> SEND TOKEN
+    async getById({commit}, {id}){
+        try{
+            const response = await axios.get('http://localhost:8080/users/' + id)
+            console.log('getById: ' + response)
+            commit('getById')
+        }catch(error){
+            console.log(error)
+        }
     },
-    deleteUser({commit}){
-        commit('deleteUser');
+    // -> SEND TOKEN
+    async update({commit}, {user}){
+        try{
+            const response = await axios.put('http://localhost:8080/users/' + user.id + '?pwchange=true', {user})
+            console.log('update: ' + response)
+            commit('update')
+        }catch(error){
+            console.log(error)
+        }
+    },
+    // -> SEND TOKEN
+    async deleteUser({commit}, id){
+        try{
+            const response = await axios.delete('http://localhost:8080/users/' + id)
+            console.log('deleteUser: ' + response)
+            commit('deleteUser')
+        }catch(error){
+            console.log(error)
+        }
     },
     userProfileLoadOrganism({commit}, buttonClicked){
         commit('userProfileLoadOrganism', buttonClicked)

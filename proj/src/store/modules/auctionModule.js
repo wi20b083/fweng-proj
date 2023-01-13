@@ -1,4 +1,4 @@
-
+import axios from "axios"
 
 const state = {
     auctions:[
@@ -12,7 +12,24 @@ const state = {
             user: "MusterMaxi2",
             categories: ["beverage", "wine"],
             details:{
-                auctionItems: [1, 2, 3,],
+                auctionItems: [{
+                    id: 1,
+                    name: "Beer",
+                    imagesource: require("../../assets/beer.png"),
+                    alttext: "Image of beer",
+                },
+                {
+                    id: 2,
+                    name: "Wine",
+                    imagesource: require("../../assets/wine.png"),
+                    alttext: "image of wine",
+                },   
+                {
+                    id: 3,
+                    name: "Berliner Luft",
+                    imagesource: require("../../assets/dummyImg.png"),
+                    alttext: "image of wine",
+                },        ],
                 total: '',
             },
         },
@@ -129,7 +146,24 @@ const state = {
             user: "MusterMaxi2",
             categories: ["beverage", "wine"],
             details:{
-                auctionItems: [1, 2, 3,],
+                auctionItems: [{
+                    id: 1,
+                    name: "Beer",
+                    imagesource: require("../../assets/beer.png"),
+                    alttext: "Image of beer",
+                },
+                {
+                    id: 2,
+                    name: "Wine",
+                    imagesource: require("../../assets/wine.png"),
+                    alttext: "image of wine",
+                },   
+                {
+                    id: 3,
+                    name: "Berliner Luft",
+                    imagesource: require("../../assets/dummyImg.png"),
+                    alttext: "image of wine",
+                },        ],
                 total: '',
             },
         },
@@ -156,11 +190,64 @@ const mutations = {
     showDetails(state, auction){
         state.auctionDetails = auction
     },
+    updateList(state, auctions){
+        state.auctions = auctions
+    },
+
 }
 
 const actions = {
     showDetails({commit}, id){
         commit('showDetails', id)
+    },
+    async getAll({commit}){
+        try{
+            const response = await axios.get('http://localhost:8080/auctions/all')
+            console.log('getAll: ' + response)
+            commit('updateList')
+        }catch(error){
+            console.log(error)
+        }
+    },
+    // -> SEND TOKEN
+    async update({commit}, {auction}){
+        try{
+            const response = await axios.put('http://localhost:8080/auctions/' + auction.id, {auction})
+            console.log('update: ' + response)
+            commit('updateList')
+        }catch(error){
+            console.log(error)
+        }
+    },
+    // -> SEND TOKEN
+    async delete({commit}, id){
+        try{
+            const response = await axios.delete('http://localhost:8080/auctions/' + id)
+            console.log('delete: ' + response)
+            commit('updateList')
+        }catch(error){
+            console.log(error)
+        }
+    },
+    // -> SEND TOKEN
+    async create({commit}, {auction}){
+        try{
+            const response = await axios.post('http://localhost:8080/auctions/', {auction})
+            console.log('create: ' + response)
+            commit('updateList')
+        }catch(error){
+            console.log(error)
+        }
+    },
+    // -> SEND TOKEN
+    async closeAuction({commit}, id){
+        try{
+            const response = await axios.put('http://localhost:8080/auctions/' +id)
+            console.log('closeAuction: ' + response)
+            commit('updateList')
+        }catch(error){
+            console.log(error)
+        }
     },
     
 }

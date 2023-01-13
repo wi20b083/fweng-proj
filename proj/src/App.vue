@@ -31,6 +31,11 @@ export default {
   font-size: 85%;
 }
 
+.btnColor{
+  background-color:  #42b983; 
+  color: white;
+}
+
 
 .centered{text-align: center;}
 

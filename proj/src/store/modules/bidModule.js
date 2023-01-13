@@ -1,3 +1,5 @@
+import axios from "axios"
+
 const state = {
     bids:[
         {
@@ -9,7 +11,7 @@ const state = {
             auction: 1,
             details:{
                 bidItems: [1, 2, 3,],
-                total: '',
+                total: 10,
             },
         },
         {
@@ -21,7 +23,7 @@ const state = {
             auction: 1,
             details:{
                 bidItems: [1, 2, 3,],
-                total: '',
+                total: 10,
             },
         },
         {
@@ -33,7 +35,7 @@ const state = {
             auction: 1,
             details:{
                 bidItems: [1, 2, 3,],
-                total: '',
+                total: 10,
             },
         },
         {
@@ -45,7 +47,7 @@ const state = {
             auction: 1,
             details:{
                 bidItems: [1, 2, 3,],
-                total: '',
+                total: 10,
             },
         },
         {
@@ -57,7 +59,7 @@ const state = {
             auction: 1,
             details:{
                 bidItems: [1, 2, 3,],
-                total: '',
+                total: 10,
             },
         },
         {
@@ -69,7 +71,7 @@ const state = {
             auction: 1,
             details:{
                 bidItems: [1, 2, 3,],
-                total: '',
+                total: 10,
             },
         },
         {
@@ -81,7 +83,7 @@ const state = {
             auction: 1,
             details:{
                 bidItems: [1, 2, 3,],
-                total: '',
+                total: 10,
             },
         },
         {
@@ -93,7 +95,7 @@ const state = {
             auction: 1,
             details:{
                 bidItems: [1, 2, 3,],
-                total: '',
+                total: 10,
             },
         },
     ],
@@ -102,10 +104,61 @@ const state = {
 }
 
 const mutations ={
-
+    updateList(state, bids){
+        state.bids = bids
+    }
 }
 
 const actions = {
+    async getAll({commit}){
+        try{
+            const response = await axios.get('http://localhost:8080/bids/all')
+            console.log('getAll: ' + response)
+            commit('updateList')
+        }catch(error){
+            console.log(error)
+        }
+    },
+    // -> SEND TOKEN
+    async update({commit}, {bid}){
+        try{
+            const response = await axios.put('http://localhost:8080/bids/' + bid.id, {bid})
+            console.log('update: ' + response)
+            commit('updateList')
+        }catch(error){
+            console.log(error)
+        }
+    },
+    // -> SEND TOKEN
+    async delete({commit}, id){
+        try{
+            const response = await axios.delete('http://localhost:8080/bids/' + id)
+            console.log('delete: ' + response)
+            commit('updateList')
+        }catch(error){
+            console.log(error)
+        }
+    },
+    // -> SEND TOKEN
+    async create({commit}, {bid}){
+        try{
+            const response = await axios.post('http://localhost:8080/bids/', {bid})
+            console.log('create: ' + response)
+            commit('updateList')
+        }catch(error){
+            console.log(error)
+        }
+    },
+    // -> SEND TOKEN
+    async getByUserId({commit}, id){
+        try{
+            const response = await axios.get('http://localhost:8080/bids/' + id)
+            console.log('getbyuserid: ' + response)
+            commit('updateList')
+        }catch(error){
+            console.log(error)
+        }
+    },
 
 }
 

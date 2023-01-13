@@ -1,12 +1,11 @@
 import { createStore } from 'vuex'
 import userModule from './modules/userModule.js'
-//import auctionsModule from './modules/auctionsModule'
-//import bidsModule from './modules/bidsModule'
+import auctionModule from './modules/auctionModule.js'
+import bidModule from './modules/bidModule'
 
 export const store = createStore({
     state: {
-    //isLogin: false,
-    //isAdmin: false,
+    
     },
     getters: {
     
@@ -19,8 +18,8 @@ export const store = createStore({
     },
     modules:{
         userModule,
-        //auctionsModule,
-        //bidsModule
+        auctionModule,
+        bidModule
     }
 })
 

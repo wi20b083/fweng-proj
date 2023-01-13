@@ -1,0 +1,93 @@
+<template>
+    <AtomHeader tag="h3" content="Personal Data"/>
+    <div class="row pt-3 pb-5">
+        <div class="col">
+            <MoleculeProfileRow v-for="field in user" v-bind:key="field.fieldName" :fieldName="field.fieldName" :fieldContent="field.fieldContent"/>
+        </div>
+        <div class="col">
+            <AtomThumbnail :src="profilePic" alt="Your Profile Picture"/><br><br>
+            <MoleculeFileUpload/>
+        </div>
+    </div>
+    <AtomButton class="btn btnEdit" content="Edit Personal Data"/>
+</template>
+
+<script>
+import AtomHeader from '../atoms/AtomHeader.vue';
+import AtomButton from '../atoms/AtomButton.vue';
+import MoleculeProfileRow from '../molecules/MoleculeProfileRow.vue';
+import AtomThumbnail from '../atoms/AtomThumbnail.vue';
+import MoleculeFileUpload from '../molecules/MoleculeFileUpload.vue';
+
+export default{
+    name:'OrganismUserProfile',
+    components:{
+    AtomHeader,
+    AtomButton,
+    MoleculeProfileRow,
+    AtomThumbnail,
+    MoleculeFileUpload
+},
+    /* get the data of the logged in user
+    computed:{
+        ...mapState('userModule', {
+            user: 
+        })
+    },*/
+    data(){
+        //getter in userModule einbauen um bestimmte dinge zu bekommen
+        return{
+            user:{
+                fname: {
+                    fieldName:'First Name:',
+                    fieldContent: 'Lara'
+                },
+                lname: {
+                    fieldName:'Last Name:',
+                    fieldContent: 'Roth'
+                },
+                email: {
+                    fieldName:'E-Mail:',
+                    fieldContent: 'lararoth1999@gmail.com'
+                },
+                username: {
+                    fieldName:'Username:',
+                    fieldContent: 'llara_rh'
+                },
+                pw: {
+                    fieldName:'Password:',
+                    fieldContent: '*********'
+                },
+                street: {
+                    fieldName:'Streetname:',
+                    fieldContent: 'Testarellogasse'
+                },
+                streetNr: {
+                    fieldName:'Housenumber:',
+                    fieldContent: '24'
+                },
+                zip: {
+                    fieldName:'Zip Code:',
+                    fieldContent: '1130'
+                },
+                city: {
+                    fieldName:'City:',
+                    fieldContent: 'Vienna'
+                },
+            },
+            profilePic: require('../../assets/dummyImg.png'),
+        }
+    }
+}
+
+</script>
+
+<style scoped>
+
+.btnEdit{
+    background-color:  #42b983; 
+    color: white;
+}
+
+</style>
+

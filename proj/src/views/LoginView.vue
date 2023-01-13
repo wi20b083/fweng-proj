@@ -1,5 +1,5 @@
 <template>
-    <div class="centered container-fluid mt-3">
+    <div class="centered container-fluid mt-4">
         <AtomHeader tag="h1" content="Login"/>
         <div class="ms-5 me-5">
             <OrganismLoginForm/>
@@ -20,9 +20,7 @@ export default {
         AtomHeader
     },
     methods:{
-        //...mapActions(['fetchUser'])
     },
-    //computed: mapGetters(['user']),
     
 }
 </script>

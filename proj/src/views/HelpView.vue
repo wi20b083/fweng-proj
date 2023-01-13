@@ -1,5 +1,5 @@
 <template>
-  <div class="centered container-fluid mt-3">
+  <div class="centered container-fluid mt-4">
     <AtomHeader tag="h1" content="FAQ" />
     <div class="mt-3">
       <div id="accordion">

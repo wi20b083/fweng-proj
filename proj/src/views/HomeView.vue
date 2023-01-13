@@ -1,5 +1,5 @@
 <template>
-  <div class="centered container-fluid mt-3">
+  <div class="centered container-fluid mt-4">
     <AtomHeader tag="h1" content="Home" />
     <div class="mt-3">
       <OrganismErrorModal />
@@ -10,12 +10,14 @@
         data-bs-target="#errorModal"
         content="Launch dummy error modal"
       />
+      <OrganismAuctionTable/>
     </div>
   </div>
 </template>
 <script>
 import AtomButton from "@/components/atoms/AtomButton.vue";
 import AtomHeader from "@/components/atoms/AtomHeader.vue";
+import OrganismAuctionTable from "@/components/organisms/OrganismAuctionTable.vue";
 import OrganismErrorModal from "@/components/organisms/OrganismErrorModal.vue";
 export default {
   name: "HomeView",
@@ -23,6 +25,7 @@ export default {
     AtomHeader,
     OrganismErrorModal,
     AtomButton,
-  },
+    OrganismAuctionTable
+},
 };
 </script>

@@ -74,7 +74,14 @@ export default {
 
     }
     
-  }
+  },
+  /*
+  computed:{
+        ...mapState('loginModule', {
+            isLogin: state => state.isLogin,
+            username: state => state.user.username
+        })
+  },*/
 };
 </script>
 

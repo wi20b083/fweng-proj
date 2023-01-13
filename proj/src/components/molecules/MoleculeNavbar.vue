@@ -1,5 +1,5 @@
 <template>
-    <nav class="navbar navbar-expand-lg bg-light p-3">
+    <nav class="navbar navbar-expand-lg bg-dark p-3" data-bs-theme="dark">
         <div class="container-fluid">
             <router-link class="navbar-brand" to="/">
                 <AtomNavLogo/>
@@ -30,7 +30,12 @@
                 <li class="nav-item">
                 <router-link class="nav-link" to="/auctions">Auctions</router-link>
                 </li>
-                <!--<AtomNavItem routeTo="products" linkName="Products"/>-->
+                <li class="nav-item">
+                <router-link class="nav-link" to="/profile">Profile</router-link>
+                </li>
+                <li class="nav-item">
+                <router-link class="nav-link" to="/editUserProfile">EditProfile</router-link>
+                </li>
             </ul>
             </div>
         </div>
@@ -56,11 +61,16 @@ export default{
 
 nav a {
   font-weight: bold;
-  color: #2c3e50;
+  color: #ffffff;
 }
 
 nav a.router-link-exact-active {
   color: #42b983;
 }
+
+nav a:hover {
+    color: #1c4f38;
+}
+
 
 </style>

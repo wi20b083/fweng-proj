@@ -1,5 +1,5 @@
 <template>
-  <div class="centered container-fluid mt-3">
+  <div class="centered container-fluid mt-4">
     <AtomHeader tag="h1" content="Products" />
     <div class="m-3">
       <OrganismTable :products="products" :colnames="colnames" />

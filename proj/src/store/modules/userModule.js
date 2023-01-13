@@ -5,11 +5,7 @@ const state = {
     //bei login überprüfen ob admin oder nicht
     isAdmin: false,
     token: {},
-    userLog:{
-        username: String,
-        password: String,
-    },
-    userReg:{
+    user:{
         fname: String,
         lname: String,
         email: String,
@@ -20,7 +16,8 @@ const state = {
         zip: Number,
         city: String,
     },
-    userList:[]
+    userList:[],
+    userProfileActiveButton: 'personal',
 }
 
 //only synchronus code -> commit mutations
@@ -36,15 +33,18 @@ const mutations = {
         state.user.password = null
     },
     register(state, {fname, lname, email, username, pw, street, streetNr, city, zip}){
-        state.userReg.fname = fname
-        state.userReg.lname = lname
-        state.userReg.email = email
-        state.userReg.username = username
-        state.userReg.pw = pw
-        state.userReg.street = street
-        state.userReg.streetNr = streetNr
-        state.userReg.zip = zip
-        state.userReg.city = city
+        state.user.fname = fname
+        state.user.lname = lname
+        state.user.email = email
+        state.user.username = username
+        state.user.pw = pw
+        state.user.street = street
+        state.user.streetNr = streetNr
+        state.user.zip = zip
+        state.user.city = city
+    },
+    userProfileLoadOrganism(state, buttonClicked){
+        state.userProfileActiveButton = buttonClicked
     }
 }
 
@@ -84,6 +84,9 @@ const actions = {
     },
     deleteUser({commit}){
         commit('deleteUser');
+    },
+    userProfileLoadOrganism({commit}, buttonClicked){
+        commit('userProfileLoadOrganism', buttonClicked)
     }
 }
 

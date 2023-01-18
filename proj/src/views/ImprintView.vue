@@ -1,6 +1,6 @@
 <template>
   <div class="centered container-fluid mt-4">
-    <AtomHeader tag="h1" content="Imprint" />
+    <h1>Imprint</h1>
 
     <div class="mt-3">
       <AtomText content="PubsBid GmbH - Company with limited liability" />
@@ -34,14 +34,12 @@
 </template>
 
 <script>
-import AtomHeader from "@/components/atoms/AtomHeader.vue";
 import AtomText from "@/components/atoms/AtomText.vue";
 import AtomLink from "@/components/atoms/AtomLink.vue";
 
 export default {
   name: "ImpintView",
   components: {
-    AtomHeader,
     AtomText,
     AtomLink,
   },

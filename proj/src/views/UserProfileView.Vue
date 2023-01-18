@@ -1,6 +1,6 @@
 <template>
     <div class="container-fluid mt-4">
-        <AtomHeader tag="h1" content="Profile" class="mb-5 border-bottom border-dark"/>
+        <h1 class="mb-5 border-bottom border-dark">Profile</h1>
         <div class="row m-4">
 
             <div class="col-3">
@@ -30,7 +30,6 @@
 
 <script>
 import OrganismUserProfile from '../components/organisms/OrganismUserProfile.vue'
-import AtomHeader from '../components/atoms/AtomHeader.vue'
 import AtomButton from '../components/atoms/AtomButton.vue'
 import OrganismAuctionTable from '@/components/organisms/OrganismAuctionTable.vue'
 import{mapActions, mapState} from 'vuex'
@@ -39,7 +38,6 @@ export default{
     name:'UserProfileView',
     components:{
         OrganismUserProfile,
-        AtomHeader,
         AtomButton,
         OrganismAuctionTable
     },

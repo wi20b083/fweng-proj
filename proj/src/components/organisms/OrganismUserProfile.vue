@@ -1,5 +1,5 @@
 <template>
-    <AtomHeader tag="h3" content="Personal Data"/>
+    <h3>Personal Data</h3>
     <div class="row pt-3 pb-5">
         <div class="col">
             <MoleculeProfileRow v-for="field in user" v-bind:key="field.fieldName" :fieldName="field.fieldName" :fieldContent="field.fieldContent"/>
@@ -13,7 +13,6 @@
 </template>
 
 <script>
-import AtomHeader from '../atoms/AtomHeader.vue';
 import AtomButton from '../atoms/AtomButton.vue';
 import MoleculeProfileRow from '../molecules/MoleculeProfileRow.vue';
 import AtomThumbnail from '../atoms/AtomThumbnail.vue';
@@ -22,7 +21,6 @@ import MoleculeFileUpload from '../molecules/MoleculeFileUpload.vue';
 export default{
     name:'OrganismUserProfile',
     components:{
-    AtomHeader,
     AtomButton,
     MoleculeProfileRow,
     AtomThumbnail,

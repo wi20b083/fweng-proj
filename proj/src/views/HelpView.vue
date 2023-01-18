@@ -1,6 +1,6 @@
 <template>
   <div class="centered container-fluid mt-4">
-    <AtomHeader tag="h1" content="FAQ" />
+    <h1>Frequently asked questions</h1>
     <div class="mt-3">
       <div id="accordion">
         <MoleculeCard
@@ -63,13 +63,12 @@
 </template>
 <script>
 import MoleculeCard from "@/components/molecules/accordion-card/MoleculeCard.vue";
-import AtomHeader from "@/components/atoms/AtomHeader.vue";
 
 export default {
   name: "HelpView",
   components: {
     MoleculeCard,
-    AtomHeader,
+
   },
 };
 </script>

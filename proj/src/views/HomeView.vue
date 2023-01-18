@@ -1,6 +1,6 @@
 <template>
   <div class="centered container-fluid mt-4">
-    <AtomHeader tag="h1" content="Home" />
+    <h1>Home</h1>
     <div class="mt-3">
       <OrganismErrorModal />
       <AtomButton
@@ -16,13 +16,11 @@
 </template>
 <script>
 import AtomButton from "@/components/atoms/AtomButton.vue";
-import AtomHeader from "@/components/atoms/AtomHeader.vue";
 import OrganismAuctionTable from "@/components/organisms/OrganismAuctionTable.vue";
 import OrganismErrorModal from "@/components/organisms/OrganismErrorModal.vue";
 export default {
   name: "HomeView",
   components: {
-    AtomHeader,
     OrganismErrorModal,
     AtomButton,
     OrganismAuctionTable

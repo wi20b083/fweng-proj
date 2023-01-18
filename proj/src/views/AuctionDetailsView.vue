@@ -1,6 +1,6 @@
 <template>
     <div class="centered container-fluid mt-4">
-        <AtomHeader tag="h1" content="AuctionDetails"/>
+        <h1>AuctionDetails</h1>
         <!--Auction Details-->
         
             <div class="row p-3">
@@ -17,7 +17,6 @@
 </template>
 
 <script>
-import AtomHeader from '@/components/atoms/AtomHeader.vue';
 import OrganismAuctionDetails from '@/components/organisms/OrganismAuctionDetails.vue';
 import OrganismBidTable from '@/components/organisms/OrganismBidTable.vue';
 import {mapGetters, mapState, mapActions } from 'vuex';
@@ -26,7 +25,6 @@ import OrganismCreateBid from '@/components/organisms/OrganismCreateBid.vue';
 export default{
     name:'AuctionDetailsView.vue',
     components:{
-    AtomHeader,
     OrganismAuctionDetails,
     OrganismBidTable,
     OrganismCreateBid

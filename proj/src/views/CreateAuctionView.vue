@@ -1,6 +1,6 @@
 <template>
     <div class="centered container-fluid mt-4">
-    <AtomHeader tag="h1" content="Create Auction" />
+    <h1>Create Auction</h1>
     <div class="m-3">
       <OrganismCreateAuctionForm />
     </div>

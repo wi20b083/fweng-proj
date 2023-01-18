@@ -1,6 +1,6 @@
 <template>
     <div class="text-start p-3 border-bottom border-top">
-        <AtomHeader tag="h2" content="Bid on Auction"/>
+        <h2>Bid on Auction</h2>
         <form @submit.prevent="createBid">
             <div class="row">
                 <div class="col">
@@ -57,7 +57,6 @@ import AtomLabel from '../atoms/AtomLabel.vue';
 import AtomButton from '../atoms/AtomButton.vue';
 import * as Yup from "yup"
 import { mapActions } from 'vuex';
-import AtomHeader from '../atoms/AtomHeader.vue';
 import AtomText from '../atoms/AtomText.vue';
 import AtomThumbnail from '../atoms/AtomThumbnail.vue';
 
@@ -75,7 +74,6 @@ export default{
     AtomInput,
     AtomLabel,
     AtomButton,
-    AtomHeader,
     AtomText,
     AtomThumbnail
 },

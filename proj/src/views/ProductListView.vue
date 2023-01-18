@@ -1,6 +1,6 @@
 <template>
   <div class="centered container-fluid mt-4">
-    <AtomHeader tag="h1" content="Products" />
+    <h1>Products</h1>
     <div class="m-3">
       <OrganismTable :products="products" :colnames="colnames" />
     </div>
@@ -8,7 +8,6 @@
 </template>
 
 <script>
-import AtomHeader from "@/components/atoms/AtomHeader.vue";
 import OrganismTable from "../components/organisms/OrganismProductTable.vue";
 
 export default {
@@ -34,7 +33,6 @@ export default {
   },
   components: {
     OrganismTable,
-    AtomHeader,
   },
 };
 </script>

@@ -12,24 +12,116 @@ const state = {
             user: "MusterMaxi2",
             categories: ["beverage", "wine"],
             details:{
-                auctionItems: [{
-                    id: 1,
-                    name: "Beer",
-                    imagesource: require("../../assets/beer.png"),
-                    alttext: "Image of beer",
-                },
-                {
-                    id: 2,
-                    name: "Wine",
-                    imagesource: require("../../assets/wine.png"),
-                    alttext: "image of wine",
-                },   
-                {
-                    id: 3,
-                    name: "Berliner Luft",
-                    imagesource: require("../../assets/dummyImg.png"),
-                    alttext: "image of wine",
-                },        ],
+                auctionItems: [
+                    {
+                        id: 1,
+                        name: "Beer",
+                        imagesource: "../../assets/beer.png",
+                        alttext: "Image of beer",
+                    },
+                    {
+                        id: 2,
+                        name: "Wine",
+                        imagesource: "../../assets/wine.png",
+                        alttext: "image of wine",
+                    },   
+                    {
+                        id: 3,
+                        name: "Berliner Luft",
+                        imagesource: "../../assets/dummyImg.png",
+                        alttext: "image of wine",
+                    },
+                    {
+                        id: 1,
+                        name: "Beer",
+                        imagesource: "../../assets/beer.png",
+                        alttext: "Image of beer",
+                    },
+                    {
+                        id: 2,
+                        name: "Wine",
+                        imagesource: "../../assets/wine.png",
+                        alttext: "image of wine",
+                    },   
+                    {
+                        id: 3,
+                        name: "Berliner Luft",
+                        imagesource: "../../assets/dummyImg.png",
+                        alttext: "image of wine",
+                    },
+                    {
+                        id: 1,
+                        name: "Beer",
+                        imagesource: "../../assets/beer.png",
+                        alttext: "Image of beer",
+                    },
+                    {
+                        id: 2,
+                        name: "Wine",
+                        imagesource: "../../assets/wine.png",
+                        alttext: "image of wine",
+                    },   
+                    {
+                        id: 3,
+                        name: "Berliner Luft",
+                        imagesource: "../../assets/dummyImg.png",
+                        alttext: "image of wine",
+                    },
+                    {
+                        id: 1,
+                        name: "Beer",
+                        imagesource: "../../assets/beer.png",
+                        alttext: "Image of beer",
+                    },
+                    {
+                        id: 2,
+                        name: "Wine",
+                        imagesource: "../../assets/wine.png",
+                        alttext: "image of wine",
+                    },   
+                    {
+                        id: 3,
+                        name: "Berliner Luft",
+                        imagesource: "../../assets/dummyImg.png",
+                        alttext: "image of wine",
+                    },
+                    {
+                        id: 1,
+                        name: "Beer",
+                        imagesource: "../../assets/beer.png",
+                        alttext: "Image of beer",
+                    },
+                    {
+                        id: 2,
+                        name: "Wine",
+                        imagesource: "../../assets/wine.png",
+                        alttext: "image of wine",
+                    },   
+                    {
+                        id: 3,
+                        name: "Berliner Luft",
+                        imagesource: "../../assets/dummyImg.png",
+                        alttext: "image of wine",
+                    },
+                    {
+                        id: 1,
+                        name: "Beer",
+                        imagesource: "../../assets/beer.png",
+                        alttext: "Image of beer",
+                    },
+                    {
+                        id: 2,
+                        name: "Wine",
+                        imagesource: "../../assets/wine.png",
+                        alttext: "image of wine",
+                    },   
+                    {
+                        id: 3,
+                        name: "Berliner Luft",
+                        imagesource: "../../assets/dummyImg.png",
+                        alttext: "image of wine",
+                    },
+                ],
                 total: '',
             },
         },
@@ -183,7 +275,8 @@ const state = {
         },
     ],
     filteredAuctions:'',
-    auctionDetails: ''
+    auctionDetails: '',
+    createBidButtonClicked: false
 }
 
 const mutations = {
@@ -193,12 +286,17 @@ const mutations = {
     updateList(state, auctions){
         state.auctions = auctions
     },
-
+    buttonClicked(state, stateChange){
+        state.createBidButtonClicked = stateChange
+    }
 }
 
 const actions = {
     showDetails({commit}, id){
         commit('showDetails', id)
+    },
+    buttonClicked({commit}, stateChange){
+        commit('buttonClicked', stateChange)
     },
     async getAll({commit}){
         try{

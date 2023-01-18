@@ -9,7 +9,7 @@
     <td class="align-middle"><AtomText :content="start" /></td>
     <td class="align-middle"><AtomText :content=categories.join() /></td>
     <td class="align-middle">
-      <AtomButton content="Details" type="button" classname="btn btn-success" @click="loadDetailsPage(id)"/>
+      <AtomButton content="Details" type="button" classname="btn btnColor" @click="loadDetailsPage(id)"/>
     </td>
   </tr>
 </template>

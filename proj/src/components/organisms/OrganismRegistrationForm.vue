@@ -65,6 +65,7 @@
         </div>
       </div>
       <p v-if="!!errors.general" class="errorMessage">{{errors.general}}</p>
+      <p v-if="!!errors.generalValidation" class="errorMessage">{{errors.generalValidation}}</p>
       <div class="text-end m-3">
         <AtomButton type="button" classname="btn btnColor" content="Submit" @click="doRegistration"/>
       </div>
@@ -100,6 +101,7 @@ export default {
   data() {
     return{
       form:{
+        
         fname: '',
         lname: '',
         email: '',
@@ -122,7 +124,8 @@ export default {
         streetNr: '',
         zip: '',
         city:'',
-        general: ''
+        general: '',
+
       }
     }
   },
@@ -135,6 +138,13 @@ export default {
 
       if(fname != '' && lname!= '' && email!= '' && username!= '' && pw!= '' && street!= '' && streetNr!= '' && zip!= '' && city!= ''){
         this.errors.general = null
+        
+        for(var errorMessage in this.errors){
+          if(this.errors[errorMessage]){
+            this.validate(this.form[errorMessage])
+          }
+        }
+
         this.register({fname, lname, email, username, pw, street, streetNr, city, zip})
       }else{
         this.errors.general = 'Please fill out the whole form'
@@ -144,7 +154,7 @@ export default {
       registrationFormSchema
         .validateAt(field, this.form)
         .then(()=>{
-          this.errors[field] = ''
+          this.errors[field] = null
         })
         .catch((error)=>{
           console.log(error)

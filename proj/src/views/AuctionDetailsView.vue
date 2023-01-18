@@ -2,14 +2,17 @@
     <div class="centered container-fluid mt-4">
         <AtomHeader tag="h1" content="AuctionDetails"/>
         <!--Auction Details-->
-        <div class="m-3 pt-2">
-            <div class="sticky-top auctionDetails">
+        
+            <div class="row p-3">
                 <OrganismAuctionDetails :auction="getAuctionById(auctionID)"/>
             </div>
-            <div class="pt-3">
+            <div class="row p-3">
+                <template v-if="createButtonClicked">
+                    <OrganismCreateBid/>
+                </template>
                 <OrganismBidTable :bids="getBidsByAuctionId(auctionID)"/>
             </div>
-        </div>
+        
     </div>
 </template>
 
@@ -18,13 +21,15 @@ import AtomHeader from '@/components/atoms/AtomHeader.vue';
 import OrganismAuctionDetails from '@/components/organisms/OrganismAuctionDetails.vue';
 import OrganismBidTable from '@/components/organisms/OrganismBidTable.vue';
 import {mapGetters, mapState, mapActions } from 'vuex';
+import OrganismCreateBid from '@/components/organisms/OrganismCreateBid.vue';
 
 export default{
     name:'AuctionDetailsView.vue',
     components:{
     AtomHeader,
     OrganismAuctionDetails,
-    OrganismBidTable
+    OrganismBidTable,
+    OrganismCreateBid
 },
     data(){
         return{
@@ -34,6 +39,7 @@ export default{
     computed:{
         ...mapState('auctionModule', {
             auctionID: state => state.auctionDetails,
+            createButtonClicked: state => state.createBidButtonClicked
         }),
         
         ...mapGetters('auctionModule',[
@@ -55,7 +61,8 @@ export default{
         ...mapActions('auctionModule', {getBids : 'getAuctionBids'}),
         getBidsForAuction(id){
             this.getBids(id)
-        }
+        },
+
     }
 }
 </script>
@@ -63,7 +70,7 @@ export default{
 <style scoped>
 
 .auctionDetails{
-    background-color: white;
+    background-color: #42b983;
 }
 
 </style>

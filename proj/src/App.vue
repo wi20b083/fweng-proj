@@ -1,17 +1,20 @@
 <template>
   <MoleculeNavbar/>
   <router-view/>
+  <footer>
+    <OrganismFooter/>
+  </footer>
 </template>
 
 <script>
-//import OrganismFormEmailPassword from './components/organisms/OrganismFormEmailPassword.vue';
 import MoleculeNavbar from './components/molecules/MoleculeNavbar.vue'
-
+import OrganismFooter from './components/organisms/OrganismFooter.vue'
 export default {
   name: 'App', 
   components: {
-    MoleculeNavbar
-}
+    MoleculeNavbar,
+    OrganismFooter
+  }
 }
 </script>
 
@@ -33,6 +36,11 @@ export default {
 
 .btnColor{
   background-color:  #42b983; 
+  color: white;
+}
+
+.btnColor:hover{
+  background-color:  #1c4f38; 
   color: white;
 }
 

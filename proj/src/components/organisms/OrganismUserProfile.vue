@@ -9,7 +9,7 @@
             <MoleculeFileUpload/>
         </div>
     </div>
-    <AtomButton class="btn btnColor" content="Edit Personal Data"/>
+    <AtomButton type="link" class="btn btnColor" content="Edit Personal Data"/>
 </template>
 
 <script>

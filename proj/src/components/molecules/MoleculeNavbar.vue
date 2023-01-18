@@ -1,6 +1,7 @@
 <template>
+
     <nav class="navbar navbar-expand-lg bg-dark p-3" data-bs-theme="dark">
-        <div class="container-fluid">
+        <div class="container-fluid position-relative">
             <router-link class="navbar-brand" to="/">
                 <AtomNavLogo/>
             </router-link>
@@ -8,51 +9,54 @@
             <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                <router-link class="nav-link" aria-current="page" to="/">Home</router-link>
-                </li>
-                <li class="nav-item">
-                <router-link class="nav-link" to="/imprint">Imprint</router-link>
-                </li>
-                <li class="nav-item">
-                <router-link class="nav-link" aria-current="page" to="/help">Help</router-link>
-                </li>
-                <li class="nav-item">
-                <router-link class="nav-link" to="/registration">Registration</router-link>
-                </li>
-                <li class="nav-item">
-                <router-link class="nav-link" to="/login">Login</router-link>
-                </li>
-                <li class="nav-item">
-                <router-link class="nav-link" to="/products">Products</router-link>
-                </li>
-                <li class="nav-item">
-                <router-link class="nav-link" to="/auctions">Auctions</router-link>
-                </li>
-                <li class="nav-item">
-                <router-link class="nav-link" to="/profile">Profile</router-link>
-                </li>
-                <li class="nav-item">
-                <router-link class="nav-link" to="/editUserProfile">EditProfile</router-link>
-                </li>
-            </ul>
+                <ul class="navbar-nav text-left">
+                    <li class="nav-item">
+                    <router-link class="nav-link" aria-current="page" to="/">Home</router-link>
+                    </li>
+                    <li class="nav-item">
+                    <router-link class="nav-link" to="/imprint">Imprint</router-link>
+                    </li>
+                    <li class="nav-item">
+                    <router-link class="nav-link" aria-current="page" to="/help">Help</router-link>
+                    </li>
+                </ul>
+                <ul class="navbar-nav position-absolute end-0">
+                    <!-- ADD LOGIC FOR LOGIN/LOGOUT !!! -->
+                    <li><i class="bi bi-person-square" style="color: white; font-size: 150%;"></i></li>
+                    <li class="nav-item">
+                        <router-link class="nav-link" to="/profile">Profile</router-link>
+                    </li>
+                    <li class="nav-item">
+                        <router-link class="nav-link" to="/registration">Registration</router-link>
+                    </li>
+                    <li class="nav-item">
+                        <router-link class="nav-link" to="/login">Login</router-link>
+                    </li>
+                    <li class="nav-item">
+                        <router-link class="nav-link" to="/login" @cklick="doLogout">Logout</router-link>
+                    </li>
+                </ul>
             </div>
         </div>
     </nav>
-    
+ 
     
 </template>
 
 <script>
 import AtomNavLogo from '../atoms/AtomNavLogo.vue';
-//import AtomNavItem from '../atoms/AtomNavItem.vue'
+
 
 export default{
    name: 'MoleculeNavbar',
    components:{
         AtomNavLogo,
-        //AtomNavItem
+
+   },
+   methods:{
+        doLogout(){
+            // state change + delete token
+        }
    }
 }
 </script>

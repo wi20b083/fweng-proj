@@ -1,25 +1,26 @@
 <template>
-  <table class="table">
-    <MoleculeTableHead :colnames=colnames />
-    <MoleculeProductTableBody :products=products />
-  </table>
+    <table class="table">
+        <MoleculeTableHead :colnames=colnames />
+        <MoleculeEditProductTableBody :products=products />
+    </table>
 </template>
+
 
 <script>
 import { mapState } from "vuex";
 import MoleculeTableHead from "../molecules/MoleculeTableHead.vue";
-import MoleculeProductTableBody from "../molecules/product-table/MoleculeProductTableBody.vue";
+import MoleculeEditProductTableBody from "../molecules/product-table/MoleculeEditProductTableBody.vue";
 
 export default {
   name: "OrganismProductTable",
   data() {
     return {
-      colnames: ["ID", "Image", "Name", "Amount", "Add"],
+      colnames: ["ID", "Image", "Name", "Edit"],
     }
   },
   components: {
     MoleculeTableHead,
-    MoleculeProductTableBody,
+    MoleculeEditProductTableBody,
   },
   computed:{
     ...mapState('itemsModule', {
@@ -27,4 +28,7 @@ export default {
     }),
   }
 };
+
+
+
 </script>

@@ -9,8 +9,8 @@
         </div>
         <div class="row mb-3">
           <AtomLabel for="password" content="Password"/><br>
-          <AtomInput inputType="password" placeholder="Enter Password" id="password" v-model="form.pw" @blur="validate('pw')"/>
-          <p v-if="!!errors.pw" class="errorMessage">{{errors.pw}}</p>
+          <AtomInput inputType="password" placeholder="Enter Password" id="password" v-model="form.password" @blur="validate('password')"/>
+          <p v-if="!!errors.password" class="errorMessage">{{errors.password}}</p>
         </div>
         
         <p v-if="!!errors.general" class="errorMessage">{{errors.general}}</p>
@@ -31,7 +31,7 @@ import * as Yup from "yup"
 
 const loginFormSchema = Yup.object().shape({
   username: Yup.string().required('Username is required'),
-  pw: Yup.string().required('Password is required'),
+  password: Yup.string().required('Password is required'),
 })
 
 export default {
@@ -39,12 +39,12 @@ export default {
   components: { AtomButton, AtomLabel, AtomInput},
   data:()=>({
     form:{
-      email: '',
-      pw:''
+      username: '',
+      password:''
     },
     errors:{
-      email: '',
-      pw: '',
+      username: '',
+      password: '',
       general: ''
     }
     
@@ -52,11 +52,10 @@ export default {
   methods:{
     ...mapActions('userModule', {login: 'login'}),
     doLogin(){
-      const {username, pw} = this.form
-
-      if(username!= '' && pw!= ''){
+      const {username, password} = this.form
+      if(username!= '' && password!= ''){
         this.errors.general = null
-        this.login({username, pw})
+        this.login({username, password})
       }else{
         this.errors.general = 'Please fill out the whole form'
       }

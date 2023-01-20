@@ -19,18 +19,34 @@ const state = {
             imagesource: require("../../assets/dummyImg.png"),
             alttext: "image of wine",
         },            
-    ]
+    ],
+    productToEdit: ''
+}
+
+const mutations = {
+    setProductToEdit(state, id){
+        state.productToEdit = id
+    }
+}
+
+const actions ={
+    setProductToEdit({commit}, id){
+        commit('setProductToEdit', id)
+    }
 }
 
 const getters = {
-    getItemsById: (state) => (id) =>{
-        debugger;
-        return state.items.filter(item => item.id === id)
+    getItemById: (state) => (id) =>{
+        return state.items.find(item => item.id === id)
     }
 }
+
+
 
 export default{
     namespaced: true,
     state,
     getters,
+    actions,
+    mutations
 }

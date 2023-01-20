@@ -29,11 +29,6 @@ export default{
     OrganismBidTable,
     OrganismCreateBid
 },
-    data(){
-        return{
-            
-        }
-    },
     computed:{
         ...mapState('auctionModule', {
             auctionID: state => state.auctionDetails,
@@ -46,13 +41,6 @@ export default{
         ...mapGetters('bidModule', [
             'getBidsByAuctionId'
         ]),
-        /*...mapGetters([
-            
-            'auctionModule/getAuctionById',
-            'bidModule/getBidsByAuctionId',
-            'itemModule/getItemsById',
-            'auctionModule/getAuctionItemsByAuctionId'
-        ])*/
 
     },
     methods:{

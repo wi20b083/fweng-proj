@@ -40,7 +40,7 @@ export default {
 }
 
 .btnColor:hover{
-  background-color:  #1c4f38; 
+  background-color:  #107355; 
   color: white;
 }
 

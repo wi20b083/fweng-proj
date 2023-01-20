@@ -11,13 +11,10 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav text-left">
                     <li class="nav-item">
-                    <router-link class="nav-link" aria-current="page" to="/">Home</router-link>
+                        <router-link class="nav-link" aria-current="page" to="/">Home</router-link>
                     </li>
                     <li class="nav-item">
-                    <router-link class="nav-link" to="/imprint">Imprint</router-link>
-                    </li>
-                    <li class="nav-item">
-                    <router-link class="nav-link" aria-current="page" to="/help">Help</router-link>
+                        <router-link class="nav-link" to="/userList">UserList</router-link>
                     </li>
                 </ul>
                 <ul class="navbar-nav position-absolute end-0">
@@ -73,7 +70,7 @@ nav a.router-link-exact-active {
 }
 
 nav a:hover {
-    color: #1c4f38;
+    color: #107355;
 }
 
 

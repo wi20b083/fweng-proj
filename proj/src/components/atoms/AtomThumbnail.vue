@@ -1,5 +1,5 @@
 <template>
-    <img :src="src" :alt="alt" class="img-fluid img-thumbnail" style="min-height: 50px; min-width: 50px" />
+    <img :src="src" :alt="alt" class="img-fluid img-thumbnail" />
 </template>
 
 <script>

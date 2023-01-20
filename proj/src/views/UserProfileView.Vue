@@ -21,6 +21,9 @@
                         <OrganismUserProfile />
 
                     </template>
+                    <template v-if="userProfileActiveButton == 'bids'">
+                        <OrganismBidTable :bids="getBidsByUserId(userID)"/>
+                    </template>
                 </div>
             </div>
 
@@ -32,20 +35,26 @@
 import OrganismUserProfile from '../components/organisms/OrganismUserProfile.vue'
 import AtomButton from '../components/atoms/AtomButton.vue'
 import OrganismAuctionTable from '@/components/organisms/OrganismAuctionTable.vue'
-import{mapActions, mapState} from 'vuex'
+import{mapActions, mapGetters, mapState} from 'vuex'
+import OrganismBidTable from '@/components/organisms/OrganismBidTable.vue'
 
 export default{
     name:'UserProfileView',
     components:{
         OrganismUserProfile,
         AtomButton,
-        OrganismAuctionTable
+        OrganismAuctionTable,
+        OrganismBidTable
     },
     computed:{
         ...mapState('userModule', {
             isLogin: state => state.isLogin,
-            userProfileActiveButton: state => state.userProfileActiveButton
-        })
+            userProfileActiveButton: state => state.userProfileActiveButton,
+            userID: state => state.user.id
+        }),
+        ...mapGetters('bidModule',[
+            'getBidsByUserId'
+        ])
     },
     methods:{
         ...mapActions('userModule',{userProfileLoadOrganism: 'userProfileLoadOrganism'}),

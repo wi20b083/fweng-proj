@@ -8,6 +8,7 @@ const state = {
             start: "15.11.2022",
             end: "30.11.2022",
             user: "MusterMaxi1",
+            userID: 1,
             auction: 1,
             details:{
                 bidItems: [1, 2, 3,],
@@ -20,6 +21,7 @@ const state = {
             start: "15.11.2022",
             end: "30.11.2022",
             user: "MusterMaxi1",
+            userID: 1,
             auction: 1,
             details:{
                 bidItems: [1, 2, 3,],
@@ -32,6 +34,7 @@ const state = {
             start: "15.11.2022",
             end: "30.11.2022",
             user: "MusterMaxi1",
+            userID: 1,
             auction: 1,
             details:{
                 bidItems: [1, 2, 3,],
@@ -44,6 +47,7 @@ const state = {
             start: "15.11.2022",
             end: "30.11.2022",
             user: "MusterMaxi1",
+            userID: 1,
             auction: 1,
             details:{
                 bidItems: [1, 2, 3,],
@@ -56,6 +60,7 @@ const state = {
             start: "15.11.2022",
             end: "30.11.2022",
             user: "MusterMaxi1",
+            userID: 2,
             auction: 1,
             details:{
                 bidItems: [1, 2, 3,],
@@ -68,6 +73,7 @@ const state = {
             start: "15.11.2022",
             end: "30.11.2022",
             user: "MusterMaxi1",
+            userID: 2,
             auction: 1,
             details:{
                 bidItems: [1, 2, 3,],
@@ -80,6 +86,7 @@ const state = {
             start: "15.11.2022",
             end: "30.11.2022",
             user: "MusterMaxi1",
+            userID: 1,
             auction: 1,
             details:{
                 bidItems: [1, 2, 3,],
@@ -92,6 +99,7 @@ const state = {
             start: "15.11.2022",
             end: "30.11.2022",
             user: "MusterMaxi1",
+            userID: 2,
             auction: 1,
             details:{
                 bidItems: [1, 2, 3,],
@@ -165,6 +173,9 @@ const actions = {
 const getters = {
     getBidsByAuctionId: (state) => (id) =>{
         return state.bids.filter(bid => bid.auction === id)
+    },
+    getBidsByUserId: (state) => (id) =>{
+        return state.bids.filter(bid => bid.userID === id)
     }
 }
 

@@ -9,7 +9,14 @@
             <MoleculeFileUpload/>
         </div>
     </div>
-    <AtomButton type="link" class="btn btnColor" content="Edit Personal Data"/>
+    <div class="row">
+        <div class="col">
+            <AtomButton type="link" class="btn btnColor" content="Edit Personal Data" @click="loadProfileEdit"/>
+        </div>
+        <div class="col">
+            <AtomButton type="link" class="btn btnColor" content="Reset Password" @click="loadPWReset"/>
+        </div>
+    </div>
 </template>
 
 <script>
@@ -17,6 +24,7 @@ import AtomButton from '../atoms/AtomButton.vue';
 import MoleculeProfileRow from '../molecules/MoleculeProfileRow.vue';
 import AtomThumbnail from '../atoms/AtomThumbnail.vue';
 import MoleculeFileUpload from '../molecules/MoleculeFileUpload.vue';
+import router from '@/router';
 
 export default{
     name:'OrganismUserProfile',
@@ -74,6 +82,14 @@ export default{
                 },
             },
             profilePic: require('../../assets/dummyImg.png'),
+        }
+    },
+    methods:{
+        loadProfileEdit(){
+            router.push('editUserProfile')
+        },
+        loadPWReset(){
+            router.push('pwReset')
         }
     }
 }

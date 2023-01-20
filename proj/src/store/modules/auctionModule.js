@@ -208,7 +208,7 @@ const state = {
             start: "15.11.2022",
             end: "30.11.2022",
             user: "MusterMaxi2",
-            categories: ["beverage", "wine"],
+            categories: ["beverage", "wine", "beer"],
             details:{
                 auctionItems: [1, 2, 3,],
                 total: '',
@@ -222,7 +222,7 @@ const state = {
             start: "15.11.2022",
             end: "30.11.2022",
             user: "MusterMaxi2",
-            categories: ["beverage", "wine"],
+            categories: ["beverage", "beer"],
             details:{
                 auctionItems: [1, 2, 3,],
                 total: '',
@@ -236,7 +236,7 @@ const state = {
             start: "15.11.2022",
             end: "30.11.2022",
             user: "MusterMaxi2",
-            categories: ["beverage", "wine"],
+            categories: ["beverage", "beer"],
             details:{
                 auctionItems: [{
                     id: 1,
@@ -274,7 +274,8 @@ const state = {
             },
         },
     ],
-    filteredAuctions:'',
+    filterAuctionsByCategory: false,
+    filterAuctionsByStartDate: false,
     auctionDetails: '',
     createBidButtonClicked: false
 }
@@ -288,6 +289,16 @@ const mutations = {
     },
     buttonClicked(state, stateChange){
         state.createBidButtonClicked = stateChange
+    },
+    filterAuctionsByCategory(state, category){
+        state.filterAuctionsByCategory = category
+    },
+    filterAuctionsByStartDate(state, date){
+        state.filterAuctionsByStartDate = date
+    },
+    clearAuctionFilter(state){
+        state.filterAuctionsByCategory = ''
+        state.filterAuctionsByStartDate = ''
     }
 }
 
@@ -297,6 +308,15 @@ const actions = {
     },
     buttonClicked({commit}, stateChange){
         commit('buttonClicked', stateChange)
+    },
+    filterAuctionsByCategory({commit}, category){
+        commit('filterAuctionsByCategory', category)
+    },
+    filterAuctionsByStartDate({commit}, date){
+        commit('filterAuctionsByStartDate', date)
+    },
+    clearAuctionFilter({commit}){
+        commit('clearAuctionFilter')
     },
     async getAll({commit}){
         try{
@@ -352,22 +372,27 @@ const actions = {
 
 const getters = {
     
-    getAuctionsByCategory(state){
-        console.log(state.auctions)
-        
-        /*
+    getAuctionsByCategory(filter){
         const filteredAuctions = []
         state.auctions.forEach(auction => {
             auction.categories.forEach(category => {
-                if(category == 'wine'){
+                if(category == filter){
                     filteredAuctions.push(auction)
                 }
             });
         })
-        return filteredAuctions*/
+        return filteredAuctions
     },
-    getAuctionsByStartDate(){
-
+    getAuctionsByStartDate(filter){
+        const filteredAuctions = []
+        state.auctions.forEach(auction => {
+            auction.start.forEach(date => {
+                if(date == filter){
+                    filteredAuctions.push(auction)
+                }
+            });
+        })
+        return filteredAuctions
     },
     getAuctionById: (state) => (id) =>{
         return state.auctions.find(auction => auction.id === id)

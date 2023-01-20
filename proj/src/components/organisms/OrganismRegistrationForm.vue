@@ -65,7 +65,6 @@
         </div>
       </div>
       <p v-if="!!errors.general" class="errorMessage">{{errors.general}}</p>
-      <p v-if="!!errors.generalValidation" class="errorMessage">{{errors.generalValidation}}</p>
       <div class="text-end m-3">
         <AtomButton type="button" classname="btn btnColor" content="Submit" @click="doRegistration"/>
       </div>
@@ -78,7 +77,6 @@ import AtomButton from "../atoms/AtomButton.vue"
 import{mapActions} from 'vuex'
 import AtomInput from '../atoms/AtomInput.vue'
 import AtomLabel from "../atoms/AtomLabel.vue"
-//import {object, string, number} from 'yup'
 import * as Yup from "yup"
 
 
@@ -120,10 +118,6 @@ export default {
         username: '',
         pw: '',
         pwConfirm: '',
-        street: '',
-        streetNr: '',
-        zip: '',
-        city:'',
         general: '',
 
       }
@@ -134,9 +128,19 @@ export default {
     doRegistration(){
       console.log('doRegistration method in OrganismRegistrationForm')
       
-      const {fname, lname, email, username, pw, street, streetNr, zip, city} = this.form
+      
+      const firstName = this.form.fname
+      const lastName = this.form.lname
+      const userName = this.form.username
+      const password = this.form.pw
+      const email = this.form.email
+      const zip = this.form.zip
+      const street = this.form.street
+      const streetNr = this.form.streetNr
+      const city = this.form.city
 
-      if(fname != '' && lname!= '' && email!= '' && username!= '' && pw!= '' && street!= '' && streetNr!= '' && zip!= '' && city!= ''){
+
+      if(firstName != '' && lastName!= '' && email!= '' && userName!= '' && password!= '' && street!= '' && streetNr!= '' && zip!= '' && city!= ''){
         this.errors.general = null
         
         for(var errorMessage in this.errors){
@@ -144,8 +148,10 @@ export default {
             this.validate(this.form[errorMessage])
           }
         }
-
-        this.register({fname, lname, email, username, pw, street, streetNr, city, zip})
+        const imgLink='../../assets/dummyImg.png'
+        const address='Straße 4'
+        const status = true
+        this.register({firstName, lastName, imgLink, userName, password, email, status, address})
       }else{
         this.errors.general = 'Please fill out the whole form'
       }

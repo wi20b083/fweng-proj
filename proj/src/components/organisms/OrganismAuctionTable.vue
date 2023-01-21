@@ -2,7 +2,7 @@
     <div>
         <div class="row">
             <!--create auction only if logged in user - AUTHORIZATION !!!-->
-            <div class="col text-start"><AtomButton type="link" class="btn btnColor" content="Create Auction" @click="loadCreateAuction"/></div>
+            <div class="col text-start" v-if="isLogin"><AtomButton type="link" class="btn btnColor" content="Create Auction" @click="loadCreateAuction"/></div>
             <div class="col text-end"><i class="bi bi-funnel" style="color: black; font-size: 130%; font-style: normal;">Filter Auctions by</i></div>
             <div class="col-auto text-end">
                 <AtomLabel for="categoryFilter" content="Category"/>
@@ -49,6 +49,7 @@ export default {
         AtomLabel,
         AtomInput
     },
+    props:['isLogin'],
     data(){
         return{
             colnames: [

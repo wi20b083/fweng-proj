@@ -302,6 +302,13 @@ const mutations = {
     }
 }
 
+const config = {
+    headers:{
+        'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
+    }
+};
+const url = "http://localhost:8081/";
+
 const actions = {
     showDetails({commit}, id){
         commit('showDetails', id)
@@ -320,48 +327,61 @@ const actions = {
     },
     async getAll({commit}){
         try{
-            const response = await axios.get('http://localhost:8080/auctions/all')
+            const response = await axios.get(url + 'auctions/all', config)
             console.log('getAll: ' + response)
-            commit('updateList')
+
+            const auctionList = response.data // .auctions ???
+
+            commit('updateList', auctionList)
         }catch(error){
             console.log(error)
         }
     },
-    // -> SEND TOKEN
-    async update({commit}, {auction}){
+    
+    async update({commit}, {id}){ // what data how spell ???
         try{
-            const response = await axios.put('http://localhost:8080/auctions/' + auction.id, {auction})
+            const response = await axios.put('auctions/' + id, {}, config)
             console.log('update: ' + response)
+
+            // what response what to change in state ?
+
             commit('updateList')
         }catch(error){
             console.log(error)
         }
     },
-    // -> SEND TOKEN
     async delete({commit}, id){
         try{
-            const response = await axios.delete('http://localhost:8080/auctions/' + id)
+            const response = await axios.delete(url + 'auctions/' + id, config)
             console.log('delete: ' + response)
+
+            // what response what to change in state ?
+
+
             commit('updateList')
         }catch(error){
             console.log(error)
         }
     },
-    // -> SEND TOKEN
-    async create({commit}, {auction}){
+    async create({commit}){ // what data how spell ???
         try{
-            const response = await axios.post('http://localhost:8080/auctions/', {auction})
+            const response = await axios.post(url + 'auctions/', config)
             console.log('create: ' + response)
-            commit('updateList')
+
+            const auctionList = response.data //.auctions ???
+
+            commit('updateList', auctionList)
         }catch(error){
             console.log(error)
         }
     },
-    // -> SEND TOKEN
     async closeAuction({commit}, id){
         try{
-            const response = await axios.put('http://localhost:8080/auctions/' +id)
+            const response = await axios.put(url + 'auctions/' +id)
             console.log('closeAuction: ' + response)
+
+            // what response what to change in state ?
+
             commit('updateList')
         }catch(error){
             console.log(error)

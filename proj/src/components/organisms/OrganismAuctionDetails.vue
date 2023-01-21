@@ -35,7 +35,7 @@
             <div class="row" v-for="item in auction.details.auctionItems" v-bind:key="item.id">{{ item.name }}</div>
         </div>
     </div>
-    <div class="row mt-3">
+    <div class="row mt-3" v-if="isLogin">
         <AtomButton type="link" content="Bid on Auction" class="btn btnColor" @click="loadOrganismCreateBid"/>
     </div>
     
@@ -52,7 +52,7 @@ export default{
         AtomThumbnail,
         AtomButton
     },
-    props:['auction'],
+    props:['auction', 'isLogin'],
     methods:{
         ...mapActions('auctionModule', {buttonClicked: 'buttonClicked'}),
         loadOrganismCreateBid(){

@@ -1,5 +1,5 @@
 <template>
-    <div class="container-fluid mt-4">
+    <div class="container-fluid mt-4" v-if="isLogin">
         <h1 class="mb-5 border-bottom border-dark">Profile</h1>
         <div class="row m-4">
 
@@ -28,6 +28,9 @@
             </div>
 
         </div>
+    </div>
+    <div class="centered container-fluid mt-4" v-else>
+        <h1>You are not authorized to see this Page.</h1>
     </div>
 </template>
 

@@ -1,31 +1,42 @@
 import axios from "axios"
 import jwtDecode from "jwt-decode"
 
+
 const state = {
     isLogin: false,
     isAdmin: false,
     admin:{
         id: Number,
-        fname: String,
-        lname: String,
-        email: String,
+        roles:[],
+        firstName: String,
+        lastName: String,
+        imgLink: String,
         username: String,
+        email: String,
+        status: String,
         street: String,
         streetNr: Number,
         zip: Number,
         city: String,
+        auctions: [],
+        bids: []
     },
-    token: {},
+    token: {}, // muss ich token hier speichern, wenn er lokal gespeichert ist und ich ihn so auch abrufe
     user:{
         id: Number,
-        fname: String,
-        lname: String,
-        email: String,
+        roles:[],
+        firstName: String,
+        lastName: String,
+        imgLink: String,
         username: String,
+        email: String,
+        status: String,
         street: String,
         streetNr: Number,
         zip: Number,
         city: String,
+        auctions: [],
+        bids: []
     },
     userList:[
         {
@@ -150,10 +161,11 @@ const state = {
 
 //only synchronus code -> commit mutations
 const mutations = {
-    login(state, {user, token}){
-       state.user = user
+    login(state, {isAdmin}){
+       //state.user = user
        state.isLogin = true
-       state.token = token
+       state.isAdmin = isAdmin
+       //state.token = token
 
     },
     loginAdmin(state, {user, token}){
@@ -194,39 +206,48 @@ const mutations = {
     }
 }
 
-// async is allowed, do api calls here -> dispatch actions
+const config = {
+    headers:{
+        'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
+    }
+};
+const url = "http://localhost:8081/";
+  
 
-// SAVE TOKEN IN STORE + SEND IT WITH REQUESTS !!!
 const actions = {
     async login({commit}, {username, password}){
 
         try{
-            const response = await axios.post('http://localhost:8081/login', {username, password})
+            const response = await axios.post(url + 'login', {username, password}) //'http://localhost:8081/login'
             // SET TOKEN HERE (GET IT FROM RESPONSE)
 
-
-            // is user = admin 
-            // if user != admin
-            const isAdmin = false
+            var isAdmin = false
 
 
             const token = response.data.token
+            localStorage.setItem('token', token)
             const decodedToken = jwtDecode(token)
             const userRoles = decodedToken.roles
+
+            console.log(decodedToken)
             if(userRoles.length == 2){
                 isAdmin = true
             }
-            commit('login', response.data)
+
+            //Get User Data to specific user with userId in token
+            
+            
+
+            commit('login', {isAdmin}) // + userID mitschicken
             
 
         }catch(error){
             console.log(error)
         }
     },
-    // -> SEND TOKEN
-    async logout({commit}, token){
+    async logout({commit}){
         try{
-            const response = await axios.get('http://localhost:8081/login?logout=true', token)
+            const response = await axios.get(url +'login?logout=true', config)
             // REMOVE TOKEN HERE FROM LOCAL STORAGE
 
 
@@ -238,21 +259,19 @@ const actions = {
     },
     async register({commit}, {firstName, lastName, imgLink, userName, password, email, status, address}){
         try{
-            const response = await axios.post('http://localhost:8081/register', {firstName, lastName, imgLink, userName, password, email, status, address})
+            const response = await axios.post(url + 'register', {firstName, lastName, imgLink, userName, password, email, status, address})
             console.log('register: '+response)
+            const user = response.data //.user ???
+            console.log(user)
             commit('register', {firstName, lastName, imgLink, userName, password, email, status, address});
         }catch(error){
             console.log(firstName, lastName, imgLink, userName, password, email, status, address)
             console.log(error)
         }
-        
-
-        //const response = userService.register({fname, lname, email, username, pw, street, streetNr, zip, city})
     },
-    // -> SEND TOKEN
     async getAll({commit}){
         try{
-            const response = await axios.get('http://localhost:8081/users/all')
+            const response = await axios.get(url + 'users/all', config)
             console.log('getAll: ' + response)
             commit('getAll')
         }catch(error){
@@ -260,41 +279,48 @@ const actions = {
         }
         
     },
-    // -> SEND TOKEN
     async getById({commit}, {id}){
         try{
-            const response = await axios.get('http://localhost:8081/users/' + id)
+            const response = await axios.get(url + 'users/' + id, config)
             console.log('getById: ' + response)
-            commit('getById')
+            const user = response.data.user
+            commit('getById', user)
         }catch(error){
             console.log(error)
         }
     },
-    // -> SEND TOKEN
-    async update({commit}, {user}){
+    async update({commit}, {id ,firstName, lastName, imgLink, userName, email, status, address}){
         try{
-            const response = await axios.put('http://localhost:8081/users/' + user.id + '?pwchange=true', {user})
+            const response = await axios.put(url +'users/' + id , {firstName, lastName, imgLink, userName, email, status, address}, config)
             console.log('update: ' + response)
+
+            // what to update in state ????
+            // response for != isAdmin => user, response for = isAdmin => userList
             commit('update')
         }catch(error){
             console.log(error)
         }
     },
-    // -> SEND TOKEN
     async deleteUser({commit}, id){
         try{
-            const response = await axios.delete('http://localhost:8081/users/' + id)
+            const response = await axios.delete(url + 'users/' + id, config)
             console.log('deleteUser: ' + response)
+
+            // what is response for admin, what for user ????
+
             commit('deleteUser')
         }catch(error){
             console.log(error)
         }
     },
-    // -> SEND TOKEN
     async changeUserState({commit}, id){
         try{
-            const response = await axios.put('http://localhost:8081/users/' + id)
+            const response = await axios.put(url + 'users/' + id, config)
             console.log('changeUserState: ' + response)
+
+            // what response ???
+            // what to change in state ???
+
             commit('changeUserState')
         }catch(error){
             console.log(error)
@@ -302,10 +328,14 @@ const actions = {
     },
     async resetPassword({commit}, {pwOld, pwNew}){
         try{
-            // what is url for pw change ????
-            const response = await axios.put('http://localhost:8081/users/' )
+            // what is url for pw change ???
+            const response = await axios.put(url + 'users/', {pwOld, pwNew}, config )
             console.log('changePassword: ' + response)
-            commit('resetPassword', {pwOld, pwNew})
+
+            // what is response ???
+            // what to change in state ???
+
+            commit('resetPassword')
         }catch(error){
             console.log(error)
         }

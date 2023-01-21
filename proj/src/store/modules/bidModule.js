@@ -117,52 +117,71 @@ const mutations ={
     }
 }
 
+const config = {
+    headers:{
+        'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
+    }
+};
+const url = "http://localhost:8081/";
+
 const actions = {
     async getAll({commit}){
         try{
-            const response = await axios.get('http://localhost:8080/bids/all')
+            const response = await axios.get(url + 'bids/all', config)
             console.log('getAll: ' + response)
-            commit('updateList')
+
+            const bidList = response.data // .bids ?
+
+            commit('updateList', bidList)
         }catch(error){
             console.log(error)
         }
     },
-    // -> SEND TOKEN
-    async update({commit}, {bid}){
+    async update({commit}, {id}){ // what data how to spell ???
         try{
-            const response = await axios.put('http://localhost:8080/bids/' + bid.id, {bid})
+            const response = await axios.put(url + 'bids/' + id, config) // what data ???
             console.log('update: ' + response)
-            commit('updateList')
+
+            const bidList = response.data // .bids ?
+
+            commit('updateList', bidList)
         }catch(error){
             console.log(error)
         }
     },
-    // -> SEND TOKEN
     async delete({commit}, id){
         try{
-            const response = await axios.delete('http://localhost:8080/bids/' + id)
+            const response = await axios.delete(url + 'bids/' + id, config)
             console.log('delete: ' + response)
+
+            // what response , what to change in state ???
+
             commit('updateList')
         }catch(error){
             console.log(error)
         }
     },
-    // -> SEND TOKEN
-    async create({commit}, {bid}){
+
+    async create({commit}){ // what data how to spell ???
         try{
-            const response = await axios.post('http://localhost:8080/bids/', {bid})
+            const response = await axios.post('http://localhost:8080/bids/', config)
             console.log('create: ' + response)
-            commit('updateList')
+
+            const bidList = response.data // .bids ?
+
+            commit('updateList', bidList)
         }catch(error){
             console.log(error)
         }
     },
-    // -> SEND TOKEN
     async getByUserId({commit}, id){
         try{
-            const response = await axios.get('http://localhost:8080/bids/' + id)
+            const response = await axios.get(url + 'bids/' + id, config)
             console.log('getbyuserid: ' + response)
-            commit('updateList')
+
+            const bidList = response.data // .bids ?
+
+            commit('updateList', bidList)
         }catch(error){
             console.log(error)
         }

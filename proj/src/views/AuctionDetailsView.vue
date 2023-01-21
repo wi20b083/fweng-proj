@@ -4,7 +4,7 @@
         <!--Auction Details-->
         
             <div class="row p-3">
-                <OrganismAuctionDetails :auction="getAuctionById(auctionID)"/>
+                <OrganismAuctionDetails :auction="getAuctionById(auctionID)" :isLogin="isLogin"/>
             </div>
             <div class="row p-3">
                 <template v-if="createButtonClicked">
@@ -41,6 +41,9 @@ export default{
         ...mapGetters('bidModule', [
             'getBidsByAuctionId'
         ]),
+        ...mapState('userModule', {
+            isLogin: state => state.isLogin
+        })
 
     },
     methods:{

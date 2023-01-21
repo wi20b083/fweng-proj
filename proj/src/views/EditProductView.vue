@@ -1,9 +1,12 @@
 <template>
-    <div class="centered container-fluid mt-4">
+    <div class="centered container-fluid mt-4" v-if="isLogin && isAdmin">
         <h1>Edit Product</h1>
         <div class="ps-5 pe-5">
             <OrganismEditProduct :product="getItemById(productID)"/>
         </div>
+    </div>
+    <div class="centered container-fluid mt-4" v-else>
+      <h1>You are not authorized to see this Page.</h1>
     </div>
 </template>
 
@@ -23,7 +26,11 @@ export default{
         }),
         ...mapGetters('itemsModule', [
             'getItemById'
-        ])
+        ]),
+        ...mapState('userModule', {
+            isLogin: state => state.isLogin,
+            isAdmin: state => state.isAdmin
+      })
     },
 }
 

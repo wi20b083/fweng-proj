@@ -22,9 +22,7 @@ export default{
       OrganismEditProductsTable,
       AtomButton
     },
-    setup(){
-      this.getAll
-    },
+
     computed:{
       ...mapState('userModule', {
         isLogin: state => state.isLogin,
@@ -32,9 +30,7 @@ export default{
       })
     },
     methods:{
-      ...mapActions('itemsModule',{
-        getAll: 'getAll'
-      }),
+     
       loadCreateProduct(){
         router.push('createProduct')
       }

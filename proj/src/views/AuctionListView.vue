@@ -16,18 +16,12 @@ export default {
   components: {
     OrganismAuctionTable,
   },
-  setup(){
-    this.getAll
-  },
+  
   computed:{
     ...mapState('userModule', {
       isLogin: state => state.isLogin
     })
   },
-  methods:{
-    ...mapActions('auctionModuel', {
-      getAll: 'getAll'
-    })
-  }
+
 };
 </script>

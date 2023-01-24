@@ -8,25 +8,11 @@
 </template>
 <script>
 import OrganismAuctionTable from "@/components/organisms/OrganismAuctionTable.vue";
-import { mapActions } from "vuex";
-//import { mapActions } from "vuex";
 export default {
   name: "HomeView",
   components: {
     OrganismAuctionTable
   },
-  setup(){
-    this.getAllAuctions
-    this.getAllBids
-  },
-  methods:{
-    
-    ...mapActions('auctionModule', {
-      getAllAuctions: 'getAll'
-    }),
-    ...mapActions('bidModule', {
-      getAllBids: 'getAll'
-    })
-  }
+  
 };
 </script>

@@ -18,20 +18,14 @@ export default{
     components:{
         OrganismUserList,
     },
-    setup(){
-    this.getAll
-    },
+    
     computed:{
       ...mapState('userModule', {
         isLogin: state => state.isLogin,
         isAdmin: state => state.isAdmin
       })
     },
-    method:{
-        ...mapActions('userModule',{
-            getAll: 'getAll'
-        })
-    }
+    
 }
 
 </script>

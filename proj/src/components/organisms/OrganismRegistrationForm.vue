@@ -39,6 +39,7 @@
           <p v-if="!!errors.pwConfirm" class="errorMessage">{{errors.pwConfirm}}</p>
         </div>
       </div>
+      <!--
       <hr class="mt-4 mb-4"/>
       <div class="row m-3">
         <div class="col">
@@ -63,7 +64,7 @@
           <AtomInput inputType="text" placeholder="Vienna" id="city" v-model="form.city" @blur="validate('city')"/>
           <p v-if="!!errors.city" class="errorMessage">{{errors.city}}</p>
         </div>
-      </div>
+      </div>-->
       <p v-if="!!errors.general" class="errorMessage">{{errors.general}}</p>
       <div class="text-end m-3">
         <AtomButton type="button" classname="btn btnColor" content="Submit" @click="doRegistration"/>
@@ -87,10 +88,6 @@ const registrationFormSchema = Yup.object().shape({
   username: Yup.string().required('Username is required'),
   pw: Yup.string().min(8).required('Password is required').oneOf([Yup.ref('pwConfirm'), null], 'Passwords must match'),
   pwConfirm: Yup.string().required('Password is required').oneOf([Yup.ref('pw'), null], 'Passwords must match'),
-  street: Yup.string().required('Street Name is required'),
-  streetNr: Yup.number().required('House Number is required').typeError('House Number must be a number').positive('House Number must be greater than zero'),
-  zip: Yup.number().required('Zip Code is required').typeError('Zip Code must be a number').positive('Zip Code must be greater than zero'),
-  city: Yup.string().required('City is required'),
 })
 
 export default {
@@ -106,10 +103,7 @@ export default {
         username: '',
         pw: '',
         pwConfirm: '',
-        street: '',
-        streetNr: '',
-        zip: '',
-        city:''
+
       },
       errors:{
         fname: '',
@@ -129,29 +123,17 @@ export default {
       console.log('doRegistration method in OrganismRegistrationForm')
       
       
-      const firstName = this.form.fname
-      const lastName = this.form.lname
-      const userName = this.form.username
+      const firstname = this.form.fname
+      const lastname = this.form.lname
+      const username = this.form.username
       const password = this.form.pw
       const email = this.form.email
-      const zip = this.form.zip
-      const street = this.form.street
-      const streetNr = this.form.streetNr
-      const city = this.form.city
 
 
-      if(firstName != '' && lastName!= '' && email!= '' && userName!= '' && password!= '' && street!= '' && streetNr!= '' && zip!= '' && city!= ''){
+      if(firstname != '' && lastname!= '' && email!= '' && username!= '' && password!= ''){
         this.errors.general = null
-        
-        for(var errorMessage in this.errors){
-          if(this.errors[errorMessage]){
-            this.validate(this.form[errorMessage])
-          }
-        }
-        const imgLink='../../assets/dummyImg.png'
-        const address='Straße 4'
-        const status = true
-        this.register({firstName, lastName, imgLink, userName, password, email, status, address})
+
+        this.register({firstname, lastname, email, username, password})
       }else{
         this.errors.general = 'Please fill out the whole form'
       }

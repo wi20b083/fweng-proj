@@ -14,13 +14,16 @@
 <script>
 import AtomButton from '@/components/atoms/AtomButton.vue';
 import OrganismEditProductsTable from '../components/organisms/OrganismEditProductsTable.vue'
-import { mapState } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 import router from '@/router';
 export default{
     name:'ProductListView',
     components:{
       OrganismEditProductsTable,
       AtomButton
+    },
+    setup(){
+      this.getAll
     },
     computed:{
       ...mapState('userModule', {
@@ -29,6 +32,9 @@ export default{
       })
     },
     methods:{
+      ...mapActions('itemsModule',{
+        getAll: 'getAll'
+      }),
       loadCreateProduct(){
         router.push('createProduct')
       }

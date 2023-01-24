@@ -10,9 +10,9 @@
       :user=auction.user
       :start=auction.start
       :categories=auction.categories
-      
+      :auctionUserID="auction.userID"
     />
-    <!--:auctionUserID="auction.userID" -->
+    <!-- -->
   </tbody>
 </template>
 

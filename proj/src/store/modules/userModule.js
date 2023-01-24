@@ -141,6 +141,7 @@ const state = {
     ],
     userProfileActiveButton: 'personal',
     userToEdit: '',
+    requestError: ''
 }
 
 //only synchronus code -> commit mutations
@@ -228,6 +229,9 @@ const mutations = {
     },
     getById(state, user){
         state.user = user
+    },
+    setRequestError(state, message){
+        state.requestError = message
     }
 
 }
@@ -238,6 +242,7 @@ const config = {
     }
 };
 const url = "http://localhost:8081/";
+//const url = "https://8eee-178-165-201-45.eu.ngrok.io/"
   
 
 const actions = {
@@ -265,10 +270,12 @@ const actions = {
                 commit('login', {isAdmin, user, token})
             }catch(error){
                 console.log(error)
+                commit('setRequestError', error.message)
             }
 
         }catch(error){
             console.log(error)
+            commit('setRequestError', error.message)
         }
     },
     async logout({commit}){
@@ -282,16 +289,18 @@ const actions = {
             commit('logout')
         }catch(error){
             console.log(error)
+            commit('setRequestError', error.message)
         }
     },
-    async register({commit}, {firstName, lastName, userName, password, email, status}){
+    async register({commit}, {firstname, lastname, email, username, password}){
         try{
-            const imgLink = require('../../assets/dummyImg.png')
-            const response = await axios.post(url + 'register', {firstName, lastName, imgLink, userName, password, email, status})
+            const imagePath = '../../assets/dummyImg.png'
+            const response = await axios.post(url + 'register', {firstname, lastname, email, username, password, imagePath})
             const user = response.data 
             commit('register', {user});
         }catch(error){
             console.log(error)
+            commit('setRequestError', error.message)
         }
     },
     async getAll({commit}){
@@ -302,6 +311,7 @@ const actions = {
             commit('getAll', userList)
         }catch(error){
             console.log(error)
+            commit('setRequestError', error.message)
         }
         
     },
@@ -313,6 +323,7 @@ const actions = {
             commit('getById', user)
         }catch(error){
             console.log(error)
+            commit('setRequestError', error.message)
         }
     },
 
@@ -325,6 +336,7 @@ const actions = {
             commit('update', user)
         }catch(error){
             console.log(error)
+            commit('setRequestError', error.message)
         }
         /*
         console.log(id)
@@ -349,6 +361,7 @@ const actions = {
             }
         }catch(error){
             console.log(error)
+            commit('setRequestError', error.message)
         }
         /*
         console.log(id)
@@ -362,11 +375,12 @@ const actions = {
             commit('changeUserState', id)
         }catch(error){
             console.log(error)
+            commit('setRequestError', error.message)
         }
         //commit('changeUserState', id)
 
     },
-    async resetPassword({pwOld, pwNew}){
+    async resetPassword({commit},{pwOld, pwNew}){
         try{
             
             const response = await axios.put(url + 'users/' + this.user.id, {pwOld, pwNew}, config )
@@ -375,6 +389,7 @@ const actions = {
             }
         }catch(error){
             console.log(error)
+            commit('setRequestError', error.message)
             // tell user that something went wrong
         }
 
@@ -392,6 +407,7 @@ const actions = {
             commit('getById', user)
         }catch(error){
             console.log(error)
+            commit('setRequestError', error.message)
         }
     }
 }

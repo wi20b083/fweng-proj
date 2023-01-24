@@ -11,13 +11,13 @@
     <td class="align-middle">
       <AtomButton content="Details" type="button" classname="btn btnColor" @click="loadDetailsPage(id)"/>
     </td>
-    <td class="align-middle" v-if=" (isLogin ===true && isAdmin === true) || isLogin === true">
+    <td class="align-middle" v-if=" (isLogin ===true && isAdmin === true) || (isLogin === true && auctionUserID === userID)">
       <AtomButton content="Edit" type="button" classname="btn btn-secondary" @click="loadEditAuction(id)"/>
     </td>
     <td class="align-middle" v-if=" isLogin ===true && isAdmin === true">
       <AtomButton content="Delete" type="button" classname="btn btn-danger" @click="deleteAuction(id)"/>
     </td>
-    <td class="align-middle" v-if=" isLogin ===true && isAdmin === false "> <!--&& userID === auctionUserID-->
+    <td class="align-middle" v-if=" isLogin ===true && isAdmin === false && userID === auctionUserID" > <!--&& userID === auctionUserID-->
       <AtomButton content="Close" type="button" classname="btn btn-danger" @click="deleteAuction(id)"/>
     </td>
 
@@ -42,7 +42,7 @@ export default {
     "user",
     "start",
     "categories",
-    //"auctionUserID"
+    "auctionUserID"
   ],
   components: {
     AtomText,

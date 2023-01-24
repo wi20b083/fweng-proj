@@ -10,7 +10,7 @@ const state = {
             deliveryDate: '05.12.2022',
             imagesource: require("../../assets/dummyImg.png"),
             user:{
-                userID: 1,
+                id: 1,
                 username: 'llara_rh',
             },
             auctionitems:[
@@ -572,7 +572,8 @@ const state = {
     filterAuctionsByCategory: '',
     filterAuctionsByStartDate: '',
     auctionDetails: '',
-    createBidButtonClicked: false
+    createBidButtonClicked: false,
+    requestError: '',
 }
 
 const mutations = {
@@ -597,16 +598,21 @@ const mutations = {
     clearAuctionFilterDate(state){
         state.filterAuctionsByStartDate = ''
     },
+    //ok
     create(state, auction){
         state.auctions.push(auction)
     },
+    //ok
     delete(state, id){
-        for(var i = 0; i<state.auctions.length; i++){
-            if(state.auctions[i].id === id){
-                state.auctions.remove(i)
+        const auctionListNew = []
+        state.auctions.forEach(auction =>{
+            if(auction.id != id){
+                auctionListNew.push(auction)
             }
-        }
+        })
+        state.auctions = auctionListNew
     },
+    //ok
     update(state, auctionUpdated){
         state.auctions.forEach(auction => {
             if(auction.id === auctionUpdated.id){
@@ -620,15 +626,19 @@ const mutations = {
                 auction.status = 'closed'
             }
         });
+    },
+    setRequestError(state, message){
+        state.requestError = message
     }
 }
 
 const config = {
     headers:{
-        'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
+        'Authorization': `Bearer ${localStorage.getItem('token')}`,
     }
 };
 const url = "http://localhost:8081/";
+//const url = "https://707a-178-165-201-45.eu.ngrok.io/"
 
 const actions = {
     showDetails({commit}, id){
@@ -659,6 +669,7 @@ const actions = {
             commit('getAll', auctionList)
         }catch(error){
             console.log(error)
+            commit('setRequestError', error.message)
         }
     },
     
@@ -672,6 +683,7 @@ const actions = {
             commit('update', auction)
         }catch(error){
             console.log(error)
+            commit('setRequestError', error.message)
         }
     },
     async delete({commit}, id){
@@ -679,18 +691,17 @@ const actions = {
             const response = await axios.delete(url + 'auctions/' + id, config)
             console.log('delete: ' + response)
 
-            // response is http status 
-
-
             commit('delete', id)
         }catch(error){
-            console.log(error)
+            console.log(error.message)
+            commit('setRequestError', error.message)
         }
     },
-    async create({commit}, {userId, startDateTime, deliveryDateTime, endDateTime, items}){ // what data how spell ???
+    async create({commit}, {userId, startDateTime, deliveryDateTime, endDateTime}){ //items
         try{
             // items = [{productId, amount, costPerUnit}]
 
+            const items =[]
             const response = await axios.post(url + 'auctions/', {userId, startDateTime, deliveryDateTime, endDateTime, items}, config) //auction data mitschicken ohne user
             console.log('create: ' + response)
 
@@ -699,6 +710,7 @@ const actions = {
             commit('create', auction)
         }catch(error){
             console.log(error)
+            commit('setRequestError', error.message)
         }
     },
     async closeAuction({commit}, id){
@@ -711,32 +723,39 @@ const actions = {
             commit('closeAuction', id)
         }catch(error){
             console.log(error)
+            commit('setRequestError', error.message)
         }
     },
     
 }
 
 const getters = {
-    
     getAuctionsByCategory(filter){
+        console.log(filter)
         const filteredAuctions = []
         state.auctions.forEach(auction => {
+            /*
             auction.categories.forEach(category => {
                 if(category === filter){
                     filteredAuctions.push(auction)
                 }
-            });
+            });*/
+
+            filteredAuctions.push(auction)
         })
         return filteredAuctions
     },
-    getAuctionsByStartDate(filter){
-        const filteredAuctions = []
+    getAuctionsByStartDate: (state) => (filter)=>{
+        
+        return state.auctions.filter(auction => auction.startDate === filter)
+        
+        /*
         state.auctions.forEach(auction => {
             if(auction.start === filter){
                 filteredAuctions.push(auction)
             }
-        })
-        return filteredAuctions
+        })*/
+        
     },
     getAuctionsByCategoryAndDate({filterDate, filterCategory}){
         const filteredAuctions = []

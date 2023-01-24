@@ -62,13 +62,13 @@
             <div class="col">
                 <AtomButton content="Details" type="button" classname="btn btnColor" @click="loadDetailsPage(auction.id)"/>
             </div>
-            <div class="col" v-if=" (isLogin ===true && isAdmin === true) "> <!-- Nur admin oder user dem die Auction gehört können auction löschen ->  || (isLogin === true && userID === auction.user.userID)-->
+            <div class="col" v-if=" (isLogin ===true && isAdmin === true) || (isLogin === true && userID === auction.user.id)"> <!-- Nur admin oder user dem die Auction gehört können auction löschen ->  || (isLogin === true && userID === auction.user.userID)-->
                 <AtomButton content="Edit" type="button" classname="btn btn-secondary" @click="loadEditAuction(auction.id)"/>
             </div>
             <div class="col" v-if=" isLogin ===true && isAdmin === true">
                 <AtomButton content="Delete" type="button" classname="btn btn-danger" @click="deleteAuction(auction.id)"/>
             </div>
-            <div class="col" v-if=" isLogin ===true && isAdmin === false "> <!--&& userID === auctionUserID-->
+            <div class="col" v-if=" isLogin ===true && isAdmin === false && userID === auctionUserID"> <!---->
                 <AtomButton content="Close" type="button" classname="btn btn-danger" @click="deleteAuction(auction.id)"/>
             </div>
         </div>
@@ -142,16 +142,15 @@ export default {
             router.push("createAuction")
         },
         filterCategory(){
-            this.auctions = this.getAuctionsByCategory(this.filter.category)
+            //this.auctions = this.getAuctionsByCategory(this.filter.category)
         },
         filterDate(){
-            this.auctions = this.getAuctionsByStartDate(this.filter.date)
+            //this.auctions = this.getAuctionsByStartDate(this.filter.date)
 
         },
         loadDetailsPage(id){
             console.log('id from auction row:' +id)
             this.showDetails(id)
-            //this.getAuctionBids(id)
             router.push("auctionDetails")
         },
         loadEditAuction(id){

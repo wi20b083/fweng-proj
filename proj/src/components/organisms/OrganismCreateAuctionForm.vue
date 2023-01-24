@@ -88,6 +88,9 @@ export default{
         OrganismProductTable
 
     },
+    props:[
+        'userID'
+    ],
     data(){
         return{
             auction:{
@@ -110,11 +113,15 @@ export default{
         ...mapActions('auctionModule', {create: 'create'}),
         createAuction(){
             console.log('create Auction method in Organism')
-            const {title, start, end, minPrice, maxPrice, deliveryDate} = this.auction
+            const startDateTime = this.auction.start
+            const endDateTime = this.auction.end
+            const deliveryDateTime = this.auction.deliveryDate
+            const userId = this.userID
             // DATA FORMAT !!! ????
-            if(title != '' && start!= '' && end!= '' && minPrice!= '' && maxPrice!= '' && deliveryDate!= ''){
+            //userId, startDateTime, deliveryDateTime, endDateTime
+            if(startDateTime != "" && endDateTime != "" && deliveryDateTime != ""){
                 this.errors.general = null
-                this.create({title, start, end, minPrice, maxPrice, deliveryDate})
+                this.create({userId, startDateTime, deliveryDateTime, endDateTime})
 
             }else{
                 this.errors.general = 'Please fill out the whole form'

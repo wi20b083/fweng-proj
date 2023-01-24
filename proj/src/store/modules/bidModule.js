@@ -109,11 +109,13 @@ const state = {
             },
         },
     ],
+    requestError: '',
 
     
 }
 
 const mutations ={
+    // ok
     update(state, bidUpdated){
         state.bids.forEach(bid => {
             if(bid.id === bidUpdated.id){
@@ -121,18 +123,34 @@ const mutations ={
             }
         });
     },
+    //ok
     getAll(state, bids){
         state.bids = bids
     },
+    //ok
     create(state, bid){
         state.bids.push(bid)
     },
+    //ok
+    delete(state, id){
+        const bidListNew = []
+        state.bids.forEach(bid =>{
+            if(bid.id != id){
+                bidListNew.push(bid)
+            }
+        })
+        state.bids = bidListNew
+    },
+    //ok
+    setRequestError(state, message){
+        state.requestError = message
+    }
 
 }
 
 const config = {
     headers:{
-        'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
+        'Authorization': `Bearer ${localStorage.getItem('token')}`,
     }
 };
 const url = "http://localhost:8081/";
@@ -143,11 +161,13 @@ const actions = {
             const response = await axios.get(url + 'bids/all', config)
             console.log('getAll: ' + response)
 
-            const bidList = response.data // .bids ?
+            const bidList = response.data
 
             commit('getAll', bidList)
         }catch(error){
             console.log(error)
+            commit('setRequestError', error.message)
+
         }
     },
     async update({commit}, {id}){ // what data how to spell ???
@@ -155,11 +175,12 @@ const actions = {
             const response = await axios.put(url + 'bids/' + id, config) // what data ???
             console.log('update: ' + response)
 
-            const bidList = response.data // .bids ?
+            const bid = response.data 
 
-            commit('updateList', bidList)
+            commit('update', bid)
         }catch(error){
             console.log(error)
+            commit('setRequestError', error.message)
         }
     },
     async delete({commit}, id){
@@ -167,38 +188,41 @@ const actions = {
             const response = await axios.delete(url + 'bids/' + id, config)
             console.log('delete: ' + response)
 
-            // what response , what to change in state ???
-
-            commit('updateList')
+            commit('delete', id)
         }catch(error){
             console.log(error)
+            commit('setRequestError', error.message)
         }
     },
 
-    async create({commit}){ // what data how to spell ???
+    async create({commit}, ){ // what data how to spell ???
         try{
             const response = await axios.post('http://localhost:8080/bids/', config)
             console.log('create: ' + response)
 
-            const bidList = response.data // .bids ?
+            const bid = response.data 
 
-            commit('updateList', bidList)
+            commit('updateList', bid)
         }catch(error){
             console.log(error)
+            commit('setRequestError', error.message)
         }
     },
+    /* brauchen wir nicht, wird im user mitgeschickt beim login
     async getByUserId({commit}, id){
         try{
             const response = await axios.get(url + 'bids/' + id, config)
             console.log('getbyuserid: ' + response)
 
-            const bidList = response.data // .bids ?
+            const bidList = response.data
 
             commit('updateList', bidList)
+            
         }catch(error){
             console.log(error)
+            commit('setRequestError', error.message)
         }
-    },
+    },*/ 
 
 }
 

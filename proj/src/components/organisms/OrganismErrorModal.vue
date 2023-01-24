@@ -3,8 +3,8 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <MoleculeModalHeader title="Error"/>
-        <MoleculeModalBody text="This is an error!"/>
-        <MoleculeModalFooter/>
+        <MoleculeModalBody :text="errorMessage"/>
+        <MoleculeModalFooter :errorType="errorType"/>
       </div>
     </div>
   </div>
@@ -17,6 +17,7 @@ import MoleculeModalFooter from '@/components/molecules/modal-error/MoleculeModa
 
 export default {
     name: 'OrganismErrorModal',
+    props:['errorMessage', 'errorType'],
     components: {
         MoleculeModalHeader, 
         MoleculeModalBody, 

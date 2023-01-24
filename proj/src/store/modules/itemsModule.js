@@ -22,45 +22,39 @@ const state = {
             alttext: "image of wine",
         },            
     ],
-    productToEdit: ''
+    productToEdit: '',
+    requestError: '',
 }
 
 const mutations = {
+    //ok
     delete(state, id){
-        for(var i = 0; i<state.items.length; i++){
-            if(state.items[i].id === id){
-                state.items.remove(i)
+        const productListNew = []
+        state.items.forEach(item =>{
+            if(item.id != id){
+                productListNew.push(item)
             }
-        }
-        /*
-        state.items.forEach(item => {
-            if(item.id === id){
-                state.items.remove()
-            }
-        });*/
+        })
+        state.items = productListNew
     },
-    update(state, {productName, image, id}){
-        /*
+    //ok
+    update(state, itemUpdated){
         state.items.forEach(item => {
             if(item.id === itemUpdated.id){
                 item = itemUpdated
             }
-        });*/
-        console.log('update mutation: '+ productName)
-        state.items.forEach(item => {
-            if(item.id === id){
-                item.name = productName
-                item.imagesource = image
-            }
         });
         
     },
+    //ok
     create(state, item){
         state.items.push(item)
     },
+    //ok
     setProductToEdit(state, id){
         state.productToEdit = id
     },
+    //ok
     getAll(state, productList){
         state.items = productList
     }
@@ -68,7 +62,7 @@ const mutations = {
 
 const config = {
     headers:{
-        'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
+        'Authorization': `Bearer ${localStorage.getItem('token')}`,
     }
 };
 const url = "http://localhost:8081/";
@@ -84,51 +78,50 @@ const actions ={
             commit('getAll', productList)
         }catch(error){
             console.log(error)
+            commit('setRequestError', error.message)
         }
     },
-    async create({commit}, ){ // what data and how to spell ???
+    async create({commit}, {productName, image}){ 
         try{
-            const response = await axios.post(url + 'new',  config)
+            const response = await axios.post(url + 'new', {productName, image}, config)
             console.log('create: '+response)
             const item = response.data
             commit('create', item);
         }catch(error){
             console.log(error)
+            commit('setRequestError', error.message)
         }
     },
-    update({commit}, {productName, image , id}){ // how to spell dataNames ???
-        /*try{
-            const response = await axios.put(url +'products/' + id , config)
+    async update({commit}, {productName, image, id}){ 
+        try{
+            const response = await axios.put(url +'products/' + id , {productName, image},config)
             console.log('update: ' + response)
             const item = response.data
-            // what to update in state ????
-            // response response for = isAdmin => userList
-            commit('update', item)
+            
+            commit('update', {item})
         }catch(error){
             console.log(error)
-        }*/
+            commit('setRequestError', error.message)
+        }
+        /*
         console.log('update action: '+productName)
         commit('update', {productName, image, id})
+        */
     },
     async delete({commit}, id){
         try{
             const response = await axios.delete(url + 'products/' + id, config)
             console.log('deleteProduct: ' + response)
 
-            // status code 200
-            if(response.status === 200){
-                commit('delete', id)
-            }else{
-                // do something
-            }
-
-            
+            commit('delete', id)
         }catch(error){
             console.log(error)
+            commit('setRequestError', error.message)
         }
     },
     setProductToEdit({commit}, id){
         commit('setProductToEdit', id)
+        
     }
 }
 

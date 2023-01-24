@@ -1,4 +1,5 @@
 <template>
+
     <div class="container-fluid mt-4" v-if="isLogin === true">
         <h1 class="mb-5 border-bottom border-dark">Profile</h1>
         <div class="row m-4">
@@ -47,13 +48,13 @@ export default{
         OrganismUserProfile,
         AtomButton,
         OrganismAuctionTable,
-        OrganismBidTable
+        OrganismBidTable,
     },
     computed:{
         ...mapState('userModule', {
             isLogin: state => state.isLogin,
             userProfileActiveButton: state => state.userProfileActiveButton,
-            userID: state => state.user.id
+            userID: state => state.user.id,
         }),
         ...mapGetters('bidModule',[
             'getBidsByUserId'

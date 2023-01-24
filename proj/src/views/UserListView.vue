@@ -12,17 +12,25 @@
 
 <script>
 import OrganismUserList from '@/components/organisms/OrganismUserList.vue';
-import { mapState } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 export default{
     name:'UserListView',
     components:{
         OrganismUserList,
+    },
+    setup(){
+    this.getAll
     },
     computed:{
       ...mapState('userModule', {
         isLogin: state => state.isLogin,
         isAdmin: state => state.isAdmin
       })
+    },
+    method:{
+        ...mapActions('userModule',{
+            getAll: 'getAll'
+        })
     }
 }
 

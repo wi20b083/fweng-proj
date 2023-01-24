@@ -14,7 +14,7 @@
 <script>
 import AtomButton from '@/components/atoms/AtomButton.vue';
 import OrganismEditProductsTable from '../components/organisms/OrganismEditProductsTable.vue'
-import { mapActions, mapState } from 'vuex';
+import {mapState } from 'vuex';
 import router from '@/router';
 export default{
     name:'ProductListView',

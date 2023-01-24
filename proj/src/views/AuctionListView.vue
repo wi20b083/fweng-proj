@@ -9,7 +9,7 @@
 
 <script>
 import OrganismAuctionTable from "@/components/organisms/OrganismAuctionTable.vue";
-import { mapActions, mapState } from "vuex";
+import { mapState } from "vuex";
 
 export default {
   name: "AuctionList",

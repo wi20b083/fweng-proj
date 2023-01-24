@@ -687,9 +687,11 @@ const actions = {
             console.log(error)
         }
     },
-    async create({commit}){ // what data how spell ???
+    async create({commit}, {userId, startDateTime, deliveryDateTime, endDateTime, items}){ // what data how spell ???
         try{
-            const response = await axios.post(url + 'auctions/', config) //auction data mitschicken ohne user
+            // items = [{productId, amount, costPerUnit}]
+
+            const response = await axios.post(url + 'auctions/', {userId, startDateTime, deliveryDateTime, endDateTime, items}, config) //auction data mitschicken ohne user
             console.log('create: ' + response)
 
             const auction = response.data
@@ -755,16 +757,9 @@ const getters = {
     getAuctionById: (state) => (id) =>{
         return state.auctions.find(auction => auction.id === id)
     },
-    getAuctionItemsByAuctionId(state, id){
-        var items = []
-        
-        state.auctions.forEach(element =>{
-            if(element.id === id){
-                items = element.auctionitems
-            }
-        })
-        
-        return items
+    getItemsForAuction: (state) => (id) =>{
+        const auction = state.auctions.find(auction => auction.id ===id)
+        return auction.auctionitems
     }
 
 }

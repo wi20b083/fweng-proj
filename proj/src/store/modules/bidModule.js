@@ -5,10 +5,10 @@ const state = {
         {
             id: 1,
             deliveryDate: '15.11.2022',
-            user: {},
-            auction: {},
+            userID: 1,
+            auctionID: 1,
             status:'open',
-            items:[],
+            items:[1, 2, 3],
         },
         {
             id: 2,

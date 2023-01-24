@@ -4,7 +4,7 @@ import jwtDecode from "jwt-decode"
 
 const state = {
     isLogin: true,
-    isAdmin: false,
+    isAdmin: true,
     token: {}, // muss ich token hier speichern, wenn er lokal gespeichert ist und ich ihn so auch abrufe
     user:{
         id: 1,

@@ -7,9 +7,7 @@
                 <OrganismAuctionDetails :auction="getAuctionById(auctionID)" :isLogin="isLogin"/>
             </div>
             <div class="row p-3">
-                <template v-if="createButtonClicked">
-                    <OrganismCreateBid :items="getAuctionItemsByAuctionId(auctionID)"/>
-                </template>
+                <OrganismCreateBid v-show="createButtonClicked" :items="getItemsForAuction(auctionID)" :auctionID="auctionID" :userID="userID"/>     
                 <OrganismBidTable :bids="getBidsByAuctionId(auctionID)"/>
             </div>
         
@@ -35,11 +33,12 @@ export default{
             createButtonClicked: state => state.createBidButtonClicked
         }),
         ...mapState('userModule', {
-            isLogin: state => state.isLogin
+            isLogin: state => state.isLogin,
+            userID: state => state.user.id
         }),
         ...mapGetters('auctionModule',[
             'getAuctionById',
-            'getAuctionItemsByAuctionId'
+            'getItemsForAuction'
         ]),
         ...mapGetters('bidModule', [
             'getBidsByAuctionId'

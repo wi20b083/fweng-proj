@@ -1,8 +1,8 @@
 <template>
-    <div class="centered container-fluid mt-4" v-if="isLogin">
+    <div class="centered container-fluid mt-4" v-if="isLogin === true">
         <h1>Edit Profile</h1>
         <div class="ps-5 pe-5">
-            <OrganismEditUserProfile :user="getUserById(userID)"/>
+            <OrganismEditUserProfile :user="user"/>
         </div>
     </div>
     <div class="centered container-fluid mt-4" v-else>
@@ -12,7 +12,7 @@
 
 <script>
 import OrganismEditUserProfile from '@/components/organisms/OrganismEditUserProfile.vue';
-import {mapGetters, mapState} from 'vuex';
+import {mapState} from 'vuex';
 
 
 export default{
@@ -23,12 +23,9 @@ export default{
     computed:{
         //if normal user is logged in or admin wants to edit user we get state.user 
         ...mapState('userModule', {
-            userID: state => state.userToEdit,
+            user: state => state.user,
             isLogin: state => state.isLogin
         }),
-        ...mapGetters('userModule', [
-            'getUserById'
-        ])
     },
     
 }

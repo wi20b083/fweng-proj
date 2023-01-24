@@ -3,38 +3,22 @@ import jwtDecode from "jwt-decode"
 
 
 const state = {
-    isLogin: false,
+    isLogin: true,
     isAdmin: false,
-    admin:{
-        id: Number,
-        roles:[],
-        firstName: String,
-        lastName: String,
-        imgLink: String,
-        username: String,
-        email: String,
-        status: String,
-        street: String,
-        streetNr: Number,
-        zip: Number,
-        city: String,
-        auctions: [],
-        bids: []
-    },
     token: {}, // muss ich token hier speichern, wenn er lokal gespeichert ist und ich ihn so auch abrufe
     user:{
-        id: Number,
-        roles:[],
-        firstName: String,
-        lastName: String,
-        imgLink: String,
-        username: String,
-        email: String,
-        status: String,
-        street: String,
-        streetNr: Number,
-        zip: Number,
-        city: String,
+        id: 1,
+        roles:['user'],
+        firstName: 'Antonella',
+        lastName: 'Roth',
+        imgLink: require('../../assets/dummyImg.png'),
+        username: 'antonella_rh',
+        email: 'lararoth1999@gmail.com',
+        status: 'unblocked',
+        street: 'Testarellogasse',
+        streetNr: 24,
+        zip: 1130,
+        city: 'Vienna',
         auctions: [],
         bids: []
     },
@@ -161,12 +145,11 @@ const state = {
 
 //only synchronus code -> commit mutations
 const mutations = {
-    login(state, {isAdmin}){
-       //state.user = user
+    login(state, {isAdmin, user, token}){
        state.isLogin = true
        state.isAdmin = isAdmin
-       //state.token = token
-
+       state.token = token
+       state.user = user
     },
     loginAdmin(state, {user, token}){
         state.admin = user
@@ -191,24 +174,67 @@ const mutations = {
     },
     update(state, user){
         state.user = user
+        //state.user.username = user.username
+        //state.user.email = user.email
+        //state.user.firstName = user.firstName
+        //state.user.lastName = user.lastName
+    },
+    updateUserAsAdmin(state, userUpdated){
+        state.userList.forEach(user => {
+            if(user.id === userUpdated.id){
+                user = userUpdated
+            }
+        });
     },
     userProfileLoadOrganism(state, buttonClicked){
         state.userProfileActiveButton = buttonClicked
     },
-    changeUserState(){
-        //impl - ?getting updates user list, or just changing in userList on clientSite?
+    changeUserState(state, id){
+        state.userList.forEach(user => {
+            if(user.id === id){
+                if(user.status === 'blocked'){
+                    user.status = 'unblocked'
+                    console.log('User was blocked and is now: '+user.status)
+                }else{
+                    user.status = 'blocked'
+                    console.log('User was unblocked and is now: '+user.status)
+
+                }
+            }
+        });
+        
     },
     setUser(state, id){
         state.userToEdit = id
     },
-    resetPassword(){
-        //impl - ?getting updates user list, or just changing in userList on clientSite?
+    deleteUser(state){
+        state.isLogin = false
+        state.isAdmin = false
+        state.user = {}
+        console.log('user deleted his own profile and was logged out, isLogin is: ' + state.isLogin)
+    },
+    deleteUserAsAdmin(state, id){
+        const userListNew = []
+        state.userList.forEach(user =>{
+            if(user.id != id){
+                userListNew.push(user)
+            }
+        })
+        state.userList = userListNew
+
+    },
+    getAll(state, userList){
+        state.userList = userList 
+    },
+    getById(state, user){
+        state.user = user
     }
+
 }
 
 const config = {
     headers:{
-        'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
+        'Authorization': `Bearer ${localStorage.getItem('token')}`,
     }
 };
 const url = "http://localhost:8081/";
@@ -218,28 +244,28 @@ const actions = {
     async login({commit}, {username, password}){
 
         try{
-            const response = await axios.post(url + 'login', {username, password}) //'http://localhost:8081/login'
-            // SET TOKEN HERE (GET IT FROM RESPONSE)
-
-            var isAdmin = false
-
-
+            const response = await axios.post(url + 'login', {username, password})
+            
             const token = response.data.token
             localStorage.setItem('token', token)
             const decodedToken = jwtDecode(token)
+
             const userRoles = decodedToken.roles
+            var isAdmin = false
 
             console.log(decodedToken)
             if(userRoles.length == 2){
                 isAdmin = true
             }
 
-            //Get User Data to specific user with userId in token
-            
-            
-
-            commit('login', {isAdmin}) // + userID mitschicken
-            
+            //Get User Data to specific user with username in token -> send new request to get userByusername
+            try{
+                const response = await axios.get(url + 'users/' + username, config)
+                const user = response.data
+                commit('login', {isAdmin, user, token})
+            }catch(error){
+                console.log(error)
+            }
 
         }catch(error){
             console.log(error)
@@ -248,24 +274,23 @@ const actions = {
     async logout({commit}){
         try{
             const response = await axios.get(url +'login?logout=true', config)
-            // REMOVE TOKEN HERE FROM LOCAL STORAGE
 
+            localStorage.removeItem('token')
 
+            console.log(localStorage.getItem)
             console.log('logout: '+response)
             commit('logout')
         }catch(error){
             console.log(error)
         }
     },
-    async register({commit}, {firstName, lastName, imgLink, userName, password, email, status, address}){
+    async register({commit}, {firstName, lastName, userName, password, email, status}){
         try{
-            const response = await axios.post(url + 'register', {firstName, lastName, imgLink, userName, password, email, status, address})
-            console.log('register: '+response)
-            const user = response.data //.user ???
-            console.log(user)
-            commit('register', {firstName, lastName, imgLink, userName, password, email, status, address});
+            const imgLink = require('../../assets/dummyImg.png')
+            const response = await axios.post(url + 'register', {firstName, lastName, imgLink, userName, password, email, status})
+            const user = response.data 
+            commit('register', {user});
         }catch(error){
-            console.log(firstName, lastName, imgLink, userName, password, email, status, address)
             console.log(error)
         }
     },
@@ -273,7 +298,8 @@ const actions = {
         try{
             const response = await axios.get(url + 'users/all', config)
             console.log('getAll: ' + response)
-            commit('getAll')
+            const userList = response.data 
+            commit('getAll', userList)
         }catch(error){
             console.log(error)
         }
@@ -283,61 +309,73 @@ const actions = {
         try{
             const response = await axios.get(url + 'users/' + id, config)
             console.log('getById: ' + response)
-            const user = response.data.user
+            const user = response.data
             commit('getById', user)
         }catch(error){
             console.log(error)
         }
     },
-    async update({commit}, {id ,firstName, lastName, imgLink, userName, email, status, address}){
-        try{
-            const response = await axios.put(url +'users/' + id , {firstName, lastName, imgLink, userName, email, status, address}, config)
-            console.log('update: ' + response)
 
-            // what to update in state ????
-            // response for != isAdmin => user, response for = isAdmin => userList
-            commit('update')
+    async update({commit}, {id ,firstName, lastName, username, email}){
+        try{
+            const imgLink = require('../../assets/dummyImg.png')
+            const response = await axios.put(url +'users/' + id , {firstName, lastName, imgLink, username, email}, config)
+
+            const user = response.data
+            commit('update', user)
         }catch(error){
             console.log(error)
         }
+        /*
+        console.log(id)
+
+        const user = {firstName, lastName, username, email}
+        commit('update', user)*/
+    },
+    deleteUserAsAdmin({commit}, id){
+        commit('deleteUserAsAdmin', id)
     },
     async deleteUser({commit}, id){
+        
         try{
             const response = await axios.delete(url + 'users/' + id, config)
             console.log('deleteUser: ' + response)
 
-            // what is response for admin, what for user ????
-
-            commit('deleteUser')
+            // response status code
+            if(state.isAdmin === true){
+                commit('deleteUserAsAdmin', id)
+            }else{
+                commit('deleteUser') 
+            }
         }catch(error){
             console.log(error)
         }
+        /*
+        console.log(id)
+            commit('deleteUser') */
     },
     async changeUserState({commit}, id){
+        
         try{
             const response = await axios.put(url + 'users/' + id, config)
             console.log('changeUserState: ' + response)
-
-            // what response ???
-            // what to change in state ???
-
-            commit('changeUserState')
+            commit('changeUserState', id)
         }catch(error){
             console.log(error)
         }
+        //commit('changeUserState', id)
+
     },
-    async resetPassword({commit}, {pwOld, pwNew}){
+    async resetPassword({pwOld, pwNew}){
         try{
-            // what is url for pw change ???
-            const response = await axios.put(url + 'users/', {pwOld, pwNew}, config )
-            console.log('changePassword: ' + response)
-
-            // what is response ???
-            // what to change in state ???
-
-            commit('resetPassword')
+            
+            const response = await axios.put(url + 'users/' + this.user.id, {pwOld, pwNew}, config )
+            if(response.status === 200){
+                // tell user that success
+            }
         }catch(error){
             console.log(error)
+            // tell user that something went wrong
         }
 
     },
@@ -346,10 +384,18 @@ const actions = {
     },
     setUser({commit}, id){
         commit('setUser', id)
+    },
+    async getUserByUsername({commit}, username){
+        try{
+            const response = await axios.get(url + 'users/' + username, config)
+            const user = response.data
+            commit('getById', user)
+        }catch(error){
+            console.log(error)
+        }
     }
 }
 
-// getters: to filter or change data for output
 const getters = {
     getUserById: (state) => (id) => {
         return state.userList.find(user => user.id === id)

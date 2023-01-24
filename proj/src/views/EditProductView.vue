@@ -1,8 +1,8 @@
 <template>
-    <div class="centered container-fluid mt-4" v-if="isLogin && isAdmin">
+    <div class="centered container-fluid mt-4" v-if="isLogin === true && isAdmin === true">
         <h1>Edit Product</h1>
         <div class="ps-5 pe-5">
-            <OrganismEditProduct :product="getItemById(productID)"/>
+            <OrganismEditProduct :product="getItemById(productID)"/> <!--:product="getItemById(productID)"-->
         </div>
     </div>
     <div class="centered container-fluid mt-4" v-else>
@@ -12,7 +12,7 @@
 
 <script>
 import OrganismEditProduct from '@/components/organisms/OrganismEditProduct.vue';
-import { mapState, mapGetters } from 'vuex';
+import { mapGetters, mapState } from 'vuex';
 
 export default{
     name:'EditProductView',
@@ -21,16 +21,18 @@ export default{
     },
     computed:{
         //if normal user is logged in or admin wants to edit user we get state.user 
+    
         ...mapState('itemsModule', {
-            productID: state => state.productToEdit
+            productID: state=> state.productToEdit
         }),
-        ...mapGetters('itemsModule', [
-            'getItemById'
-        ]),
+    
         ...mapState('userModule', {
             isLogin: state => state.isLogin,
             isAdmin: state => state.isAdmin
-      })
+        }),
+        ...mapGetters('itemsModule',[
+            'getItemById'
+        ])
     },
 }
 

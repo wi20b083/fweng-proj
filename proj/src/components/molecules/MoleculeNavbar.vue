@@ -1,7 +1,7 @@
 <template>
 
     <nav class="navbar navbar-expand-lg bg-dark p-3" data-bs-theme="dark">
-        <div class="container-fluid position-relative">
+        <div class="container-fluid"> <!--position-relative-->
             <router-link class="navbar-brand" to="/">
                 <AtomNavLogo/>
             </router-link>
@@ -13,24 +13,24 @@
                     <li class="nav-item">
                         <router-link class="nav-link" aria-current="page" to="/">Home</router-link>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item" v-if="isLogin === true && isAdmin === true">
                         <router-link class="nav-link" to="/userList">UserList</router-link>
                     </li>
-                </ul>
-                <ul class="navbar-nav position-absolute end-0">
-                    <!-- ADD LOGIC FOR LOGIN/LOGOUT !!! -->
                     <li><i class="bi bi-person-square" style="color: white; font-size: 150%;"></i></li>
-                    <li class="nav-item">
+                    <li class="nav-item" v-if="isLogin === true">
                         <router-link class="nav-link" to="/profile">Profile</router-link>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item" v-if="isAdmin === true && isLogin === true">
+                        <router-link class="nav-link" to="/products">Products</router-link>
+                    </li>
+                    <li class="nav-item" v-if="isLogin === false">
                         <router-link class="nav-link" to="/registration">Registration</router-link>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item" v-if="isLogin === false">
                         <router-link class="nav-link" to="/login">Login</router-link>
                     </li>
-                    <li class="nav-item">
-                        <router-link class="nav-link" to="/login" @cklick="doLogout">Logout</router-link>
+                    <li class="nav-item" v-else>
+                        <a class="nav-link" @cklick="doLogout">Logout</a>
                     </li>
                 </ul>
             </div>
@@ -42,7 +42,8 @@
 
 <script>
 import AtomNavLogo from '../atoms/AtomNavLogo.vue';
-
+import { mapActions, mapState } from 'vuex';
+import router from '@/router';
 
 export default{
    name: 'MoleculeNavbar',
@@ -51,9 +52,17 @@ export default{
 
    },
    methods:{
+        ...mapActions('userModule',{ logout: 'logout'}),
         doLogout(){
-            // state change + delete token
+            this.logout
+            router.push('login')
         }
+   },
+   computed:{
+        ...mapState('userModule', {
+            isLogin: state => state.isLogin,
+            isAdmin: state => state.isAdmin
+        })
    }
 }
 </script>

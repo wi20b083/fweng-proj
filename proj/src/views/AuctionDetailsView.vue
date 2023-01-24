@@ -8,7 +8,7 @@
             </div>
             <div class="row p-3">
                 <template v-if="createButtonClicked">
-                    <OrganismCreateBid/>
+                    <OrganismCreateBid :items="getAuctionItemsByAuctionId(auctionID)"/>
                 </template>
                 <OrganismBidTable :bids="getBidsByAuctionId(auctionID)"/>
             </div>
@@ -19,7 +19,7 @@
 <script>
 import OrganismAuctionDetails from '@/components/organisms/OrganismAuctionDetails.vue';
 import OrganismBidTable from '@/components/organisms/OrganismBidTable.vue';
-import {mapGetters, mapState, mapActions } from 'vuex';
+import {mapGetters, mapState } from 'vuex';
 import OrganismCreateBid from '@/components/organisms/OrganismCreateBid.vue';
 
 export default{
@@ -34,25 +34,19 @@ export default{
             auctionID: state => state.auctionDetails,
             createButtonClicked: state => state.createBidButtonClicked
         }),
-        
+        ...mapState('userModule', {
+            isLogin: state => state.isLogin
+        }),
         ...mapGetters('auctionModule',[
             'getAuctionById',
+            'getAuctionItemsByAuctionId'
         ]),
         ...mapGetters('bidModule', [
             'getBidsByAuctionId'
         ]),
-        ...mapState('userModule', {
-            isLogin: state => state.isLogin
-        })
+       
 
     },
-    methods:{
-        ...mapActions('auctionModule', {getBids : 'getAuctionBids'}),
-        getBidsForAuction(id){
-            this.getBids(id)
-        },
-
-    }
 }
 </script>
 

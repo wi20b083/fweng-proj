@@ -5,8 +5,10 @@
         <div class="col">Name</div>
         <div class="col">E-Mail</div>
         <div class="col">Address</div>
-        <div class="col">Edit</div>
+        <div class="col">Status</div>
+        <!--<div class="col">Edit</div>-->
         <div class="col">Block / Unblock</div>
+        <div class="col">Delete</div>
     </div>
     <div class="row border rounded p-3 mt-2 mb-2 userItem" v-for="user in userList" v-bind:key="user.id">
         <div class="col">{{ user.id }}</div>
@@ -14,17 +16,17 @@
         <div class="col">{{ user.fname }} {{ user.lname }}</div>
         <div class="col">{{ user.email }}</div>
         <div class="col">{{ user.street }} {{ user.streetNr }}<br>{{ user.zip }} {{ user.city }}</div>
-        <div class="col"><AtomButton class="btn btnColor" content="Edit" type="link" @click="loadEditProfile(user.id)"/></div>
-        <div class="col" v-show="user.status == 'unblocked'"><AtomButton class="btn btn-danger" content="Block" type="button" /></div>
-        <div class="col" v-show="user.status == 'blocked'"><AtomButton class="btn btn-primary" content="Unblock" type="button" /></div>
-
+        <div class="col">{{ user.status }}</div>
+        <!--<div class="col"><AtomButton class="btn btnColor" content="Edit" type="link" @click="loadEditProfile(user.id)"/></div>-->
+        <div class="col"><AtomButton class="btn btn-secondary" content="Block/Unblock" type="button" @click="changeState(user.id)"/></div>
+        <div class="col"><AtomButton class="btn btn-danger" content="Delete" type="button" @click="deleteProfile(user.id)"/></div>
     </div>
 </template>
 
 <script>
 import { mapActions, mapState } from 'vuex';
 import AtomButton from '../atoms/AtomButton.vue';
-import router from '@/router';
+//import router from '@/router';
 
 export default{
     name:'OrganismUserList',
@@ -33,14 +35,21 @@ export default{
     },
     methods:{
         ...mapActions('userModule', {
-            //
-            setUserToEdit: 'setUser'
+            //setUserToEdit: 'setUser',
+            changeUserState: 'changeUserState',
+            deleteUser: 'deleteUser'
         }),
+        /*
         loadEditProfile(id){
             this.setUserToEdit(id)
             router.push('editUserProfile')
+        },*/
+        changeState(id){
+            this.changeUserState(id)
+        },
+        deleteProfile(id){
+            this.deleteUser(id)
         }
-
     },
     computed:{
         ...mapState('userModule', {

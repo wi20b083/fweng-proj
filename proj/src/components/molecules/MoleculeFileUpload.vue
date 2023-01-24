@@ -1,6 +1,6 @@
 <template>
     <div>
-        <AtomInput type="file" accept="image/*" content="Upload Profile Picture"/>
+        <AtomInput type="file" accept="image/*" />
     </div>
 </template>
 

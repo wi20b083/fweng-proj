@@ -1,13 +1,13 @@
 <template>
-    <div class="container-fluid mt-4" v-if="isLogin">
+    <div class="container-fluid mt-4" v-if="isLogin === true">
         <h1 class="mb-5 border-bottom border-dark">Profile</h1>
         <div class="row m-4">
 
             <div class="col-3">
                 <div class="sticky-top">
                     <AtomButton class="button" type="button" content="Personal Data" @click="loadOrganism('personal')"/><br>
-                    <AtomButton class="button" type="button" content="Auctions" @click="loadOrganism('auctions')"/><br>
-                    <AtomButton class="button" type="button" content="Bids" @click="loadOrganism('bids')"/><br>
+                    <AtomButton class="button" type="button" content="Your Auctions" @click="loadOrganism('auctions')"/><br>
+                    <AtomButton class="button" type="button" content="Your Bids" @click="loadOrganism('bids')"/><br>
                 </div>
             </div>
 
@@ -87,8 +87,9 @@ export default{
     color: white;
 }
 
-.buttonAcitve{
-    background-color: blue;
+.button:focus{
+    background-color: #42b983;
+    color: white;
 }
 
 </style>

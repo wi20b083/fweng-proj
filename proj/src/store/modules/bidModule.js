@@ -4,16 +4,11 @@ const state = {
     bids:[
         {
             id: 1,
-            title: "Bid 1",
-            start: "15.11.2022",
-            end: "30.11.2022",
-            user: "MusterMaxi1",
-            userID: 1,
-            auction: 1,
-            details:{
-                bidItems: [1, 2, 3,],
-                total: 10,
-            },
+            deliveryDate: '15.11.2022',
+            user: {},
+            auction: {},
+            status:'open',
+            items:[],
         },
         {
             id: 2,
@@ -23,6 +18,7 @@ const state = {
             user: "MusterMaxi1",
             userID: 1,
             auction: 1,
+            status:'open',
             details:{
                 bidItems: [1, 2, 3,],
                 total: 10,
@@ -36,6 +32,7 @@ const state = {
             user: "MusterMaxi1",
             userID: 1,
             auction: 1,
+            status:'declined',
             details:{
                 bidItems: [1, 2, 3,],
                 total: 10,
@@ -49,6 +46,7 @@ const state = {
             user: "MusterMaxi1",
             userID: 1,
             auction: 1,
+            status:'declined',
             details:{
                 bidItems: [1, 2, 3,],
                 total: 10,
@@ -62,6 +60,7 @@ const state = {
             user: "MusterMaxi1",
             userID: 2,
             auction: 1,
+            status:'accepted',
             details:{
                 bidItems: [1, 2, 3,],
                 total: 10,
@@ -75,6 +74,7 @@ const state = {
             user: "MusterMaxi1",
             userID: 2,
             auction: 1,
+            status:'accepted',
             details:{
                 bidItems: [1, 2, 3,],
                 total: 10,
@@ -88,6 +88,7 @@ const state = {
             user: "MusterMaxi1",
             userID: 1,
             auction: 1,
+            status:'declined',
             details:{
                 bidItems: [1, 2, 3,],
                 total: 10,
@@ -101,6 +102,7 @@ const state = {
             user: "MusterMaxi1",
             userID: 2,
             auction: 1,
+            status:'open',
             details:{
                 bidItems: [1, 2, 3,],
                 total: 10,
@@ -112,9 +114,20 @@ const state = {
 }
 
 const mutations ={
-    updateList(state, bids){
+    update(state, bidUpdated){
+        state.bids.forEach(bid => {
+            if(bid.id === bidUpdated.id){
+                bid = bidUpdated
+            }
+        });
+    },
+    getAll(state, bids){
         state.bids = bids
-    }
+    },
+    create(state, bid){
+        state.bids.push(bid)
+    },
+
 }
 
 const config = {
@@ -132,7 +145,7 @@ const actions = {
 
             const bidList = response.data // .bids ?
 
-            commit('updateList', bidList)
+            commit('getAll', bidList)
         }catch(error){
             console.log(error)
         }

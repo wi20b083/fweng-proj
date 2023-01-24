@@ -7,6 +7,8 @@
       :productname = product.name
       :imagesource = product.imagesource
       :alttext = product.alttext
+      :price = product.price
+      :amount = product.amount
     />
   </tbody>
 </template>

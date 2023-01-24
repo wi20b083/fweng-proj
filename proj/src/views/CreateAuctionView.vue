@@ -1,7 +1,7 @@
 <template>
-    <div class="centered container-fluid mt-4" v-if="isLogin">
+    <div class="centered container-fluid mt-4" v-if="isLogin === true">
       <h1>Create Auction</h1>
-      <div class="m-3">
+      <div class="mb-3">
         <OrganismCreateAuctionForm />
       </div>
     </div>

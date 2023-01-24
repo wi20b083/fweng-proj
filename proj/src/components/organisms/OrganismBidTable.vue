@@ -5,14 +5,31 @@
         <div class="col">{{ bid.start }}</div>
         <div class="col">{{ bid.end }}</div>
         <div class="col">{{ bid.details.total.toFixed(2) }}€</div>
+        <div class="col colorOpen" v-show="bid.status === 'open'">{{ bid.status }}</div>
+        <div class="col colorAcc" v-show="bid.status === 'accepted'">{{ bid.status }}</div>
+        <div class="col colorDecl" v-show="bid.status === 'declined'">{{ bid.status }}</div>
     </div>
 </template>
 
 <script>
-
 export default{
     name:'OrganismBidTable',
-    props:['bids']
+    props:['bids'],
+}
+</script>
+
+<style scoped>
+
+.colorOpen{
+    color: #0303a6
 }
 
-</script>
+.colorAcc{
+    color: #42b983;
+}
+
+.colorDecl{
+    color: #d70000;
+}
+
+</style>

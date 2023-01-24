@@ -1,5 +1,5 @@
 <template>
-    <div class="centered container-fluid mt-4" v-if="isLogin && isAdmin">
+    <div class="centered container-fluid mt-4" v-if="isLogin === true && isAdmin === true">
         <h1>User List</h1>
         <div class="p-4">        
             <OrganismUserList/>

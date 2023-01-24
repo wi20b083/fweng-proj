@@ -1,5 +1,5 @@
 <template>
-  <div class="centered container-fluid mt-4" v-if="isLogin">
+  <div class="centered container-fluid mt-4" v-if="isLogin === false">
     <h1>Registration</h1>
     <div class="ms-5 me-5">
       <OrganismRegistrationForm />

@@ -8,7 +8,7 @@
             </div>
             <div class="row p-3">
                 <OrganismCreateBid v-show="createButtonClicked" :items="getItemsForAuction(auctionID)" :auctionID="auctionID" :userID="userID"/>     
-                <OrganismBidTable :bids="getBidsByAuctionId(auctionID)"/>
+                <OrganismBidTable :bids="getBidsForAuction(auctionID)"/>
             </div>
         
     </div>
@@ -38,11 +38,13 @@ export default{
         }),
         ...mapGetters('auctionModule',[
             'getAuctionById',
-            'getItemsForAuction'
+            'getItemsForAuction',
+            'getBidsForAuction'
         ]),
         ...mapGetters('bidModule', [
             'getBidsByAuctionId'
         ]),
+        
        
 
     },

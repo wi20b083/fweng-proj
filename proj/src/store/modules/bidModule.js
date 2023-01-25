@@ -128,7 +128,8 @@ const mutations ={
         state.bids = bids
     },
     //ok
-    create(state, bid){
+    create(state, {deliveryDate, userID,items, auctionID}){
+        const bid= {id:9, deliveryDate: deliveryDate, userID: userID, items:items, auctionID:auctionID}
         state.bids.push(bid)
     },
     //ok
@@ -195,18 +196,21 @@ const actions = {
         }
     },
 
-    async create({commit}, ){ // what data how to spell ???
+    async create({commit}, {deliveryDate, userID, auctionID}){ // what data how to spell ???
+        const items = []
+        /*
         try{
             const response = await axios.post('http://localhost:8080/bids/', config)
             console.log('create: ' + response)
 
             const bid = response.data 
 
-            commit('updateList', bid)
+            commit('update', bid)
         }catch(error){
             console.log(error)
             commit('setRequestError', error.message)
-        }
+        }*/
+        commit('update', {deliveryDate, userID,items, auctionID})
     },
     /* brauchen wir nicht, wird im user mitgeschickt beim login
     async getByUserId({commit}, id){

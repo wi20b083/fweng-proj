@@ -22,6 +22,7 @@
 import AtomLabel from '../atoms/AtomLabel.vue';
 import AtomButton from '../atoms/AtomButton.vue';
 import { mapActions } from 'vuex';
+import router from '@/router';
 
 
 export default{
@@ -44,12 +45,14 @@ export default{
             this.error = ''
 
             var productName = document.getElementById('name').value
-            var image = document.getElementById('productImage').value
+            var image = require('../../assets/dummyImg.png')
+            //document.getElementById('productImage').value
             var id = this.product.id
 
             if(productName != '' && image != ''){
                 console.log(productName + image)
                 this.update({productName, image, id})
+                router.push('products')
             }else{
                 this.error = 'Please fill out the whole form'
             }

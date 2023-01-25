@@ -37,7 +37,7 @@ export default{
         ...mapActions('userModule', {
             //setUserToEdit: 'setUser',
             changeUserState: 'changeUserState',
-            deleteUser: 'deleteUser'
+            deleteUser: 'deleteUserAsAdmin'
         }),
         /*
         loadEditProfile(id){

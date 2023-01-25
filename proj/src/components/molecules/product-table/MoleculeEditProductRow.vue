@@ -4,6 +4,8 @@
         <td class="align-middle"><AtomThumbnail :src="imagesource" :alt="alttext"/></td>
         <td class="align-middle"><AtomText :content=productname /></td>
         <td class="align-middle"><AtomButton content="Edit" type="link" classname="btn btnColor" @click="loadEditProduct(id)"/></td>
+        <td class="align-middle"><AtomButton content="Delete" type="button" classname="btn btn-danger" @click="deleteProduct(id)"/></td>
+
     </tr>
 </template>
 
@@ -24,11 +26,15 @@ export default {
         AtomButton
     },
     methods:{
-        ...mapActions('itemsModule', { setProductToEdit : 'setProductToEdit' }),
+        ...mapActions('itemsModule', { setProductToEdit : 'setProductToEdit' , delete: 'delete'}),
         loadEditProduct(id){
             this.setProductToEdit(id)
             router.push('editProduct')
+        },
+        deleteProduct(id){
+            this.delete(id)
         }
+
     }
 }
 </script>

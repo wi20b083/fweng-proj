@@ -183,7 +183,7 @@ const state = {
                     id: 1,
                     deliveryDate: '15.11.2022',
                     user: {
-                        user:{
+                     
                             id: 1,
                             roles:['user'],
                             firstName: 'Florian',
@@ -198,11 +198,12 @@ const state = {
                             city: 'Vienna',
                             auctions: [],
                             bids: []
-                        },
+                        
                     },
-                    auction: {},
+                    auction: 1,
                     status:'open',
                     items:[],
+                    total: 100,
                 },
             ]
         },
@@ -599,7 +600,9 @@ const mutations = {
         state.filterAuctionsByStartDate = ''
     },
     //ok
-    create(state, auction){
+    create(state, {userId, startDateTime, deliveryDateTime, endDateTime}){
+        const items = []
+        const auction = {user: userId, startDate: startDateTime, deliveryDate: deliveryDateTime, endDate: endDateTime, auctionitems: items}
         state.auctions.push(auction)
     },
     //ok
@@ -613,10 +616,12 @@ const mutations = {
         state.auctions = auctionListNew
     },
     //ok
-    update(state, auctionUpdated){
+    update(state, {id, startDateTime, deliveryDateTime, endDateTime}){
         state.auctions.forEach(auction => {
-            if(auction.id === auctionUpdated.id){
-                auction = auctionUpdated
+            if(auction.id === id){
+                auction.startDate = startDateTime
+                auction.endDate = endDateTime
+                auction.deliveryDate = deliveryDateTime
             }
         });
     },
@@ -629,6 +634,13 @@ const mutations = {
     },
     setRequestError(state, message){
         state.requestError = message
+    },
+    addBid(state, {auctionID, bid}){
+        state.auctions.forEach(auction => {
+            if(auction.id === auctionID){
+                auction.bids.push(bid)
+            }
+        });
     }
 }
 
@@ -641,6 +653,10 @@ const url = "http://localhost:8081/";
 //const url = "https://707a-178-165-201-45.eu.ngrok.io/"
 
 const actions = {
+    addBid({commit}, {deliveryDate, user, auctionID}){
+        const bid= {deliveryDate: deliveryDate, user:user, auction:auctionID, status:'open'}
+        commit('addBid', {auctionID, bid})
+    },
     showDetails({commit}, id){
         commit('showDetails', id)
     },
@@ -673,9 +689,10 @@ const actions = {
         }
     },
     
-    async update({commit}, {id}){ // what data how spell ???
+    async update({commit}, {id, startDateTime, deliveryDateTime, endDateTime}){ 
+        /*
         try{
-            const response = await axios.put('auctions/' + id, {}, config) // send auction without user
+            const response = await axios.put('auctions/' + id, {}, config)
             console.log('update: ' + response)
 
             // response is die erstellte auction
@@ -684,9 +701,12 @@ const actions = {
         }catch(error){
             console.log(error)
             commit('setRequestError', error.message)
-        }
+        }*/
+
+        commit('update', {id, startDateTime, deliveryDateTime, endDateTime})
     },
     async delete({commit}, id){
+        /*
         try{
             const response = await axios.delete(url + 'auctions/' + id, config)
             console.log('delete: ' + response)
@@ -695,9 +715,11 @@ const actions = {
         }catch(error){
             console.log(error.message)
             commit('setRequestError', error.message)
-        }
+        }*/
+        commit('delete', id)
     },
     async create({commit}, {userId, startDateTime, deliveryDateTime, endDateTime}){ //items
+        /*
         try{
             // items = [{productId, amount, costPerUnit}]
 
@@ -711,7 +733,8 @@ const actions = {
         }catch(error){
             console.log(error)
             commit('setRequestError', error.message)
-        }
+        }*/
+        commit('create', {userId, startDateTime, deliveryDateTime, endDateTime})
     },
     async closeAuction({commit}, id){
         try{
@@ -779,6 +802,10 @@ const getters = {
     getItemsForAuction: (state) => (id) =>{
         const auction = state.auctions.find(auction => auction.id ===id)
         return auction.auctionitems
+    },
+    getBidsForAuction: (state) => (id) =>{
+        const auction = state.auctions.find(auction => auction.id ===id)
+        return auction.bids
     }
 
 }

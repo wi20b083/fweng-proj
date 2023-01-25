@@ -5,139 +5,132 @@ import jwtDecode from "jwt-decode"
 const state = {
     isLogin: true,
     isAdmin: true,
-    token: {}, // muss ich token hier speichern, wenn er lokal gespeichert ist und ich ihn so auch abrufe
+    token: {}, 
     user:{
         id: 1,
         roles:['user'],
-        firstName: 'Antonella',
+        firstName: 'Lara-Antonella',
         lastName: 'Roth',
         imgLink: require('../../assets/dummyImg.png'),
-        username: 'antonella_rh',
+        username: 'antonella_llara_rh',
         email: 'lararoth1999@gmail.com',
         status: 'unblocked',
-        street: 'Testarellogasse',
-        streetNr: 24,
-        zip: 1130,
-        city: 'Vienna',
         auctions: [],
         bids: []
     },
     userList:[
         {
             id: 1,
-            fname: 'Lara',
-            lname: 'Roth',
+            roles:['user'],
+            firstName: 'Antonella',
+            lastName: 'Roth',
+            imgLink: require('../../assets/dummyImg.png'),
+            username: 'antonella_rh',
             email: 'lararoth1999@gmail.com',
-            username: 'llara_rh',
-            street: 'Testarellogasse',
-            streetNr: 24,
-            zip: 1130,
-            city: 'Vienna',
-            status: 'blocked',
+            status: 'unblocked',
+            auctions: [],
+            bids: []
         },
         {
             id: 2,
-            fname: 'Lara',
-            lname: 'Roth',
+            roles:['user'],
+            firstName: 'Antonella',
+            lastName: 'Roth',
+            imgLink: require('../../assets/dummyImg.png'),
+            username: 'antonella_rh',
             email: 'lararoth1999@gmail.com',
-            username: 'llara_rh',
-            street: 'Testarellogasse',
-            streetNr: 24,
-            zip: 1130,
-            city: 'Vienna',
-            status: 'unblocked'
-
+            status: 'unblocked',
+            auctions: [],
+            bids: []
         },
         {
             id: 3,
-            fname: 'Lara',
-            lname: 'Roth',
+            roles:['user'],
+            firstName: 'Antonella',
+            lastName: 'Roth',
+            imgLink: require('../../assets/dummyImg.png'),
+            username: 'antonella_rh',
             email: 'lararoth1999@gmail.com',
-            username: 'llara_rh',
-            street: 'Testarellogasse',
-            streetNr: 24,
-            zip: 1130,
-            city: 'Vienna',
-            status: 'blocked'
+            status: 'unblocked',
+            auctions: [],
+            bids: []
 
         },
         {
             id: 4,
-            fname: 'Lara',
-            lname: 'Roth',
+            roles:['user'],
+            firstName: 'Antonella',
+            lastName: 'Roth',
+            imgLink: require('../../assets/dummyImg.png'),
+            username: 'antonella_rh',
             email: 'lararoth1999@gmail.com',
-            username: 'llara_rh',
-            street: 'Testarellogasse',
-            streetNr: 24,
-            zip: 1130,
-            city: 'Vienna',
-            status: 'unblocked'
+            status: 'unblocked',
+            auctions: [],
+            bids: []
 
         },
         {
             id: 5,
-            fname: 'Lara',
-            lname: 'Roth',
+            roles:['user'],
+            firstName: 'Antonella',
+            lastName: 'Roth',
+            imgLink: require('../../assets/dummyImg.png'),
+            username: 'antonella_rh',
             email: 'lararoth1999@gmail.com',
-            username: 'llara_rh',
-            street: 'Testarellogasse',
-            streetNr: 24,
-            zip: 1130,
-            city: 'Vienna',
-            status: 'blocked'
+            status: 'unblocked',
+            auctions: [],
+            bids: []
 
         },
         {
             id: 6,
-            fname: 'Lara',
-            lname: 'Roth',
+            roles:['user'],
+            firstName: 'Antonella',
+            lastName: 'Roth',
+            imgLink: require('../../assets/dummyImg.png'),
+            username: 'antonella_rh',
             email: 'lararoth1999@gmail.com',
-            username: 'llara_rh',
-            street: 'Testarellogasse',
-            streetNr: 24,
-            zip: 1130,
-            city: 'Vienna',
-            status: 'unblocked'
+            status: 'unblocked',
+            auctions: [],
+            bids: []
 
         },
         {
             id: 7,
-            fname: 'Lara',
-            lname: 'Roth',
+            roles:['user'],
+            firstName: 'Antonella',
+            lastName: 'Roth',
+            imgLink: require('../../assets/dummyImg.png'),
+            username: 'antonella_rh',
             email: 'lararoth1999@gmail.com',
-            username: 'llara_rh',
-            street: 'Testarellogasse',
-            streetNr: 24,
-            zip: 1130,
-            city: 'Vienna',
-            status: 'blocked'
+            status: 'unblocked',
+            auctions: [],
+            bids: []
 
         },
         {
             id: 8,
-            fname: 'Lara',
-            lname: 'Roth',
+            roles:['user'],
+            firstName: 'Antonella',
+            lastName: 'Roth',
+            imgLink: require('../../assets/dummyImg.png'),
+            username: 'antonella_rh',
             email: 'lararoth1999@gmail.com',
-            username: 'llara_rh',
-            street: 'Testarellogasse',
-            streetNr: 24,
-            zip: 1130,
-            city: 'Vienna',
-            status: 'unblocked'
-
+            status: 'unblocked',
+            auctions: [],
+            bids: []
         },
         {
             id: 9,
-            fname: 'Lara',
-            lname: 'Roth',
+            roles:['user'],
+            firstName: 'Antonella',
+            lastName: 'Roth',
+            imgLink: require('../../assets/dummyImg.png'),
+            username: 'antonella_rh',
             email: 'lararoth1999@gmail.com',
-            username: 'llara_rh',
-            street: 'Testarellogasse',
-            streetNr: 24,
-            zip: 1130,
-            city: 'Vienna',
-            status: 'blocked'
-        },
+            status: 'unblocked',
+            auctions: [],
+            bids: []        },
     ],
     userProfileActiveButton: 'personal',
     userToEdit: '',
@@ -174,11 +167,11 @@ const mutations = {
         state.user.city = user.city
     },
     update(state, user){
-        state.user = user
-        //state.user.username = user.username
-        //state.user.email = user.email
-        //state.user.firstName = user.firstName
-        //state.user.lastName = user.lastName
+        //state.user = user
+        state.user.username = user.username
+        state.user.email = user.email
+        state.user.firstName = user.firstName
+        state.user.lastName = user.lastName
     },
     updateUserAsAdmin(state, userUpdated){
         state.userList.forEach(user => {
@@ -327,7 +320,10 @@ const actions = {
         }
     },
 
-    async update({commit}, {id ,firstName, lastName, username, email}){
+    async update({commit}, {id, firstName, lastName, username, email}){ 
+        console.log(id)
+
+        /*
         try{
             const imgLink = require('../../assets/dummyImg.png')
             const response = await axios.put(url +'users/' + id , {firstName, lastName, imgLink, username, email}, config)
@@ -337,37 +333,32 @@ const actions = {
         }catch(error){
             console.log(error)
             commit('setRequestError', error.message)
-        }
-        /*
-        console.log(id)
-
+        }*/
+        
         const user = {firstName, lastName, username, email}
-        commit('update', user)*/
+        commit('update', user)
     },
     deleteUserAsAdmin({commit}, id){
         commit('deleteUserAsAdmin', id)
     },
     async deleteUser({commit}, id){
-        
+        console.log(id)
+        /*
         try{
             const response = await axios.delete(url + 'users/' + id, config)
             console.log('deleteUser: ' + response)
 
-            // response status code
-            if(state.isAdmin === true){
-                commit('deleteUserAsAdmin', id)
-            }else{
                 commit('deleteUser') 
-            }
+         
         }catch(error){
             console.log(error)
             commit('setRequestError', error.message)
-        }
-        /*
-        console.log(id)
-            commit('deleteUser') */
+        }*/
+        
+            commit('deleteUser')
     },
     async changeUserState({commit}, id){
+        /*
         
         try{
             const response = await axios.put(url + 'users/' + id, config)
@@ -376,8 +367,8 @@ const actions = {
         }catch(error){
             console.log(error)
             commit('setRequestError', error.message)
-        }
-        //commit('changeUserState', id)
+        }*/
+        commit('changeUserState', id)
 
     },
     async resetPassword({commit},{pwOld, pwNew}){

@@ -11,19 +11,19 @@
                 <div class="row m-3" >
                     <div class="col">
                         <AtomLabel for="startDate" content="Start Date"/><br>
-                        <input class="form-control" type="text" id="startDate" :value="auction.startDate" @blur="validate('startDate')"/>
+                        <input class="form-control" type="text" id="startDate" :value="auction.startDate" />
                         <p v-if="!!errors.startDate" class="errorMessage">{{errors.startDate}}</p>
                     </div>
                     <div class="col">
                         <AtomLabel for="endDate" content="End Date"/><br>
-                        <input class="form-control" inputType="text" id="endDate" :value="auction.endDate" @blur="validate('endDate')"/>
+                        <input class="form-control" inputType="text" id="endDate" :value="auction.endDate" />
                         <p v-if="!!errors.endDate" class="errorMessage">{{errors.endDate}}</p>
                     </div>
                 </div>
                 <div class="row m-3">
                     <div class="col">
                         <AtomLabel for="deliveryDate" content="Delivery Date"/><br>
-                        <input class="form-control" inputType="date" id="deliveryDate" :value="auction.deliveryDate" @blur="validate('deliveryDate')"/>
+                        <input class="form-control" inputType="date" id="deliveryDate" :value="auction.deliveryDate" />
                         <p v-if="!!errors.deliveryDate" class="errorMessage">{{errors.deliveryDate}}</p>
                     </div>
                     <div class="col">
@@ -46,7 +46,7 @@
             </div>
             <p v-if="!!errors.general" class="errorMessage">{{errors.general}}</p>
             <div class="row m-3">
-                <AtomButton content="Create Auction" type="submit" classname="btn btnColor"/>
+                <AtomButton content="Submit" type="submit" classname="btn btnColor"/>
             </div>
         </form>
     </div>
@@ -58,6 +58,7 @@ import AtomButton from '../atoms/AtomButton.vue';
 import * as Yup from "yup"
 import { mapActions } from 'vuex';
 import OrganismProductTable from './OrganismProductTable.vue';
+import router from '@/router';
 
 
 const auctionFormSchema = Yup.object().shape({
@@ -90,11 +91,16 @@ export default{
     methods:{
         ...mapActions('auctionModule', {update: 'update'}),
         createAuction(){
-            const {title, start, end, minPrice, maxPrice, deliveryDate} = this.auction
-
-            if(title != '' && start!= '' && end!= '' && minPrice!= '' && maxPrice!= '' && deliveryDate!= ''){
+            //id, startDateTime, deliveryDateTime, endDateTime
+            const id= this.auction.id
+            const startDateTime = this.auction.startDate
+            const deliveryDateTime = this.auction.deliveryDate
+            const endDateTime = this.auction.endDate
+            console.log('hallo?')
+            if(startDateTime != '' && deliveryDateTime!= ''&& endDateTime!=''){
                 this.errors.general = null
-                this.update({title, start, end, minPrice, maxPrice, deliveryDate})
+                this.update({id, startDateTime, deliveryDateTime, endDateTime})
+                router.push('/')
             }else{
                 this.errors.general = 'Please fill out the whole form'
             }

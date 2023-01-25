@@ -40,7 +40,7 @@
             <p v-if="!!errors.general" class="errorMessage">{{errors.general}}</p>
             <div class="row p-2">
                 <div class="col-auto">                
-                    <AtomButton content="Submit" type="submit" classname="btn btnColor"/>
+                    <AtomButton content="Submit" type="submit" classname="btn btnColor" />
                 </div>
                 <div class="col-auto">
                     <AtomButton content="Cancel" type="button" classname="btn btn-danger" @click="cancelCreateBid"/>
@@ -84,7 +84,7 @@ export default{
     },
     methods:{
         ...mapActions('bidModule', {create: 'create'}),
-        ...mapActions('auctionModule', {buttonClicked:'buttonClicked'}),
+        ...mapActions('auctionModule', {buttonClicked:'buttonClicked', addBid : 'addBid'}),
         cancelCreateBid(){
             this.buttonClicked(false)
         },
@@ -105,8 +105,12 @@ export default{
             // items:[{productId, amount, costPerUnit}]
             
             if(deliveryDate != ''){
+                console.log(deliveryDate)
                 this.errors.general = null
-                this.create()
+                //this.create(deliveryDate, this.userID, this.auctionID)
+                const user = this.getUserById(this.userID)
+                const auctionID = this.auctionID
+                this.addBid({deliveryDate, user, auctionID})
             }else{
                 this.errors.general = 'Please fill out the whole form'
             }
@@ -128,6 +132,9 @@ export default{
         ...mapGetters('itemsModule', [
             'getItemById'
         ]),
+        ...mapGetters('userModule',[
+            'getUserById'
+        ])
     }
 }
 

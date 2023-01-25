@@ -4,11 +4,11 @@
             <div class="row m-3">
                 <div class="col">
                     <AtomLabel content="Name" for="name"/>
-                    <input id="name" type="text"/>
+                    <input class="form-control" id="name" type="text"/>
                 </div>
                 <div class="col">
                     <AtomLabel content="Upload Product Image" for="productImage"/>
-                    <input type="file" accept="image/*" id="productImage"/>
+                    <input type="file" class="form-control" accept="image/*" id="productImage"/>
                 </div>
             </div>
             <p v-if="!!error" class="errorMessage">{{error}}</p>
@@ -23,6 +23,7 @@
 import AtomLabel from '../atoms/AtomLabel.vue';
 import AtomButton from '../atoms/AtomButton.vue';
 import { mapActions } from 'vuex';
+import router from '@/router';
 
 export default{
     name:'OrganismEditProduct',
@@ -44,11 +45,13 @@ export default{
             this.error = ''
 
             var productName = document.getElementById('name').value
-            var image = document.getElementById('productImage').value
+            var image = require('../../assets/dummyImg.png')
+            //document.getElementById('productImage').value
 
             if(productName != '' && image != ''){
                 console.log(productName + image)
                 this.create({productName, image})
+                router.push('products')
             }else{
                 this.error = 'Please fill out the whole form'
             }

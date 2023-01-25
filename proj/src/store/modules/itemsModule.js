@@ -38,17 +38,23 @@ const mutations = {
         state.items = productListNew
     },
     //ok
-    update(state, itemUpdated){
+    update(state, {productName, image, id}){
+        //const itemUpdated = {id:id, name:productName, imagesource: image, alttext: 'alttext' }
         state.items.forEach(item => {
-            if(item.id === itemUpdated.id){
-                item = itemUpdated
+            if(item.id === id){
+                item.name = productName
+                item.imagesource = image
+                item.alttext = 'alttext'
             }
         });
         
     },
     //ok
-    create(state, item){
+    create(state, {productName, image}){
+        
+        const item = {id:4, name:productName, imagesource: image, alttext: 'alttext' }
         state.items.push(item)
+        
     },
     //ok
     setProductToEdit(state, id){
@@ -82,6 +88,7 @@ const actions ={
         }
     },
     async create({commit}, {productName, image}){ 
+        /*
         try{
             const response = await axios.post(url + 'new', {productName, image}, config)
             console.log('create: '+response)
@@ -90,9 +97,12 @@ const actions ={
         }catch(error){
             console.log(error)
             commit('setRequestError', error.message)
-        }
+        }*/
+        commit('create', {productName, image});
+
     },
     async update({commit}, {productName, image, id}){ 
+        /*
         try{
             const response = await axios.put(url +'products/' + id , {productName, image},config)
             console.log('update: ' + response)
@@ -102,13 +112,13 @@ const actions ={
         }catch(error){
             console.log(error)
             commit('setRequestError', error.message)
-        }
-        /*
-        console.log('update action: '+productName)
+        }*/
+        
         commit('update', {productName, image, id})
-        */
+        
     },
     async delete({commit}, id){
+        /*
         try{
             const response = await axios.delete(url + 'products/' + id, config)
             console.log('deleteProduct: ' + response)
@@ -117,7 +127,9 @@ const actions ={
         }catch(error){
             console.log(error)
             commit('setRequestError', error.message)
-        }
+        }*/
+        commit('delete', id)
+
     },
     setProductToEdit({commit}, id){
         commit('setProductToEdit', id)

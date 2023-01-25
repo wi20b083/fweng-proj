@@ -9,19 +9,24 @@
 
 <script>
 import OrganismAuctionTable from "@/components/organisms/OrganismAuctionTable.vue";
-import { mapState } from "vuex";
+import { mapActions, mapState } from "vuex";
 
 export default {
   name: "AuctionList",
   components: {
     OrganismAuctionTable,
   },
-  
+  setup(){
+    this.getAll()
+  },
   computed:{
     ...mapState('userModule', {
       isLogin: state => state.isLogin
     })
   },
+  ...mapActions('auctionModule', {
+    getAll: 'getAll'
+  })
 
 };
 </script>

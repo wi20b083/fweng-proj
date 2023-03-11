@@ -52,6 +52,9 @@ export default{
             if(productName != '' && image != ''){
                 console.log(productName + image)
                 this.update({productName, image, id})
+                .then(res => {
+                    res.error ? this.$toast.error(res.msg) : this.$toast.success(res.msg)
+                })
                 router.push('products')
             }else{
                 this.error = 'Please fill out the whole form'

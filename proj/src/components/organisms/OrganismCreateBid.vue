@@ -107,10 +107,13 @@ export default{
             if(deliveryDate != ''){
                 console.log(deliveryDate)
                 this.errors.general = null
-                //this.create(deliveryDate, this.userID, this.auctionID)
-                const user = this.getUserById(this.userID)
-                const auctionID = this.auctionID
-                this.addBid({deliveryDate, user, auctionID})
+                this.create(deliveryDate, this.userID, this.auctionID)
+                .then(res => {
+                    res.error ? this.$toast.error(res.msg) : this.$toast.success(res.msg)
+                })
+                //const user = this.getUserById(this.userID)
+                //const auctionID = this.auctionID
+                //this.addBid({deliveryDate, user, auctionID})
             }else{
                 this.errors.general = 'Please fill out the whole form'
             }

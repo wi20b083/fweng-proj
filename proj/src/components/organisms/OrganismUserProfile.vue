@@ -2,7 +2,6 @@
     <h3>Personal Data</h3>
     <div class="row p-3">
         <div class="col">
-            <!--<MoleculeProfileRow v-for="field in user" v-bind:key="field.fieldName" :fieldName="field.fieldName" :fieldContent="field.fieldContent"/>-->
             <div class="row">
                 {{ user.firstName }}
                 {{ user.lastName }}
@@ -32,7 +31,6 @@
 
 <script>
 import AtomButton from '../atoms/AtomButton.vue';
-//import MoleculeProfileRow from '../molecules/MoleculeProfileRow.vue';
 import AtomThumbnail from '../atoms/AtomThumbnail.vue';
 import MoleculeFileUpload from '../molecules/MoleculeFileUpload.vue';
 import router from '@/router';
@@ -41,7 +39,6 @@ export default{
     name:'OrganismUserProfile',
     components:{
         AtomButton,
-        //MoleculeProfileRow,
         AtomThumbnail,
         MoleculeFileUpload
     },
@@ -56,7 +53,8 @@ export default{
             deleteUser: 'deleteUser'
         }),
         loadProfileEdit(){
-            this.setUserToEdit(this.user.id)
+            //brauchen wir nicht da nur eingeloggter user sich editen kann und daten dafür sind in store.user
+            //this.setUserToEdit(this.user.id)
             router.push('editUserProfile')
         },
         loadPWReset(){
@@ -64,6 +62,9 @@ export default{
         },
         deleteProfile(id){
             this.deleteUser(id)
+            .then(res => {
+                    res.error ? this.$toast.error(res.msg) : this.$toast.success(res.msg)
+                })      
             router.push('registration')
         }
     }

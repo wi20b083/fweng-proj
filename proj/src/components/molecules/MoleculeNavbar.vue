@@ -49,12 +49,14 @@ export default{
    name: 'MoleculeNavbar',
    components:{
         AtomNavLogo,
-
    },
    methods:{
         ...mapActions('userModule',{ logout: 'logout'}),
         doLogout(){
             this.logout
+            .then(res => {
+                res.error ? this.$toast.error(res.msg) : this.$toast.success(res.msg)
+            })
             router.push('login')
         }
    },

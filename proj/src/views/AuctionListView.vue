@@ -16,6 +16,7 @@ export default {
   components: {
     OrganismAuctionTable,
   },
+  
   setup(){
     this.getAll()
   },
@@ -24,6 +25,7 @@ export default {
       isLogin: state => state.isLogin
     })
   },
+  
   ...mapActions('auctionModule', {
     getAll: 'getAll'
   })

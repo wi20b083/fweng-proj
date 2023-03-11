@@ -96,14 +96,12 @@ export default{
             auction:{
                 start: '',
                 end: '',
-                //minPrice: '',
                 deliveryDate: '',
                 
             },
             errors:{
                 start: '',
                 end: '',
-                //minPrice: '',
                 deliveryDate: '',
                 general: ''
             }
@@ -122,7 +120,9 @@ export default{
             if(startDateTime != "" && endDateTime != "" && deliveryDateTime != ""){
                 this.errors.general = null
                 this.create({userId, startDateTime, deliveryDateTime, endDateTime})
-
+                .then(res => {
+                    res.error ? this.$toast.error(res.msg) : this.$toast.success(res.msg)
+                })
             }else{
                 this.errors.general = 'Please fill out the whole form'
             }

@@ -56,6 +56,9 @@ export default {
       if(username!= '' && password!= ''){
         this.errors.general = null
         this.login({username, password})
+        .then(res => {
+          res.error ? this.$toast.error(res.msg) : this.$toast.success(res.msg)
+        })     
       }else{
         this.errors.general = 'Please fill out the whole form'
       }

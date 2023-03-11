@@ -109,9 +109,10 @@ const state = {
             },
         },
     ],
-    requestError: '',
-
-    
+    resObj : {
+        error: false,
+        msg: ''
+    }
 }
 
 const mutations ={
@@ -157,7 +158,11 @@ const config = {
 const url = "http://localhost:8081/";
 
 const actions = {
-    async getAll({commit}){
+    async getByUserId({commit}){ // brauchen wir ? -> bidsByUserId , bidsByAuctionId
+        let resObj = {
+            error: false,
+            msg: ''
+        }
         try{
             const response = await axios.get(url + 'bids/all', config)
             console.log('getAll: ' + response)
@@ -165,71 +170,65 @@ const actions = {
             const bidList = response.data
 
             commit('getAll', bidList)
+            resObj.msg = 'Bids retreived successfully'
+            commit('setResponseObj', resObj)
+            return resObj
         }catch(error){
-            console.log(error)
-            commit('setRequestError', error.message)
-
+            resObj.error = true
+            resObj.msg = error.message
+            commit('setResponseObj', resObj)
+            return resObj
         }
     },
-    async update({commit}, {id}){ // what data how to spell ???
-        try{
-            const response = await axios.put(url + 'bids/' + id, config) // what data ???
-            console.log('update: ' + response)
-
-            const bid = response.data 
-
-            commit('update', bid)
-        }catch(error){
-            console.log(error)
-            commit('setRequestError', error.message)
+    async getByAuctionId({commit}){ // brauchen wir ? -> bidsByUserId , bidsByAuctionId
+        let resObj = {
+            error: false,
+            msg: ''
         }
-    },
-    async delete({commit}, id){
         try{
-            const response = await axios.delete(url + 'bids/' + id, config)
-            console.log('delete: ' + response)
+            const response = await axios.get(url + 'bids/all', config)
+            console.log('getAll: ' + response)
 
-            commit('delete', id)
+            const bidList = response.data
+
+            commit('getAll', bidList)
+            resObj.msg = 'Bids retreived successfully'
+            commit('setResponseObj', resObj)
+            return resObj
         }catch(error){
-            console.log(error)
-            commit('setRequestError', error.message)
+            resObj.error = true
+            resObj.msg = error.message
+            commit('setResponseObj', resObj)
+            return resObj
         }
     },
 
     async create({commit}, {deliveryDate, userID, auctionID}){ // what data how to spell ???
-        const items = []
-        /*
+        let resObj = {
+            error: false,
+            msg: ''
+        }
+        //const items = []
         try{
-            const response = await axios.post('http://localhost:8080/bids/', config)
+            const response = await axios.post('http://localhost:8080/bids/', {deliveryDate, userID, auctionID},config)
             console.log('create: ' + response)
 
             const bid = response.data 
 
             commit('update', bid)
+            resObj.msg = 'Bid created successfully'
+            commit('setResponseObj', resObj)
+            return resObj
         }catch(error){
-            console.log(error)
-            commit('setRequestError', error.message)
-        }*/
-        commit('update', {deliveryDate, userID,items, auctionID})
-    },
-    /* brauchen wir nicht, wird im user mitgeschickt beim login
-    async getByUserId({commit}, id){
-        try{
-            const response = await axios.get(url + 'bids/' + id, config)
-            console.log('getbyuserid: ' + response)
-
-            const bidList = response.data
-
-            commit('updateList', bidList)
-            
-        }catch(error){
-            console.log(error)
-            commit('setRequestError', error.message)
+            resObj.error = true
+            resObj.msg = error.message
+            commit('setResponseObj', resObj)
+            return resObj
         }
-    },*/ 
-
+    }
 }
 
+/*brauchen wir nicht, gibt extra call für getByUser/AuctionId 
 const getters = {
     getBidsByAuctionId: (state) => (id) =>{
         return state.bids.filter(bid => bid.auction === id)
@@ -237,12 +236,12 @@ const getters = {
     getBidsByUserId: (state) => (id) =>{
         return state.bids.filter(bid => bid.userID === id)
     }
-}
+}*/
 
 export default{
     namespaced: true,
     state,
     actions,
     mutations,
-    getters
+    //getters
 }

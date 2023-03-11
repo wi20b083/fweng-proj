@@ -75,10 +75,12 @@
 
 <script>
 import AtomButton from "../atoms/AtomButton.vue"
-import{mapActions} from 'vuex'
+import{mapActions, mapState} from 'vuex'
 import AtomInput from '../atoms/AtomInput.vue'
 import AtomLabel from "../atoms/AtomLabel.vue"
 import * as Yup from "yup"
+//import axios from "axios"
+//const url = "http://localhost:8081/"
 
 
 const registrationFormSchema = Yup.object().shape({
@@ -119,21 +121,20 @@ export default {
   },
   methods:{
     ...mapActions('userModule', {register: 'register'}),
-    doRegistration(){
-      console.log('doRegistration method in OrganismRegistrationForm')
-      
-      
+    doRegistration(){      
       const firstname = this.form.fname
       const lastname = this.form.lname
       const username = this.form.username
       const password = this.form.pw
       const email = this.form.email
 
-
       if(firstname != '' && lastname!= '' && email!= '' && username!= '' && password!= ''){
         this.errors.general = null
 
-        this.register({firstname, lastname, email, username, password})
+        this.register(firstname, lastname, email, username, password)
+        .then(res => {
+          res.error ? this.$toast.error(res.msg) : this.$toast.success(res.msg)
+        })      
       }else{
         this.errors.general = 'Please fill out the whole form'
       }
@@ -150,6 +151,11 @@ export default {
         })
 
     }
+  },
+  computed:{
+    ...mapState('userModule', {
+      requestMessage: state => state.requestMessage
+    })
   }
 };
 </script>

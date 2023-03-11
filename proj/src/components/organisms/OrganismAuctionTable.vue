@@ -159,6 +159,9 @@ export default {
         },
         deleteAuction(id){
             this.delete(id)
+            .then(res => {
+                res.error ? this.$toast.error(res.msg) : this.$toast.success(res.msg)
+            })
         }
 
         // set category for filter in store

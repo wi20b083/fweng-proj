@@ -100,6 +100,10 @@ export default{
             if(startDateTime != '' && deliveryDateTime!= ''&& endDateTime!=''){
                 this.errors.general = null
                 this.update({id, startDateTime, deliveryDateTime, endDateTime})
+                .then(res => {
+                    res.error ? this.$toast.error(res.msg) : this.$toast.success(res.msg)
+                })
+                // noch überlegen, ob user wenn über userProfileAuctions edited dorthin zurück geleitet wird
                 router.push('/')
             }else{
                 this.errors.general = 'Please fill out the whole form'

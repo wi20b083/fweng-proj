@@ -35,20 +35,20 @@ export default{
     },
     methods:{
         ...mapActions('userModule', {
-            //setUserToEdit: 'setUser',
             changeUserState: 'changeUserState',
-            deleteUser: 'deleteUserAsAdmin'
+            deleteUser: 'deleteUser'
         }),
-        /*
-        loadEditProfile(id){
-            this.setUserToEdit(id)
-            router.push('editUserProfile')
-        },*/
         changeState(id){
             this.changeUserState(id)
+            .then(res => {
+                res.error ? this.$toast.error(res.msg) : this.$toast.success(res.msg)
+            })      
         },
         deleteProfile(id){
             this.deleteUser(id)
+            .then(res => {
+                res.error ? this.$toast.error(res.msg) : this.$toast.success(res.msg)
+            })      
         }
     },
     computed:{

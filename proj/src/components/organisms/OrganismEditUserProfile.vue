@@ -23,31 +23,6 @@
                 </div>
             </div>
             <hr class="mt-4 mb-4"/>
-            <!--
-            <div class="row m-3">
-                <div class="col">
-                    <AtomLabel for="street" content="Streetname"/><br>
-                    <input class="form-control" id="street" type="text" :value="user.street" @blur="validate('street')"/>
-                    <p v-if="!!errors.street" class="errorMessage">{{errors.street}}</p>
-                </div>
-                <div class="col">
-                    <AtomLabel for="streetnr" content="House Number"/><br>
-                    <input class="form-control" id="streetnr" type="text" :value="user.streetNr" @blur="validate('streetNr')"/>
-                    <p v-if="!!errors.streetNr" class="errorMessage">{{errors.streetNr}}</p>
-                </div>
-            </div>
-            <div class="row m-3">
-                <div class="col">
-                    <AtomLabel for="zip" content="ZIP-Code"/><br>
-                    <input class="form-control" id="zip" type="text" :value="user.zip" @blur="validate('zip')"/>
-                    <p v-if="!!errors.zip" class="errorMessage">{{errors.zip}}</p>
-                </div>
-                <div class="col">
-                    <AtomLabel for="city" content="City"/><br>
-                    <input class="form-control" id="city" type="text" :value="user.city" @blur="validate('city')"/>
-                    <p v-if="!!errors.city" class="errorMessage">{{errors.city}}</p>
-                </div>
-            </div>-->
             <p v-if="!!error" class="errorMessage">{{error}}</p>
             <div class="text-end m-3">
                 <AtomButton type="submit" classname="btn btnColor" content="Submit" />
@@ -88,6 +63,9 @@ export default{
                 
 
                 this.update({id, firstName, lastName, email, username})
+                .then(res => {
+                    res.error ? this.$toast.error(res.msg) : this.$toast.success(res.msg)
+                })     
                 router.push('profile')
             }else{
                 this.error = 'Please fill out the whole form'

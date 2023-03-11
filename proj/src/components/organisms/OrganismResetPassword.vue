@@ -70,6 +70,9 @@ export default{
                 if(pwNew ===  pwNewConf){
                     this.errors.general = null
                     this.changePw({pwOld, pwNew})
+                    .then(res => {
+                        res.error ? this.$toast.error(res.msg) : this.$toast.success(res.msg)
+                    })     
                     router.push('profile')
                 }else{
                     this.errors.general = 'New password and password confirmation must match'

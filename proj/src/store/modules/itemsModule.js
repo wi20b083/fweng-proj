@@ -23,7 +23,10 @@ const state = {
         },            
     ],
     productToEdit: '',
-    requestError: '',
+    resObj : {
+        error: false,
+        msg: ''
+    }
 }
 
 const mutations = {
@@ -75,6 +78,10 @@ const url = "http://localhost:8081/";
 
 const actions ={
     async getAll({commit}){
+        let resObj = {
+            error: false,
+            msg: ''
+        }
         try{
             const response = await axios.get(url + 'products/all', config)
             console.log('getAll: ' + response)
@@ -82,54 +89,79 @@ const actions ={
             const productList = response.data
 
             commit('getAll', productList)
+            resObj.msg = 'Items retreived successfully'
+            commit('setResponseObj', resObj)
+            return resObj
         }catch(error){
-            console.log(error)
-            commit('setRequestError', error.message)
+            resObj.error = true
+            resObj.msg = error.message
+            commit('setResponseObj', resObj)
+            return resObj
         }
     },
     async create({commit}, {productName, image}){ 
-        /*
+        let resObj = {
+            error: false,
+            msg: ''
+        }
         try{
             const response = await axios.post(url + 'new', {productName, image}, config)
             console.log('create: '+response)
             const item = response.data
-            commit('create', item);
-        }catch(error){
-            console.log(error)
-            commit('setRequestError', error.message)
-        }*/
-        commit('create', {productName, image});
+            commit('create', item)
+            resObj.msg = 'Item created successfully'
+            commit('setResponseObj', resObj)
+            return resObj
 
+        }catch(error){
+            resObj.error = true
+            resObj.msg = error.message
+            commit('setResponseObj', resObj)
+            return resObj
+        }
     },
     async update({commit}, {productName, image, id}){ 
-        /*
+        let resObj = {
+            error: false,
+            msg: ''
+        }
         try{
             const response = await axios.put(url +'products/' + id , {productName, image},config)
             console.log('update: ' + response)
             const item = response.data
             
             commit('update', {item})
+            resObj.msg = 'Item updated successfully'
+            commit('setResponseObj', resObj)
+            return resObj
+
         }catch(error){
-            console.log(error)
-            commit('setRequestError', error.message)
-        }*/
-        
-        commit('update', {productName, image, id})
-        
+            resObj.error = true
+            resObj.msg = error.message
+            commit('setResponseObj', resObj)
+            return resObj
+        }        
     },
     async delete({commit}, id){
-        /*
+        let resObj = {
+            error: false,
+            msg: ''
+        }
         try{
             const response = await axios.delete(url + 'products/' + id, config)
             console.log('deleteProduct: ' + response)
 
             commit('delete', id)
-        }catch(error){
-            console.log(error)
-            commit('setRequestError', error.message)
-        }*/
-        commit('delete', id)
+            resObj.msg = 'Item deleted successfully'
+            commit('setResponseObj', resObj)
+            return resObj
 
+        }catch(error){
+            resObj.error = true
+            resObj.msg = error.message
+            commit('setResponseObj', resObj)
+            return resObj
+        }
     },
     setProductToEdit({commit}, id){
         commit('setProductToEdit', id)

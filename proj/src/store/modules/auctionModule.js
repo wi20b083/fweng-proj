@@ -574,7 +574,10 @@ const state = {
     filterAuctionsByStartDate: '',
     auctionDetails: '',
     createBidButtonClicked: false,
-    requestError: '',
+    resObj : {
+        error: false,
+        msg: ''
+    }
 }
 
 const mutations = {
@@ -632,16 +635,18 @@ const mutations = {
             }
         });
     },
-    setRequestError(state, message){
-        state.requestError = message
+    setResponseObj(state, resObj){
+        state.resObj.error = resObj.error
+        state.resObj.msg = resObj.msg
     },
+    /*
     addBid(state, {auctionID, bid}){
         state.auctions.forEach(auction => {
             if(auction.id === auctionID){
                 auction.bids.push(bid)
             }
         });
-    }
+    }*/
 }
 
 const config = {
@@ -653,10 +658,11 @@ const url = "http://localhost:8081/";
 //const url = "https://707a-178-165-201-45.eu.ngrok.io/"
 
 const actions = {
+    /*
     addBid({commit}, {deliveryDate, user, auctionID}){
         const bid= {deliveryDate: deliveryDate, user:user, auction:auctionID, status:'open'}
         commit('addBid', {auctionID, bid})
-    },
+    },*/
     showDetails({commit}, id){
         commit('showDetails', id)
     },
@@ -676,6 +682,10 @@ const actions = {
         commit('clearAuctionFilterDate')
     },
     async getAll({commit}){
+        let resObj = {
+            error: false,
+            msg: ''
+        }
         try{
             const response = await axios.get(url + 'auctions/all', config)
             console.log('getAll: ' + response)
@@ -683,43 +693,63 @@ const actions = {
             const auctionList = response.data
 
             commit('getAll', auctionList)
+            resObj.msg = 'Auctions retrieved successfully'
+            commit('setResponseObj', resObj)
+            return resObj
         }catch(error){
-            console.log(error)
-            commit('setRequestError', error.message)
+            resObj.error = true
+            resObj.msg = error.message
+            commit('setResponseObj', resObj)
+            return resObj
         }
     },
     
     async update({commit}, {id, startDateTime, deliveryDateTime, endDateTime}){ 
-        /*
+        let resObj = {
+            error: false,
+            msg: ''
+        }
         try{
-            const response = await axios.put('auctions/' + id, {}, config)
+            const response = await axios.put('auctions/' + id, {id, startDateTime, deliveryDateTime, endDateTime}, config)
             console.log('update: ' + response)
-
-            // response is die erstellte auction
             const auction = response.data
             commit('update', auction)
-        }catch(error){
-            console.log(error)
-            commit('setRequestError', error.message)
-        }*/
 
-        commit('update', {id, startDateTime, deliveryDateTime, endDateTime})
+            resObj.msg = 'Auction has been updated successfully'
+            commit('setResponseObj', resObj)
+            return resObj
+        }catch(error){
+            resObj.error = true
+            resObj.msg = error.message
+            commit('setResponseObj', resObj)
+            return resObj        
+        }
     },
     async delete({commit}, id){
-        /*
+        let resObj = {
+            error: false,
+            msg: ''
+        }
         try{
             const response = await axios.delete(url + 'auctions/' + id, config)
             console.log('delete: ' + response)
 
             commit('delete', id)
+            resObj.msg = 'Auction deleted successfully'
+            commit('setResponseObj', resObj)
+            return resObj
         }catch(error){
-            console.log(error.message)
-            commit('setRequestError', error.message)
-        }*/
-        commit('delete', id)
+            resObj.error = true
+            resObj.msg = error.message
+            commit('setResponseObj', resObj)
+            return resObj        
+        }
     },
-    async create({commit}, {userId, startDateTime, deliveryDateTime, endDateTime}){ //items
-        /*
+    async create({commit}, {userId, startDateTime, deliveryDateTime, endDateTime}){ //items + maxPrice
+        let resObj = {
+            error: false,
+            msg: ''
+        }       
         try{
             // items = [{productId, amount, costPerUnit}]
 
@@ -730,13 +760,21 @@ const actions = {
             const auction = response.data
 
             commit('create', auction)
+            resObj.msg = 'Auction created successfully'
+            commit('setResponseObj', resObj)
+            return resObj
         }catch(error){
-            console.log(error)
-            commit('setRequestError', error.message)
-        }*/
-        commit('create', {userId, startDateTime, deliveryDateTime, endDateTime})
+            resObj.error = true
+            resObj.msg = error.message
+            commit('setResponseObj', resObj)
+            return resObj
+        }
     },
     async closeAuction({commit}, id){
+        let resObj = {
+            error: false,
+            msg: ''
+        }
         try{
             const response = await axios.put(url + 'auctions/' +id)
             console.log('closeAuction: ' + response)
@@ -744,9 +782,15 @@ const actions = {
             // response status code 
 
             commit('closeAuction', id)
+            resObj.msg = 'Auction closed successfully'
+            commit('setResponseObj', resObj)
+            return resObj
+
         }catch(error){
-            console.log(error)
-            commit('setRequestError', error.message)
+            resObj.error = true
+            resObj.msg = error.message
+            commit('setResponseObj', resObj)
+            return resObj
         }
     },
     

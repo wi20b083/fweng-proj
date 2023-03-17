@@ -603,9 +603,7 @@ const mutations = {
         state.filterAuctionsByStartDate = ''
     },
     //ok
-    create(state, {userId, startDateTime, deliveryDateTime, endDateTime}){
-        const items = []
-        const auction = {user: userId, startDate: startDateTime, deliveryDate: deliveryDateTime, endDate: endDateTime, auctionitems: items}
+    create(state, auction){
         state.auctions.push(auction)
     },
     //ok

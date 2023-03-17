@@ -28,6 +28,7 @@ import AtomInput from '../atoms/AtomInput.vue'
 import AtomButton from "../atoms/AtomButton.vue"
 import{mapActions} from 'vuex'
 import * as Yup from "yup"
+import router from '@/router'
 
 const loginFormSchema = Yup.object().shape({
   username: Yup.string().required('Username is required'),
@@ -57,7 +58,7 @@ export default {
         this.errors.general = null
         this.login({username, password})
         .then(res => {
-          res.error ? this.$toast.error(res.msg) : this.$toast.success(res.msg)
+          res.error ? this.$toast.error(res.msg) : (this.$toast.success(res.msg) && router.push('/'))
         })     
       }else{
         this.errors.general = 'Please fill out the whole form'

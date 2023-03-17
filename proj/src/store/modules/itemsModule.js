@@ -30,7 +30,6 @@ const state = {
 }
 
 const mutations = {
-    //ok
     delete(state, id){
         const productListNew = []
         state.items.forEach(item =>{
@@ -40,7 +39,6 @@ const mutations = {
         })
         state.items = productListNew
     },
-    //ok
     update(state, {productName, image, id}){
         //const itemUpdated = {id:id, name:productName, imagesource: image, alttext: 'alttext' }
         state.items.forEach(item => {
@@ -52,18 +50,15 @@ const mutations = {
         });
         
     },
-    //ok
     create(state, {productName, image}){
         
         const item = {id:4, name:productName, imagesource: image, alttext: 'alttext' }
         state.items.push(item)
         
     },
-    //ok
     setProductToEdit(state, id){
         state.productToEdit = id
     },
-    //ok
     getAll(state, productList){
         state.items = productList
     }

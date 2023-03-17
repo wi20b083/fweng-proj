@@ -4,6 +4,25 @@
             <div class="backgroundAuction border rounded p-2">
                 <div class="row m-3" >
                     <div class="col">
+                        <AtomLabel for="title" content="Title"/>
+                        <AtomInput  id="title" inputType="text" v-model="auction.title" @blur="validate('title')"/>
+                        <p v-if="!!errors.title" class="errorMessage">{{errors.title}}</p>
+                    </div>
+                    <div class="col">
+                        <AtomLabel for="deliveryDate" content="Delivery Date"/><br>
+                        <AtomInput inputType="date" id="deliveryDate" v-model="auction.deliveryDate" @blur="validate('deliveryDate')"/>
+                        <p v-if="!!errors.deliveryDate" class="errorMessage">{{errors.deliveryDate}}</p>
+                    </div>
+                </div>
+                <div class="row m-3" >
+                    <div class="col">
+                        <AtomLabel for="description" content="Description"/><br>
+                        <textarea  class="form-control" placeholder="Add a short description for the auction" id="description" v-model="auction.description" @blur="validate('description')"></textarea>
+                        <p v-if="!!errors.description" class="errorMessage">{{errors.description}}</p>
+                    </div>
+                </div>
+                <div class="row m-3" >
+                    <div class="col">
                         <AtomLabel for="auctionPic" content="Select one or more images"/>
                         <AtomInput  id="auctionPic" type="file" accept="image/*" content="Upload one or more images" multiple @change="validateImages"/>
                     </div>
@@ -16,46 +35,29 @@
                     </div>
                     <div class="col">
                         <AtomLabel for="end" content="End Date"/><br>
-                        <AtomInput inputType="date" id="end" v-model="auction.start" @blur="validate('end')"/>
+                        <AtomInput inputType="date" id="end" v-model="auction.end" @blur="validate('end')"/><!--@blur="validate('end')"-->
                         <p v-if="!!errors.end" class="errorMessage">{{errors.end}}</p>
-                    </div>
-                </div>
-                <div class="row m-3" >
-                    <div class="col">
-                        <AtomLabel for="total" content="Total Price"/><br>
-                        <AtomInput inputType="number" id="total" v-model="auction.total" @blur="validate('total')"/>
-                        <p v-if="!!errors.total" class="errorMessage">{{errors.total}}</p>
-                    </div>
-                    <div class="col">
-                        <AtomLabel for="deliveryDate" content="Delivery Date"/><br>
-                        <AtomInput inputType="date" id="deliveryDate" v-model="auction.deliveryDate" @blur="validate('deliveryDate')"/>
-                        <p v-if="!!errors.deliveryDate" class="errorMessage">{{errors.deliveryDate}}</p>
-                    </div>
-                </div>
-                <div class="row m-3">
-                    <div class="col">
-                        <AtomLabel for="categories" content="Choose Category"/><br>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="beer">
-                            <label class="form-check-label" for="beer">
-                                Beer
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="wine">
-                            <label class="form-check-label" for="wine">
-                                Wine
-                            </label>
-                        </div>
                     </div>
                 </div>
             </div>
             <div class="row m-5">
                 <h2 class="border-bottom border-2 border-dark">Add Products to Auction</h2>
-
-                <OrganismProductTable />
+                <table>
+                    <tbody>
+                        <MoleculeProductRow
+                            v-for="product in products"
+                            v-bind:key="product.id"
+                            :id = "product.id"
+                            :productname = "product.name"
+                            :imagesource = "product.imagesource"
+                            :alttext = "product.alttext"
+                            @addProduct="addProduct"
+                        />
+                    </tbody>
+                </table>
+                <p v-if="!!errors.product" class="errorMessage">{{errors.product}}</p>
             </div>
-            <p v-if="!!errors.general" class="errorMessage">{{errors.general}}</p>
+            <p v-if="!!errorsFinal" class="border rounded p-2 bg-danger text-white centered">{{errorsFinal}}</p>
             <div class="row m-3">
                 <AtomButton content="Create Auction" type="submit" classname="btn btnColor"/>
             </div>
@@ -69,14 +71,15 @@ import AtomLabel from '../atoms/AtomLabel.vue';
 import AtomButton from '../atoms/AtomButton.vue';
 import * as Yup from "yup"
 import { mapActions } from 'vuex';
-import router from '@/router';
-import OrganismProductTable from './OrganismProductTable.vue';
+import MoleculeProductRow from '../molecules/product-table/MoleculeProductRow.vue';
 
 
 const auctionFormSchema = Yup.object().shape({
+    title: Yup.string().required('Title is required').typeError('Please enter a valid title'),
     start: Yup.date().required('Start Date is required').typeError('Please enter a valid date').min(new Date(), 'Date is already over'),
-    end: Yup.date().required('End Date is required').typeError('Please enter a valid date').min(Yup.ref('start'), "End date can't be before start date"),
+    end: Yup.date().required('End Date is required').typeError('Please enter a valid date'), //.min(Yup.ref('start'), "End date can't be before start date"),
     deliveryDate: Yup.date().required('Delivery Date is required').typeError('Please enter a valid date').min(Yup.ref('start'), "Delivery date can't be before start date").min(Yup.ref('end'), "Delivery date can't be before end date"),
+    description: Yup.string().required('Description is required').typeError('Please enter a valid description')
 })
 
 export default{
@@ -85,46 +88,99 @@ export default{
         AtomInput,
         AtomLabel,
         AtomButton,
-        OrganismProductTable
+        MoleculeProductRow
 
     },
     props:[
-        'userID'
+        'userID',
+        'products'
     ],
     data(){
         return{
             auction:{
+                title: '',
+                description: '',
                 start: '',
                 end: '',
                 deliveryDate: '',
-                
+                products:[]
             },
             errors:{
+                title: '',
+                description: '',
                 start: '',
                 end: '',
                 deliveryDate: '',
-                general: ''
-            }
+                product: ''
+            },
+            errorsFinal:''
         }
     },
     methods:{
         ...mapActions('auctionModule', {create: 'create'}),
+        addProduct(id, amount, price, isAdded){
+            //add or remove object if addProduct is clicked
+            if(isAdded){
+                console.log('Amount of product added: '+amount)
+                this.auction.products.push({id, amount, price})
+            }else{
+                this.auction.products.splice(this.auction.products.findIndex(product => product.id == id), 1)
+            }
+        },
         createAuction(){
-            console.log('create Auction method in Organism')
-            const startDateTime = this.auction.start
-            const endDateTime = this.auction.end
-            const deliveryDateTime = this.auction.deliveryDate
-            const userId = this.userID
-            // DATA FORMAT !!! ????
-            //userId, startDateTime, deliveryDateTime, endDateTime
-            if(startDateTime != "" && endDateTime != "" && deliveryDateTime != ""){
-                this.errors.general = null
-                this.create({userId, startDateTime, deliveryDateTime, endDateTime})
+            let _this = this
+            let hasErrors = false
+            const auction = {
+                title: this.auction.title,
+                description: this.auction.description,
+                start: this.auction.start,
+                end: this.auction.end,
+                deliveryDate: this.auction.deliveryDate,
+                products: (function (){
+                    let productsNew = []
+                    _this.auction.products.forEach(product => {
+                        productsNew.push(product)
+                    })
+                    return productsNew
+                })()
+            }
+
+            //validate input one last time bevore sending it, except products
+            Object.keys(auction).forEach(key =>{
+                if(key != 'products'){
+                    this.validate(key)
+                }
+            })
+
+            //check if there are any products added, if so validate if products amounts and prices are set
+            if(auction.products.length > 0){
+                Object.values(auction.products).forEach(product =>{
+                    if(typeof product.amount == 'undefined' || typeof product.price == 'undefined'){
+                        this.errors.product = 'Product wont be added if amount and price are not set'
+                        hasErrors = true
+                    }
+                })
+            }else{
+                this.errors.product = 'Please add at least one product to your auction'
+                hasErrors = true
+            }
+            
+            //check if there are any errorMessages left
+            // if so set final error and stop data from sending
+            Object.values(this.errors).forEach(error =>{
+                // ???? errors seen as empty for some reason ????
+                if(error != ''){
+                    this.errorsFinal = 'Please check your input there is something wrong'
+                    hasErrors = true
+                }
+            })
+            //???? why no errors if products are valid, but form input not
+            console.log('are there errors: '+hasErrors)
+            if(!hasErrors){
+                this.create({auction})
                 .then(res => {
                     res.error ? this.$toast.error(res.msg) : this.$toast.success(res.msg)
                 })
-            }else{
-                this.errors.general = 'Please fill out the whole form'
             }
         },
         validate(field){
@@ -147,9 +203,6 @@ export default{
             }
             console.log(uploadedFiles)
         },
-        loadAddItems(){
-            router.push('addProduct')
-        }
     }
 }
 
@@ -159,5 +212,9 @@ export default{
     .backgroundAuction{
         background-color: #292b2c;
         color: white;
+    }
+
+    #description{
+        width: 100%;
     }
 </style>

@@ -58,15 +58,13 @@ export default{
             var email = document.getElementById('email').value
             var username = document.getElementById('username').value
 
+            //+ imgUpload fehlt noch
             if(firstName != '' && lastName!= '' && email!= '' && username!= ''){
                 this.error = ''
-                
-
                 this.update({id, firstName, lastName, email, username})
                 .then(res => {
-                    res.error ? this.$toast.error(res.msg) : this.$toast.success(res.msg)
+                    res.error ? this.$toast.error(res.msg) : (this.$toast.success(res.msg) && router.push('profile'))
                 })     
-                router.push('profile')
             }else{
                 this.error = 'Please fill out the whole form'
             }

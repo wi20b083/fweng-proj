@@ -2,7 +2,7 @@
     <div class="centered container-fluid mt-4" v-if="isLogin === true">
       <h1>Create Auction</h1>
       <div class="mb-3">
-        <OrganismCreateAuctionForm :userID="userID"/>
+        <OrganismCreateAuctionForm :userID="userID" :products="products"/>
       </div>
     </div>
     <div class="centered container-fluid mt-4" v-else>
@@ -22,6 +22,9 @@ export default{
       ...mapState('userModule', {
         isLogin: state => state.isLogin,
         userID: state => state.user.id
+      }),
+      ...mapState('itemsModule', {
+        products: state => state.items
       })
     }
 }

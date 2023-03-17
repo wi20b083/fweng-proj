@@ -30,7 +30,7 @@
                         <router-link class="nav-link" to="/login">Login</router-link>
                     </li>
                     <li class="nav-item" v-else>
-                        <a class="nav-link" @cklick="doLogout">Logout</a>
+                        <a class="nav-link" type="button" @click="doLogout">Logout</a>
                     </li>
                 </ul>
             </div>
@@ -53,11 +53,10 @@ export default{
    methods:{
         ...mapActions('userModule',{ logout: 'logout'}),
         doLogout(){
-            this.logout
-            .then(res => {
-                res.error ? this.$toast.error(res.msg) : this.$toast.success(res.msg)
+            console.log('logout button gedrückt')
+            this.logout().then(res =>{
+                res.error ? this.$toast.error(res.msg) : (this.$toast.success(res.msg) && router.push('login'))
             })
-            router.push('login')
         }
    },
    computed:{

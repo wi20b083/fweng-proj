@@ -68,7 +68,7 @@
             <div class="col" v-if=" isLogin ===true && isAdmin === true">
                 <AtomButton content="Delete" type="button" classname="btn btn-danger" @click="deleteAuction(auction.id)"/>
             </div>
-            <div class="col" v-if=" isLogin ===true && isAdmin === false && userID === auctionUserID"> <!---->
+            <div class="col" v-if=" isLogin ===true && isAdmin === false && userID === auction.user.id"> <!---->
                 <AtomButton content="Close" type="button" classname="btn btn-danger" @click="deleteAuction(auction.id)"/>
             </div>
         </div>
@@ -76,8 +76,6 @@
 </template>
 
 <script>
-//import MoleculeAuctionTableBody from '../molecules/auction-table/MoleculeAuctionTableBody.vue';
-//import MoleculeTableHead from '../molecules/MoleculeTableHead.vue';
 import { mapActions, mapGetters, mapState } from 'vuex';
 import AtomButton from '../atoms/AtomButton.vue';
 import router from '@/router';
@@ -88,8 +86,6 @@ import AtomThumbnail from '../atoms/AtomThumbnail.vue';
 export default {
     name: 'OrganismAuctionTable', 
     components: {
-    //MoleculeTableHead,
-    //MoleculeAuctionTableBody,
     AtomButton,
     AtomInput,
     AtomLabel,
@@ -97,16 +93,6 @@ export default {
 },
     data(){
         return{
-            /*
-            colnames: [
-                "ID",
-                "Image",
-                "Title",
-                "User",
-                "Start-Date",
-                "Categories",
-                "Details",
-            ],*/
             filter:{
                 category: 'all',
                 date: 'all'

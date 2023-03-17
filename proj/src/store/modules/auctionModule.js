@@ -2,7 +2,7 @@ import axios from "axios"
 
 const state = {
     auctions:[
-        { // ganzer user wird mitgeschickt
+        { 
             id: 1,
             startDate: '15.11.2022',
             endDate: '30.11.2022',
@@ -745,16 +745,14 @@ const actions = {
             return resObj        
         }
     },
-    async create({commit}, {userId, startDateTime, deliveryDateTime, endDateTime}){ //items + maxPrice
+    async create({commit}, {title, desc, startDate, endDate, deliveryDate, items}){ //+imgLink
         let resObj = {
             error: false,
             msg: ''
         }       
         try{
-            // items = [{productId, amount, costPerUnit}]
-
-            const items =[]
-            const response = await axios.post(url + 'auctions/', {userId, startDateTime, deliveryDateTime, endDateTime, items}, config) //auction data mitschicken ohne user
+            let imgLink = '../../assets/dummyImg.png'
+            const response = await axios.post(url + 'auctions/', {title, desc, startDate, endDate, deliveryDate, items, imgLink}, config) //+imgLink
             console.log('create: ' + response)
 
             const auction = response.data

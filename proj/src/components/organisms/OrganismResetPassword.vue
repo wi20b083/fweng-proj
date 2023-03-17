@@ -64,6 +64,7 @@ export default{
     },
     methods:{
         ...mapActions('userModule', {changePw: 'resetPassword'}),
+        // error because of maxCallStackSize BUT WHY ?????
         changePw(){
             const {pwOld, pwNew, pwNewConf} = this.form
             if(pwOld != '' && pwNew != '' && pwNewConf != ''){
@@ -71,13 +72,11 @@ export default{
                     this.errors.general = null
                     this.changePw({pwOld, pwNew})
                     .then(res => {
-                        res.error ? this.$toast.error(res.msg) : this.$toast.success(res.msg)
-                    })     
-                    router.push('profile')
+                        res.error ? this.$toast.error(res.msg) : (this.$toast.success(res.msg) && router.push('profile'))
+                    })
                 }else{
                     this.errors.general = 'New password and password confirmation must match'
                 }
-                
             }else{
                 this.errors.general = 'Please fill out the whole form'
             }

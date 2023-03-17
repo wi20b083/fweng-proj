@@ -39,32 +39,6 @@
           <p v-if="!!errors.pwConfirm" class="errorMessage">{{errors.pwConfirm}}</p>
         </div>
       </div>
-      <!--
-      <hr class="mt-4 mb-4"/>
-      <div class="row m-3">
-        <div class="col">
-          <AtomLabel for="street" content="Streetname"/><br>
-          <AtomInput inputType="text" placeholder="Höchstädtplatz" id="street" v-model="form.street" @blur="validate('street')"/>
-          <p v-if="!!errors.street" class="errorMessage">{{errors.street}}</p>
-        </div>
-        <div class="col">
-          <AtomLabel for="streetnr" content="House Number"/><br>
-          <AtomInput inputType="text" placeholder="6" id="streetnr" v-model="form.streetNr" @blur="validate('streetNr')"/>
-          <p v-if="!!errors.streetNr" class="errorMessage">{{errors.streetNr}}</p>
-        </div>
-      </div>
-      <div class="row m-3">
-        <div class="col">
-          <AtomLabel for="zip" content="ZIP-Code"/><br>
-          <AtomInput inputType="text" placeholder="1200" id="zip" v-model="form.zip" @blur="validate('zip')"/>
-          <p v-if="!!errors.zip" class="errorMessage">{{errors.zip}}</p>
-        </div>
-        <div class="col">
-          <AtomLabel for="city" content="City"/><br>
-          <AtomInput inputType="text" placeholder="Vienna" id="city" v-model="form.city" @blur="validate('city')"/>
-          <p v-if="!!errors.city" class="errorMessage">{{errors.city}}</p>
-        </div>
-      </div>-->
       <p v-if="!!errors.general" class="errorMessage">{{errors.general}}</p>
       <div class="text-end m-3">
         <AtomButton type="button" classname="btn btnColor" content="Submit" @click="doRegistration"/>
@@ -79,9 +53,7 @@ import{mapActions, mapState} from 'vuex'
 import AtomInput from '../atoms/AtomInput.vue'
 import AtomLabel from "../atoms/AtomLabel.vue"
 import * as Yup from "yup"
-//import axios from "axios"
-//const url = "http://localhost:8081/"
-
+import router from "@/router"
 
 const registrationFormSchema = Yup.object().shape({
   fname: Yup.string().required('First Name is required'),
@@ -98,14 +70,12 @@ export default {
   data() {
     return{
       form:{
-        
         fname: '',
         lname: '',
         email: '',
         username: '',
         pw: '',
         pwConfirm: '',
-
       },
       errors:{
         fname: '',
@@ -115,7 +85,6 @@ export default {
         pw: '',
         pwConfirm: '',
         general: '',
-
       }
     }
   },
@@ -133,7 +102,7 @@ export default {
 
         this.register(firstname, lastname, email, username, password)
         .then(res => {
-          res.error ? this.$toast.error(res.msg) : this.$toast.success(res.msg)
+          res.error ? this.$toast.error(res.msg) : (this.$toast.success(res.msg) && router.push('login'))
         })      
       }else{
         this.errors.general = 'Please fill out the whole form'

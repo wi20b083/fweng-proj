@@ -63,9 +63,8 @@ export default{
         deleteProfile(id){
             this.deleteUser(id)
             .then(res => {
-                    res.error ? this.$toast.error(res.msg) : this.$toast.success(res.msg)
-                })      
-            router.push('registration')
+                res.error ? this.$toast.error(res.msg) : (this.$toast.success(res.msg) && router.push('registration'))
+            })    
         }
     }
 }

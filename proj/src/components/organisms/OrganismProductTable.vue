@@ -1,7 +1,6 @@
 <template>
   <table class="table">
-    <!--<MoleculeTableHead :colnames=colnames />-->
-    <MoleculeProductTableBody :products=products />
+    <MoleculeProductTableBody :products="products" :addProduct="addProduct"/>
   </table>
 </template>
 
@@ -11,7 +10,7 @@ import MoleculeProductTableBody from "../molecules/product-table/MoleculeProduct
 
 export default {
   name: "OrganismProductTable",
-  props:['products'],
+  props:['products', 'addProduct'],
   components: {
     MoleculeProductTableBody,
   },

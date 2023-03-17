@@ -1,9 +1,7 @@
 import axios from "axios"
-import jwtDecode from "jwt-decode"
-
-
+//import jwtDecode from "jwt-decode"
 const state = {
-    isLogin: false,
+    isLogin: true,
     isAdmin: false,
     token: {}, 
     user:{
@@ -15,8 +13,6 @@ const state = {
         username: 'antonella_llara_rh',
         email: 'lararoth1999@gmail.com',
         status: 'unblocked',
-        auctions: [],
-        bids: []
     },
     userList:[
         {
@@ -244,45 +240,27 @@ const url = "http://localhost:8081/";
   
 
 const actions = {
-    async login({commit}, {username, password}){
+    async login({commit}, {uname, pw}){
         let resObj = {
             error: false,
             msg: ''
         }
-        // zurzeit noch 2 Requests, da backend bei login nur einen status zurück gibt
         try{
-            const response = await axios.post(url + 'login', {username, password})
+            // response = { user: {id, fname, lname, email, uname, roles[], imgLink, status}}
+            const response = await axios.post(url + 'login', {uname, pw})
             
             const token = response.data.token
+            const user = response.data.user
+            var isAdmin = !!(response.data.roles.length > 1) //check if userIsAdmin
             localStorage.setItem('token', token)
-            const decodedToken = jwtDecode(token)
 
-            const userRoles = decodedToken.roles
-            var isAdmin = false
+            //const decodedToken = jwtDecode(token)
+            //const userRoles = decodedToken.roles
 
-            console.log(decodedToken)
-            if(userRoles.length == 2){
-                isAdmin = true
-            }
-
-            //Get User Data to specific user with username in token -> send new request to get userByusername
-            try{
-                const response = await axios.get(url + 'users/' + username, config)
-                const user = response.data
-                commit('login', {isAdmin, user, token})
-                resObj.msg = 'User data successfully retrieved'
-                commit('setResponseObj', resObj)
-                
-            }catch(error){
-                resObj.error = true
-                resObj.msg = error.message
-                commit('setResponseObj', resObj)
-                return resObj 
-            }
+            commit('login', isAdmin, user, token)
             resObj.msg = 'You have been logged in successfully'
             commit('setResponseObj', resObj)
             return resObj
-
         }catch(error){
             resObj.error = true
             resObj.msg = error.message
@@ -290,42 +268,28 @@ const actions = {
             return resObj
         }
     },
-    async logout({commit}){ // kein call ans backend
+    logout({commit}){ // kein call ans backend
         let resObj = {
             error: false,
             msg: ''
         }
+        localStorage.removeItem('token')
         
-        try{
-            const response = await axios.get(url +'login?logout=true', config)
-            console.log(response)
-            localStorage.removeItem('token')
-            console.log(localStorage.getItem)
-            commit('logout')
-
-            resObj.msg = 'You have been logged out successfully'
-            commit('setResponseObj', resObj)
-            return resObj
-        }catch(error){
-            resObj.error = true
-            resObj.msg = error.message
-            commit('setResponseObj', resObj)
-            return resObj
-        }
-
+        commit('logout')
+        resObj.msg = 'Logged out successfully'
+        
+        return resObj
     },
-    async register({commit}, {firstname, lastname, email, username, password}){ // keine daten zurück 
+    async register({commit}, {fname, lname, email, uname, pw}){ 
         let resObj = {
             error: false,
             msg: ''
         }
         try {
-            const imagePath = '../../assets/dummyImg.png'
-            const response = await axios.post(url + 'register', {firstname, lastname, email, username, password, imagePath})
-
-            const user = response.data 
-            commit('register', {user});
-            
+            const imgLink = '../../assets/dummyImg.png'
+            const response = await axios.post(url + 'register', {fname, lname, email, uname, pw, imgLink})
+            console.log(response) 
+            // save response.message in resObj.message           
             resObj.msg = 'You have been registered successfully'
             commit('setResponseObj', resObj)
             return resObj
@@ -372,7 +336,6 @@ const actions = {
             resObj.msg = 'User successfully retrieved'
             commit('setResponseObj', resObj)
             return resObj
-
         }catch(error){
             resObj.error = true
             resObj.msg = error.message
@@ -381,27 +344,26 @@ const actions = {
         }
     },
 
-    async update({commit}, {id, firstName, lastName, username, email}){  //+pic 
+    async update({commit}, {id, fname, lname, uname, email}){  //+pic 
         let resObj = {
             error: false,
             msg: ''
         }
-        console.log(id + resObj)
-
-        /*
         try{
             const imgLink = require('../../assets/dummyImg.png')
-            const response = await axios.put(url +'users/' + id , {firstName, lastName, imgLink, username, email}, config)
+            const response = await axios.put(url +'users/' + id , {fname, lname, uname, email, imgLink}, config)
 
             const user = response.data
             commit('update', user)
+            resObj.msg = 'User successfully retrieved'
+            commit('setResponseObj', resObj)
+            return resObj
         }catch(error){
-            console.log(error)
-            commit('setRequestError', error.message)
-        }*/
-        
-        const user = {firstName, lastName, username, email}
-        commit('update', user)
+            resObj.error = true
+            resObj.msg = error.message
+            commit('setResponseObj', resObj)
+            return resObj        
+        }
     },
     async deleteUser({commit}, id){
         let resObj = {
@@ -452,13 +414,14 @@ const actions = {
             msg: ''
         }
         try{
-            const response = await axios.put(url + 'users/' + this.user.id, {pwOld, pwNew}, config )
+            const response = await axios.put(url+'/'+this.user.id+'/pw-reset', {pwOld, pwNew}, config )
             console.log(response)
 
             resObj.msg = 'Password successfully changed'
             commit('setResponseObj', resObj)
             return resObj
         }catch(error){
+            // throws maxCallStackSize Error BUT WHY ???
             resObj.error = true
             resObj.msg = error.message
             commit('setResponseObj', resObj)

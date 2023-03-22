@@ -29,8 +29,8 @@
             </div>
 
             <!--<p v-if="!!error" class="errorMessage">{{error}}</p>-->
-
-            <AtomButton type="sumbit" class="btn btnColor" content="Submit"/>
+            <AtomButton type="link" class="btn btn-secondary m-1" content="Cancel" @click="cancelCreate"/>
+            <AtomButton type="sumbit" class="btn btnColor m-1" content="Submit"/>
             
         </form>
     </div>
@@ -104,6 +104,9 @@ export default{
                         })
            
 
+        },
+        cancelCreate(){
+            router.push('products')
         },
         validate(field){
             productFormSchema

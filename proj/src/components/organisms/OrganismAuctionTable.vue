@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="row p-2">
-            <div class="col text-start" v-if="isLogin === true && isAdmin === false"><AtomButton type="link" class="btn btnColor" content="Create Auction" @click="loadCreateAuction"/></div>
+            <div class="col text-start" v-show="isLogin && isAdmin"><AtomButton type="link" class="btn btnColor" content="Create Auction" @click="loadCreateAuction"/></div>
         </div>
         <div class="row p-2 ms-2 me-2 border-bottom border-dark">
             <div class="col-auto text-end">

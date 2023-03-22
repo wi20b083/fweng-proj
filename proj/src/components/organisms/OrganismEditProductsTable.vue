@@ -1,31 +1,51 @@
 <template>
     <table class="table">
         <MoleculeTableHead :colnames=colnames />
-        <MoleculeEditProductTableBody :products=products />
+        <tbody>
+          <MoleculeAdminProductRow
+              v-for="product in products"
+              v-bind:key="product.pid"
+              :pid = product.pid
+              :productname = product.name
+              :imagesource = product.imgLink
+              :description = product.description
+              @editProduct="loadEditProduct"
+              @deleteProduct="deleteProduct"
+          />
+        </tbody>
     </table>
 </template>
 
-
 <script>
-import { mapState } from "vuex";
+import { mapActions } from "vuex";
 import MoleculeTableHead from "../molecules/MoleculeTableHead.vue";
-import MoleculeEditProductTableBody from "../molecules/product-table/MoleculeEditProductTableBody.vue";
-
+import MoleculeAdminProductRow from "../molecules/product-table/MoleculeAdminProductRow.vue";
+import router from "@/router";
 export default {
-  name: "OrganismProductTable",
+  name: "OrganismEditProductTable",
+  props:['products'],
   data() {
     return {
-      colnames: ["ID", "Image", "Name", "Edit"],
+      colnames: ["ID", "Image", "Name", "Description", "Edit", "Delete"],
     }
   },
   components: {
     MoleculeTableHead,
-    MoleculeEditProductTableBody,
+    MoleculeAdminProductRow
   },
-  computed:{
-    ...mapState('itemsModule', {
-      products: state => state.items
-    }),
+  methods:{
+    ...mapActions('itemsModule', { setProductToEdit : 'setProductToEdit' , delete: 'delete'}),
+        loadEditProduct(id){
+            this.setProductToEdit(id)
+            router.push('editProduct')
+        },
+        deleteProduct(id){
+            this.delete(id)
+            .then(res => {
+                res.error ? this.$toast.error(res.msg) : this.$toast.success(res.msg)
+            })
+
+        }
   }
 };
 

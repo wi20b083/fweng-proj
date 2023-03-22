@@ -5,19 +5,19 @@
                 <div class="row m-3" >
                     <div class="col">
                         <AtomLabel for="title" content="Title"/>
-                        <AtomInput  id="title" inputType="text" v-model="auction.title" @blur="validate('title')"/>
+                        <AtomInput  id="title" inputType="text" v-model="auction.title" @blur="validate('title')" @keypress="validate('title')"/>
                         <p v-if="!!errors.title" class="errorMessage">{{errors.title}}</p>
                     </div>
                     <div class="col">
                         <AtomLabel for="deliveryDate" content="Delivery Date"/><br>
-                        <AtomInput inputType="date" id="deliveryDate" v-model="auction.deliveryDate" @blur="validate('deliveryDate')"/>
+                        <AtomInput inputType="date" id="deliveryDate" v-model="auction.deliveryDate" @blur="validate('deliveryDate')" @keypress="validate('deliveryDate')"/>
                         <p v-if="!!errors.deliveryDate" class="errorMessage">{{errors.deliveryDate}}</p>
                     </div>
                 </div>
                 <div class="row m-3" >
                     <div class="col">
                         <AtomLabel for="description" content="Description"/><br>
-                        <textarea  class="form-control" placeholder="Add a short description for the auction" id="description" v-model="auction.description" @blur="validate('description')"></textarea>
+                        <textarea  class="form-control" placeholder="Add a short description for the auction" id="description" v-model="auction.description" @blur="validate('description')" @keypress="validate('description')"></textarea>
                         <p v-if="!!errors.description" class="errorMessage">{{errors.description}}</p>
                     </div>
                 </div>
@@ -29,14 +29,14 @@
                 </div>
                 <div class="row m-3" >
                     <div class="col">
-                        <AtomLabel for="start" content="Start Date"/><br>
-                        <AtomInput inputType="date" id="start" v-model="auction.start" @blur="validate('start')"/>
-                        <p v-if="!!errors.start" class="errorMessage">{{errors.start}}</p>
+                        <AtomLabel for="startDate" content="Start Date"/><br>
+                        <AtomInput inputType="date" id="startDate" v-model="auction.startDate" @blur="validate('startDate')" @keypress="validate('startDate')"/>
+                        <p v-if="!!errors.startDate" class="errorMessage">{{errors.startDate}}</p>
                     </div>
                     <div class="col">
-                        <AtomLabel for="end" content="End Date"/><br>
-                        <AtomInput inputType="date" id="end" v-model="auction.end" @blur="validate('end')"/><!--@blur="validate('end')"-->
-                        <p v-if="!!errors.end" class="errorMessage">{{errors.end}}</p>
+                        <AtomLabel for="endDate" content="End Date"/><br>
+                        <AtomInput inputType="date" id="endDate" v-model="auction.endDate" @blur="validate('endDate')" @keypress="validate('endDate')"/><!--@blur="validate('end')"-->
+                        <p v-if="!!errors.endDate" class="errorMessage">{{errors.endDate}}</p>
                     </div>
                 </div>
             </div>
@@ -46,18 +46,20 @@
                     <tbody>
                         <MoleculeProductRow
                             v-for="product in products"
-                            v-bind:key="product.id"
-                            :id = "product.id"
-                            :productname = "product.name"
-                            :imagesource = "product.imagesource"
+                            v-bind:key="product.pid"
+                            :pid = "product.pid"
+                            :name = "product.name"
+                            :description="product.description"
+                            :imgLink = "product.imgLink"
                             :alttext = "product.alttext"
                             @addProduct="addProduct"
+                            :productErrorNoAttributesSet="productErrorNoAttributesSet"
                         />
                     </tbody>
                 </table>
-                <p v-if="!!errors.product" class="errorMessage">{{errors.product}}</p>
+                <p v-if="productErrorNoAttributesSet!=''" class="errorMessage">{{productErrorNoAttributesSet}}</p>
+                <p v-if="productError.hasError" class="errorMessage">{{productError.errorMsg}}</p>
             </div>
-            <p v-if="!!errorsFinal" class="border rounded p-2 bg-danger text-white centered">{{errorsFinal}}</p>
             <div class="row m-3">
                 <AtomButton content="Create Auction" type="submit" classname="btn btnColor"/>
             </div>
@@ -72,13 +74,13 @@ import AtomButton from '../atoms/AtomButton.vue';
 import * as Yup from "yup"
 import { mapActions } from 'vuex';
 import MoleculeProductRow from '../molecules/product-table/MoleculeProductRow.vue';
-
+import router from '@/router';
 
 const auctionFormSchema = Yup.object().shape({
     title: Yup.string().required('Title is required').typeError('Please enter a valid title'),
-    start: Yup.date().required('Start Date is required').typeError('Please enter a valid date').min(new Date(), 'Date is already over'),
-    end: Yup.date().required('End Date is required').typeError('Please enter a valid date'), //.min(Yup.ref('start'), "End date can't be before start date"),
-    deliveryDate: Yup.date().required('Delivery Date is required').typeError('Please enter a valid date').min(Yup.ref('start'), "Delivery date can't be before start date").min(Yup.ref('end'), "Delivery date can't be before end date"),
+    startDate: Yup.date().required('Start Date is required').typeError('Please enter a valid date').min(new Date(), 'Date is already over'),
+    endDate: Yup.date().required('End Date is required').typeError('Please enter a valid date'), //.min(Yup.ref('start'), "End date can't be before start date"),
+    deliveryDate: Yup.date().required('Delivery Date is required').typeError('Please enter a valid date'), //.min(Yup.ref('start'), "Delivery date can't be before start date").min(Yup.ref('end'), "Delivery date can't be before end date"),
     description: Yup.string().required('Description is required').typeError('Please enter a valid description')
 })
 
@@ -100,88 +102,82 @@ export default{
             auction:{
                 title: '',
                 description: '',
-                start: '',
-                end: '',
+                startDate: '',
+                endDate: '',
                 deliveryDate: '',
-                products:[]
             },
+            addedProducts:[],
+            productError: {
+                hasError: false,
+                errorMsg: ''
+            },
+            productErrorNoAttributesSet:'',
             errors:{
                 title: '',
                 description: '',
-                start: '',
-                end: '',
+                startDate: '',
+                endDate: '',
                 deliveryDate: '',
-                product: ''
             },
-            errorsFinal:''
         }
     },
     methods:{
         ...mapActions('auctionModule', {create: 'create'}),
-        addProduct(id, amount, price, isAdded){
+        addProduct(item, target){
+            this.productError.hasError = false
             //add or remove object if addProduct is clicked
-            if(isAdded){
-                console.log('Amount of product added: '+amount)
-                this.auction.products.push({id, amount, price})
+            if(target.checked){
+                if(item.qty != '' && item.price != ''){
+                    this.productErrorNoAttributesSet = ''
+                    this.addedProducts.push(item)
+                }else{
+                    this.productErrorNoAttributesSet = 'Please add product amount and price to add it'
+                    target.checked = false
+                }
             }else{
-                this.auction.products.splice(this.auction.products.findIndex(product => product.id == id), 1)
+                this.addedProducts.splice(this.addedProducts.findIndex(product => product.pid == item.pid), 1)
             }
         },
         createAuction(){
-            let _this = this
-            let hasErrors = false
-            const auction = {
-                title: this.auction.title,
-                description: this.auction.description,
-                start: this.auction.start,
-                end: this.auction.end,
-                deliveryDate: this.auction.deliveryDate,
-                products: (function (){
-                    let productsNew = []
-                    _this.auction.products.forEach(product => {
-                        productsNew.push(product)
-                    })
-                    return productsNew
-                })()
-            }
-
-            //validate input one last time bevore sending it, except products
-            Object.keys(auction).forEach(key =>{
-                if(key != 'products'){
-                    this.validate(key)
-                }
-            })
-
+            this.productError.hasError = false
             //check if there are any products added, if so validate if products amounts and prices are set
-            if(auction.products.length > 0){
-                Object.values(auction.products).forEach(product =>{
-                    if(typeof product.amount == 'undefined' || typeof product.price == 'undefined'){
-                        this.errors.product = 'Product wont be added if amount and price are not set'
-                        hasErrors = true
+            if(this.addedProducts.length == 0){
+                this.productError.errorMsg = 'Please add at least one product'
+                this.productError.hasError = true
+            }
+
+            auctionFormSchema.validate(this.auction, {abortEarly: false})
+            .then(()=>{
+                if(!this.productError.hasError){
+                    console.log('no validation errors')
+
+                    let _this = this
+                    const auction = {
+                        title: this.auction.title,
+                        description: this.auction.description,
+                        startDate: this.auction.startDate,
+                        endDate: this.auction.endDate,
+                        deliveryDate: this.auction.deliveryDate,
+                        items: (function (){
+                            let productsNew = []
+                            _this.addedProducts.forEach(product => {
+                                productsNew.push(product)
+                            })
+                            return productsNew
+                        })(),
+                        img: ['dummy.png']
                     }
-                })
-            }else{
-                this.errors.product = 'Please add at least one product to your auction'
-                hasErrors = true
-            }
-            
-            //check if there are any errorMessages left
-            // if so set final error and stop data from sending
-            Object.values(this.errors).forEach(error =>{
-                // ???? errors seen as empty for some reason ????
-                if(error != ''){
-                    this.errorsFinal = 'Please check your input there is something wrong'
-                    hasErrors = true
+                    this.create(auction)
+                    .then(res => {
+                        res.error ? this.$toast.error(res.msg) : this.$toast.success(res.msg) && router.push('/')
+                    })
                 }
-            })
-            //???? why no errors if products are valid, but form input not
-            console.log('are there errors: '+hasErrors)
-            if(!hasErrors){
-                this.create({auction})
-                .then(res => {
-                    res.error ? this.$toast.error(res.msg) : this.$toast.success(res.msg)
+            }).catch((err)=>{
+                err.inner.forEach((error) =>{
+                    this.errors = {...this.errors, [error.path]: error.message}
                 })
-            }
+            }) 
+            
         },
         validate(field){
             auctionFormSchema
@@ -190,10 +186,10 @@ export default{
                 this.errors[field] = ''
             })
             .catch((error)=>{
-                console.log(error)
+                //console.log(error)
                 this.errors[field] = error.message
             })
-        },
+        }, 
         validateImages(){
             // do something with uploaded files !?!
             const fileInput = document.getElementById('auctionPic')
@@ -201,7 +197,13 @@ export default{
             for( var i = 0; i < fileInput.files.length; i++){
                 uploadedFiles.push(fileInput.files[i])
             }
-            console.log(uploadedFiles)
+
+            //only stored temporarily
+            const reader = new FileReader()
+            reader.addEventListener('load', () =>{
+                localStorage.setItem('newRecent-image', reader.result)
+            })
+            reader.readAsDataURL(uploadedFiles[0])
         },
     }
 }

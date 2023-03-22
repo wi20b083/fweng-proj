@@ -1,9 +1,9 @@
 <template>
     <div>
-        <div class="row mb-4">
+        <div class="row p-2">
             <div class="col text-start" v-if="isLogin === true && isAdmin === false"><AtomButton type="link" class="btn btnColor" content="Create Auction" @click="loadCreateAuction"/></div>
         </div>
-        <div class="row mb-4">
+        <div class="row p-2 ms-2 me-2 border-bottom border-dark">
             <div class="col-auto text-end">
                 <button class="btn" @click="clearCategory"><i class="bi bi-x-square" style="color: red;"></i></button>
                 <AtomLabel for="categoryFilter" content="Filter by Category"/>
@@ -20,56 +20,51 @@
                 <AtomInput id="dateFilter" type="date" min="" @change="filterDate" v-model="this.filter.date"/>
             </div>
         </div>
-        <!--
-        <table class="table mt-5">
-            <MoleculeTableHead :colnames="colnames" />
-                <MoleculeAuctionTableBody :auctions="auctions"/>
-
-                <MoleculeAuctionTableBody :auctions="getAuctionsByCategory(filterCategory)" />
-
-                <template v-if="filterDate != '' && filterCategory == ''"><MoleculeAuctionTableBody :auctions="getAuctionsByStartDate(filterDate)" /></template>
-                <template v-if="filterDate != '' && filterCategory != ''"><MoleculeAuctionTableBody :auctions="getAuctionsByCategoryAndDate({filterDate, filterCategory})" /></template>
-                <template v-else><MoleculeAuctionTableBody :auctions="auctions"/></template>
-        </table> -->
-        <div class="row mb-4 border-bottom">
-            <div class="col">ID</div>
-            <div class="col">Images</div>
+        <div class="row p-2 ms-2 me-2 fw-bold centered border-bottom border-dark">
+            <div class="col">Auction ID</div>
+            <div class="col">Image</div>
             <div class="col">User</div>
             <div class="col">Categories</div>
-            <div class="col">Start-Date /<br>End-Date</div>
-            <div class="col">Details</div>
-            <div class="col" v-if=" (isLogin ===true && isAdmin === true) ">Edit</div><!-- Nur admin oder user dem die Auction gehört können auction löschen ->  || (isLogin === true && userID === auction.user.userID)-->
-            <div class="col" v-if=" isLogin ===true && isAdmin === true">Delete</div> 
-            <div class="col" v-if=" isLogin ===true && isAdmin === false ">Close</div>
+            <div class="col">Start<br>-<br>End</div>
+            <div class="col">Status</div>
         </div>
-        <div class="row" v-for="auction in auctions" v-bind:key="auction.id">
-            <div class="col">
-                {{ auction.id }}
+        <div class="p-2 m-2 rounded background-light centered" v-for="auction in auctions" v-bind:key="auction.aid">
+            <div class="row">
+                <div class="col">
+                    {{ auction.aid }}
+                </div>
+                <div class="col">
+                    <AtomThumbnail :src="auction.img[0].imgLink"/>
+                </div>
+                <div class="col">
+                    {{ auction.uname }}
+                </div>
+                <div class="col">
+                    {{ auction.categories.join() }}
+                </div>
+                <div class="col">
+                    {{ formatTimestamp(auction.startDate) }}<br>-<br>{{ formatTimestamp(auction.endDate) }}
+                </div>
+                <div class="col">
+                    {{ auction.locked ? 'locked' : (auction.closed ? 'closed' : 'open') }}
+                </div>
             </div>
-            <div class="col">
-                <!-- CAROUSEL FOR MORE IMAGES !!! only in auction details ?-->
-                <AtomThumbnail :src="auction.imagesource"/>
+            <div class="row m-1">
+                <AtomButton content="Details" type="button" classname="btn btn-sm btnColor" @click="loadDetailsPage(auction.aid)"/>
             </div>
-            <div class="col">
-                {{ auction.user.username }}
+            <div class="row m-1" v-if=" isLogin && !isAdmin && userID === auction.uid ">
+                <AtomButton content="Edit" type="button" classname="btn btn-sm btn-secondary" @click="loadEditAuction(auction.aid)"/>
             </div>
-            <div class="col">
-                {{ auction.categories.join() }}
+            <!--
+            <div class="row m-1" v-if=" isLogin && !isAdmin && userID === auction.uid">
+                <AtomButton content="Delete" type="button" classname="btn btn-sm btn-danger" @click="deleteAuction(auction.aid)"/>
+            </div>-->
+            <!-- IMPL on-click functions-->
+            <div class="row m-1" v-show="!auction.locked && isLogin && isAdmin && !auction.closed">
+                <AtomButton content="Lock" type="button" classname="btn btn-sm btn-danger" @click="changeState(auction.aid)"/>
             </div>
-            <div class="col">
-                {{ auction.startDate }} /<br>{{ auction.endDate }}
-            </div>
-            <div class="col">
-                <AtomButton content="Details" type="button" classname="btn btnColor" @click="loadDetailsPage(auction.id)"/>
-            </div>
-            <div class="col" v-if=" (isLogin ===true && isAdmin === true) || (isLogin === true && userID === auction.user.id)"> <!-- Nur admin oder user dem die Auction gehört können auction löschen ->  || (isLogin === true && userID === auction.user.userID)-->
-                <AtomButton content="Edit" type="button" classname="btn btn-secondary" @click="loadEditAuction(auction.id)"/>
-            </div>
-            <div class="col" v-if=" isLogin ===true && isAdmin === true">
-                <AtomButton content="Delete" type="button" classname="btn btn-danger" @click="deleteAuction(auction.id)"/>
-            </div>
-            <div class="col" v-if=" isLogin ===true && isAdmin === false && userID === auction.user.id"> <!---->
-                <AtomButton content="Close" type="button" classname="btn btn-danger" @click="deleteAuction(auction.id)"/>
+            <div class="row m-1" v-show="auction.locked && isLogin && isAdmin && !auction.closed">
+                <AtomButton content="Unlock" type="button" classname="btn btn-sm btn-primary" @click="changeState(auction.aid)"/>
             </div>
         </div>
     </div>
@@ -86,11 +81,12 @@ import AtomThumbnail from '../atoms/AtomThumbnail.vue';
 export default {
     name: 'OrganismAuctionTable', 
     components: {
-    AtomButton,
-    AtomInput,
-    AtomLabel,
-    AtomThumbnail
-},
+        AtomButton,
+        AtomInput,
+        AtomLabel,
+        AtomThumbnail
+    },
+    emits:['filterCategory'],
     data(){
         return{
             filter:{
@@ -99,22 +95,17 @@ export default {
             }
         }
     },
-    computed:{
-        ...mapState('auctionModule',{
-            auctions: state => state.auctions,
-            //filterCategory: state => state.filterAuctionsByCategory,
-            //filterDate: state => state.filterAuctionsByStartDate
-        }),
-        
+    props:['auctions'],
+    computed:{        
         ...mapGetters('auctionModule',[
             'getAuctionsByCategory',
             'getAuctionsByStartDate',
-            'getAuctionsByCategoryAndDate'
+            'getAuctionsByCategoryAndDate',
         ]),
         ...mapState('userModule',{
             isLogin: state => state.isLogin,
             isAdmin: state => state.isAdmin,
-            userID: state => state.user.id
+            userID: state => state.user.uid
         })
     },
     methods:{
@@ -122,13 +113,14 @@ export default {
             clearCategory: 'clearAuctionFilterCategory',
             clearDate: 'clearAuctionFilterDate',
             showDetails : 'showDetails',
-            delete: 'delete'
+            //delete: 'delete',
+            changeAuctionState:'changeState'
         }),
         loadCreateAuction(){
             router.push("createAuction")
         },
         filterCategory(){
-            //this.auctions = this.getAuctionsByCategory(this.filter.category)
+            this.getAuctionsByCategory(this.filter.category)
         },
         filterDate(){
             //this.auctions = this.getAuctionsByStartDate(this.filter.date)
@@ -148,8 +140,18 @@ export default {
             .then(res => {
                 res.error ? this.$toast.error(res.msg) : this.$toast.success(res.msg)
             })
+        },
+        changeState(aid){
+            this.changeAuctionState(aid)
+            .then(res => {
+                res.error ? this.$toast.error(res.msg) : this.$toast.success(res.msg)
+            })
+        },
+        formatTimestamp(timestamp){
+            const dateObject = new Date(timestamp)
+            const humanDateFormat = dateObject.toLocaleDateString() 
+            return humanDateFormat
         }
-
         // set category for filter in store
         /*
         clearCategory(){

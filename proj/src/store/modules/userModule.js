@@ -1,147 +1,24 @@
 import axios from "axios"
-//import jwtDecode from "jwt-decode"
 const state = {
-    isLogin: true,
+    isLogin: false,
     isAdmin: false,
     token: {}, 
-    user:{
-        id: 1,
-        roles:['user'],
-        firstName: 'Lara-Antonella',
-        lastName: 'Roth',
-        imgLink: require('../../assets/dummyImg.png'),
-        username: 'antonella_llara_rh',
-        email: 'lararoth1999@gmail.com',
-        status: 'unblocked',
-    },
-    userList:[
-        {
-            id: 1,
-            roles:['user'],
-            firstName: 'Antonella',
-            lastName: 'Roth',
-            imgLink: require('../../assets/dummyImg.png'),
-            username: 'antonella_rh',
-            email: 'lararoth1999@gmail.com',
-            status: 'unblocked',
-            auctions: [],
-            bids: []
-        },
-        {
-            id: 2,
-            roles:['user'],
-            firstName: 'Antonella',
-            lastName: 'Roth',
-            imgLink: require('../../assets/dummyImg.png'),
-            username: 'antonella_rh',
-            email: 'lararoth1999@gmail.com',
-            status: 'unblocked',
-            auctions: [],
-            bids: []
-        },
-        {
-            id: 3,
-            roles:['user'],
-            firstName: 'Antonella',
-            lastName: 'Roth',
-            imgLink: require('../../assets/dummyImg.png'),
-            username: 'antonella_rh',
-            email: 'lararoth1999@gmail.com',
-            status: 'unblocked',
-            auctions: [],
-            bids: []
-
-        },
-        {
-            id: 4,
-            roles:['user'],
-            firstName: 'Antonella',
-            lastName: 'Roth',
-            imgLink: require('../../assets/dummyImg.png'),
-            username: 'antonella_rh',
-            email: 'lararoth1999@gmail.com',
-            status: 'unblocked',
-            auctions: [],
-            bids: []
-
-        },
-        {
-            id: 5,
-            roles:['user'],
-            firstName: 'Antonella',
-            lastName: 'Roth',
-            imgLink: require('../../assets/dummyImg.png'),
-            username: 'antonella_rh',
-            email: 'lararoth1999@gmail.com',
-            status: 'unblocked',
-            auctions: [],
-            bids: []
-
-        },
-        {
-            id: 6,
-            roles:['user'],
-            firstName: 'Antonella',
-            lastName: 'Roth',
-            imgLink: require('../../assets/dummyImg.png'),
-            username: 'antonella_rh',
-            email: 'lararoth1999@gmail.com',
-            status: 'unblocked',
-            auctions: [],
-            bids: []
-
-        },
-        {
-            id: 7,
-            roles:['user'],
-            firstName: 'Antonella',
-            lastName: 'Roth',
-            imgLink: require('../../assets/dummyImg.png'),
-            username: 'antonella_rh',
-            email: 'lararoth1999@gmail.com',
-            status: 'unblocked',
-            auctions: [],
-            bids: []
-
-        },
-        {
-            id: 8,
-            roles:['user'],
-            firstName: 'Antonella',
-            lastName: 'Roth',
-            imgLink: require('../../assets/dummyImg.png'),
-            username: 'antonella_rh',
-            email: 'lararoth1999@gmail.com',
-            status: 'unblocked',
-            auctions: [],
-            bids: []
-        },
-        {
-            id: 9,
-            roles:['user'],
-            firstName: 'Antonella',
-            lastName: 'Roth',
-            imgLink: require('../../assets/dummyImg.png'),
-            username: 'antonella_rh',
-            email: 'lararoth1999@gmail.com',
-            status: 'unblocked',
-            auctions: [],
-            bids: []        },
-    ],
+    user:{},
+    userList:[],
+    userForCurrentAuction:{},
     userProfileActiveButton: 'personal',
     userToEdit: '',
     resObj : {
         error: false,
         msg: ''
     }
-
 }
 
 //only synchronus code -> commit mutations
 const mutations = {
-    login(state, {isAdmin, user, token}){
+    login(state, user, token){
        state.isLogin = true
-       state.isAdmin = isAdmin
+       state.isAdmin= !!(user.roles.length > 1)
        state.token = token
        state.user = user
     },
@@ -152,76 +29,34 @@ const mutations = {
     }, 
     logout(state){
         state.isLogin = false
+        state.isAdmin = false
         state.user = null
         state.token = null
     },
-    register(state, {user}){ // keine daten zurück 
-        state.user.fname = user.fname
-        state.user.lname = user.lname
-        state.user.email = user.email
-        state.user.username = user.username
-        state.user.pw = user.pw
-        //state.user.street = user.street
-        //state.user.streetNr = user.streetNr
-        //state.user.zip = user.zip
-        //state.user.city = user.city
-    },
     update(state, user){
-        //state.user = user
-        state.user.username = user.username
-        state.user.email = user.email
-        state.user.firstName = user.firstName
-        state.user.lastName = user.lastName
-    },
-    updateUserAsAdmin(state, userUpdated){
-        state.userList.forEach(user => {
-            if(user.id === userUpdated.id){
-                user = userUpdated
-            }
-        });
+        state.user = user
     },
     userProfileLoadOrganism(state, buttonClicked){
         state.userProfileActiveButton = buttonClicked
     },
-    changeUserState(state, id){
-        state.userList.forEach(user => {
-            if(user.id === id){
-                if(user.status === 'blocked'){
-                    user.status = 'unblocked'
-                    console.log('User was blocked and is now: '+user.status)
-                }else{
-                    user.status = 'blocked'
-                    console.log('User was unblocked and is now: '+user.status)
-
-                }
+    changeUserState(state, updatedUser){
+        state.userList.forEach((user, index) => {
+            if(user.uid === updatedUser.uid){
+                state.userList[index] = updatedUser
             }
-        });
-        
+       })
     },
     setUser(state, id){
         state.userToEdit = id
-    },
-    deleteUser(state){
-        state.isLogin = false
-        state.isAdmin = false
-        state.user = {}
-        console.log('user deleted his own profile and was logged out, isLogin is: ' + state.isLogin)
-    },
-    deleteUserAsAdmin(state, id){
-        const userListNew = []
-        state.userList.forEach(user =>{
-            if(user.id != id){
-                userListNew.push(user)
-            }
-        })
-        state.userList = userListNew
-
     },
     getAll(state, userList){
         state.userList = userList 
     },
     getById(state, user){
         state.user = user
+    },
+    setUserForCurrentAuction(state, user){
+        state.userForCurrentAuction = user
     },
     setResponseObj(state, resObj){
         state.resObj.error = resObj.error
@@ -233,42 +68,49 @@ const mutations = {
 const config = {
     headers:{
         'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        "ngrok-skip-browser-warning": true,
+        'Access-Control-Allow-Origin' : '*',
+        'Access-Control-Allow-Methods':'GET,PUT,POST,DELETE,PATCH,OPTIONS'
     }
 };
-const url = "http://localhost:8081/";
-//const url = "https://8eee-178-165-201-45.eu.ngrok.io/"
+
+const config2 = {
+    headers:{
+        "ngrok-skip-browser-warning": true,
+        'Access-Control-Allow-Origin' : '*',
+        'Access-Control-Allow-Methods':'GET,PUT,POST,DELETE,PATCH,OPTIONS'
+    }
+}
+const url = "https://8144-178-115-45-233.eu.ngrok.io/";
   
 
 const actions = {
-    async login({commit}, {uname, pw}){
+    async login({commit}, user){
         let resObj = {
             error: false,
             msg: ''
         }
         try{
-            // response = { user: {id, fname, lname, email, uname, roles[], imgLink, status}}
-            const response = await axios.post(url + 'login', {uname, pw})
-            
+            //make call and set response data
+            localStorage.removeItem('token')
+            const response = await axios.post(url + 'login', user, config2)
             const token = response.data.token
-            const user = response.data.user
-            var isAdmin = !!(response.data.roles.length > 1) //check if userIsAdmin
             localStorage.setItem('token', token)
-
-            //const decodedToken = jwtDecode(token)
-            //const userRoles = decodedToken.roles
-
-            commit('login', isAdmin, user, token)
+            //commit mutation to change state
+            commit('login', response.data.user, token)
+            //set response object for Success message to user
             resObj.msg = 'You have been logged in successfully'
             commit('setResponseObj', resObj)
             return resObj
         }catch(error){
+            //set response object for error message to user
             resObj.error = true
             resObj.msg = error.message
             commit('setResponseObj', resObj)
             return resObj
         }
     },
-    logout({commit}){ // kein call ans backend
+    logout({commit}){
         let resObj = {
             error: false,
             msg: ''
@@ -280,16 +122,14 @@ const actions = {
         
         return resObj
     },
-    async register({commit}, {fname, lname, email, uname, pw}){ 
+    async register({commit}, user){ 
         let resObj = {
             error: false,
             msg: ''
         }
         try {
-            const imgLink = '../../assets/dummyImg.png'
-            const response = await axios.post(url + 'register', {fname, lname, email, uname, pw, imgLink})
+            const response = await axios.post(url + 'register', user)
             console.log(response) 
-            // save response.message in resObj.message           
             resObj.msg = 'You have been registered successfully'
             commit('setResponseObj', resObj)
             return resObj
@@ -318,17 +158,19 @@ const actions = {
             resObj.error = true
             resObj.msg = error.message
             commit('setResponseObj', resObj)
+            console.log(error)
+
             return resObj
         }
         
     },
-    async getById({commit}, {id}){
+    async getById({commit}, uid){
         let resObj = {
             error: false,
             msg: ''
         }
         try{
-            const response = await axios.get(url + 'users/' + id, config)
+            const response = await axios.get(url + 'users/' + uid, config)
             console.log('getById: ' + response)
             const user = response.data
             commit('getById', user)
@@ -343,18 +185,14 @@ const actions = {
             return resObj
         }
     },
-
-    async update({commit}, {id, fname, lname, uname, email}){  //+pic 
+    async update({commit}, user){
         let resObj = {
             error: false,
             msg: ''
         }
         try{
-            const imgLink = require('../../assets/dummyImg.png')
-            const response = await axios.put(url +'users/' + id , {fname, lname, uname, email, imgLink}, config)
-
-            const user = response.data
-            commit('update', user)
+            const response = await axios.put(url +'users/' + user.uid +'/edit' , user, config)
+            commit('update', response.data)
             resObj.msg = 'User successfully retrieved'
             commit('setResponseObj', resObj)
             return resObj
@@ -365,19 +203,18 @@ const actions = {
             return resObj        
         }
     },
-    async deleteUser({commit}, id){
+    async delete({commit}, uid){
         let resObj = {
             error: false,
             msg: ''
         }
         try{
-            const response = await axios.delete(url + 'users/' + id, config)
+            const response = await axios.delete(url + 'users/' + uid, config)
             console.log('deleteUser: ' + response)
-            //wenn isAdmin = true dann soll user in state.userList entfernt werden,
-            // sonst soll state.user entfernt werden und user ausgeloggt werden
-            state.isAdmin ? commit('deleteUserAsAdmin', id) : commit('deleteUser') 
+            localStorage.removeItem('token')
+            commit('logout')
             
-            resObj.msg = state.isAdmin ? 'Profile successfully deleted' : 'User successfully deleted'
+            resObj.msg = 'Profile successfully deleted'
             commit('setResponseObj', resObj)
             return resObj
         }catch(error){
@@ -387,15 +224,15 @@ const actions = {
             return resObj
         }
     },
-    async changeUserState({commit}, id){
+    async changeUserState({commit}, uid){
         let resObj = {
             error: false,
             msg: ''
         }
         try{
-            const response = await axios.put(url + 'users/' + id, config)
+            const response = await axios.put(url + 'users/' + uid+'/state', uid,config)
             console.log('changeUserState: ' + response)
-            commit('changeUserState', id)
+            commit('changeUserState', response.data)
 
             resObj.msg = 'User state successfully changed'
             commit('setResponseObj', resObj)
@@ -408,20 +245,19 @@ const actions = {
         }
 
     },
-    async resetPassword({commit},{pwOld, pwNew}){
+    async resetPassword({commit}, {uid, pw}){
         let resObj = {
             error: false,
             msg: ''
         }
+        console.log('module: '+pw)
         try{
-            const response = await axios.put(url+'/'+this.user.id+'/pw-reset', {pwOld, pwNew}, config )
+            const response = await axios.put(url+'users/'+ uid +'/pw-reset', pw, config)
             console.log(response)
-
             resObj.msg = 'Password successfully changed'
             commit('setResponseObj', resObj)
             return resObj
         }catch(error){
-            // throws maxCallStackSize Error BUT WHY ???
             resObj.error = true
             resObj.msg = error.message
             commit('setResponseObj', resObj)
@@ -429,16 +265,15 @@ const actions = {
         }
 
     },
-    /*
-    async getUserByUsername({commit}, username){
+    async getUserByIdForAuction({commit}, id){
         let resObj = {
             error: false,
             msg: ''
         }
         try{
-            const response = await axios.get(url + 'users/' + username, config)
+            const response = await axios.get(url + 'users/' + {id}, config)
             const user = response.data
-            commit('getById', user)
+            commit('setUserForCurrentAuction', user)
             
             resObj.msg = 'User successfully retrieved'
             commit('setResponseObj', resObj)
@@ -449,7 +284,7 @@ const actions = {
             commit('setResponseObj', resObj)
             return resObj
         }
-    },*/
+    },
     userProfileLoadOrganism({commit}, buttonClicked){
         commit('userProfileLoadOrganism', buttonClicked)
     },

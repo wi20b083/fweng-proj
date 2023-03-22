@@ -4,6 +4,7 @@
 
     <div class="mt-3">
       <AtomText content="PubsBid GmbH - Company with limited liability" />
+      <AtomText content="BY LARA ROTH/wi19b083 AND FLORIAN HUBER/wi20b083"/>
       <hr />
       <AtomText classname="lh-1" content="UID-Nr: ATU12345678" />
       <AtomText classname="lh-1" content="FN: 123456a" />

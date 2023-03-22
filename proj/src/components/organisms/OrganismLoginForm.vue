@@ -1,24 +1,20 @@
 <template>
   <div class="m-5 text-start ">
-    <div class="">
-      <form>
-        <div class="row mb-3">
-          <AtomLabel for="username" content="Username"/><br>
-          <AtomInput inputType="text" placeholder="Mustermax99" id="username" v-model="form.username" @blur="validate('username')"/>
-          <p v-if="!!errors.username" class="errorMessage">{{errors.username}}</p>
-        </div>
-        <div class="row mb-3">
-          <AtomLabel for="password" content="Password"/><br>
-          <AtomInput inputType="password" placeholder="Enter Password" id="password" v-model="form.password" @blur="validate('password')"/>
-          <p v-if="!!errors.password" class="errorMessage">{{errors.password}}</p>
-        </div>
-        
-        <p v-if="!!errors.general" class="errorMessage">{{errors.general}}</p>
-        <div class="text-end m-3">
-          <AtomButton type="button" classname="btn btnColor" content="Login" @click="doLogin"/>
-        </div>
-      </form>
-    </div>
+    <form @submit.prevent="doLogin">
+      <div class="row mb-3">
+        <AtomLabel for="uname" content="Username"/><br>
+        <AtomInput inputType="text" placeholder="Mustermax99" id="uname" v-model="form.uname" @blur="validate('uname')"/>
+        <p v-if="!!errors.uname" class="errorMessage">{{errors.uname}}</p>
+      </div>
+      <div class="row mb-3">
+        <AtomLabel for="pw" content="Password"/><br>
+        <AtomInput inputType="password" placeholder="Enter Password" id="pw" v-model="form.pw" @blur="validate('pw')"/>
+        <p v-if="!!errors.pw" class="errorMessage">{{errors.pw}}</p>
+      </div>
+      <div class="text-end m-3">
+        <AtomButton type="submit" classname="btn btnColor" content="Login"/>
+      </div>
+    </form>
   </div>
 </template>
 
@@ -31,8 +27,8 @@ import * as Yup from "yup"
 import router from '@/router'
 
 const loginFormSchema = Yup.object().shape({
-  username: Yup.string().required('Username is required'),
-  password: Yup.string().required('Password is required'),
+  uname: Yup.string().required('Username is required'),
+  pw: Yup.string().required('Password is required'),
 })
 
 export default {
@@ -40,29 +36,38 @@ export default {
   components: { AtomButton, AtomLabel, AtomInput},
   data:()=>({
     form:{
-      username: '',
-      password:''
+      uname: '',
+      pw:''
     },
     errors:{
-      username: '',
-      password: '',
-      general: ''
+      uname: '',
+      pw: '',
     }
-    
   }),
   methods:{
     ...mapActions('userModule', {login: 'login'}),
     doLogin(){
-      const {username, password} = this.form
-      if(username!= '' && password!= ''){
-        this.errors.general = null
-        this.login({username, password})
-        .then(res => {
-          res.error ? this.$toast.error(res.msg) : (this.$toast.success(res.msg) && router.push('/'))
-        })     
-      }else{
-        this.errors.general = 'Please fill out the whole form'
-      }
+      loginFormSchema
+        .validate(this.form, { abortEarly: false })
+        .then(() => {
+            console.log("no validation errors");
+
+            const user = {
+              uname: this.form.uname,
+              pw: this.form.pw,
+            };
+            this.login(user)
+            .then(res => {
+              res.error ? this.$toast.error(res.msg) : (this.$toast.success(res.msg) && router.push('/'))
+              
+            })    
+          
+        })
+        .catch((err) => {
+          err.inner.forEach((error) => {
+            this.errors = { ...this.errors, [error.path]: error.message };
+          });
+        });
     },
     validate(field){
       loginFormSchema

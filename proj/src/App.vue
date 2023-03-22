@@ -41,6 +41,9 @@ export default {
   color: white;
 }
 
+.background-light{
+  background-color: #E3E4E4;
+}
 
 .centered{text-align: center;}
 

@@ -1,14 +1,15 @@
 <template>
-    <div class="centered container-fluid mt-4">
-        <h1>AuctionDetails</h1>
+    <div class="container-fluid mt-4">
+        <h1 class="centered">AuctionDetails</h1>
         <!--Auction Details-->
         
             <div class="row p-3">
-                <OrganismAuctionDetails :auction="getAuctionById(auctionID)" :isLogin="isLogin"/>
+                <!--:username="getUserByIdForAuction" instead of static username-->
+                <OrganismAuctionDetails  username="llara_rh" :auction="getAuctionById(auctionID)" :isLogin="isLogin" :userID="userID"/>
             </div>
-            <div class="row p-3">
-                <OrganismCreateBid v-show="createButtonClicked" :items="getItemsForAuction(auctionID)" :auctionID="auctionID" :userID="userID"/>     
-                <OrganismBidTable :bids="getBidsForAuction(auctionID)"/>
+            <div class="row p-3" v-show="isLogin">
+                <OrganismCreateBid v-show="createButtonClicked" :items="getItemsForAuction(auctionID)" :auctionID="auctionID" :userID="userID"/>  <!--:userID="userID"-->   
+                <OrganismBidTable :bids="bids" :auctionID="auctionID"/>
             </div>
         
     </div>
@@ -17,37 +18,52 @@
 <script>
 import OrganismAuctionDetails from '@/components/organisms/OrganismAuctionDetails.vue';
 import OrganismBidTable from '@/components/organisms/OrganismBidTable.vue';
-import {mapGetters, mapState } from 'vuex';
+import {mapActions, mapGetters, mapState } from 'vuex';
 import OrganismCreateBid from '@/components/organisms/OrganismCreateBid.vue';
+import { useStore } from 'vuex';
+import { computed } from '@vue/reactivity';
+import { store } from '@/store';
 
 export default{
     name:'AuctionDetailsView.vue',
     components:{
-    OrganismAuctionDetails,
-    OrganismBidTable,
-    OrganismCreateBid
-},
+        OrganismAuctionDetails,
+        OrganismBidTable,
+        OrganismCreateBid
+    },
+    setup () {
+        const store = useStore()
+        const auctionID = computed(()=> store.state.auctionModule.auctionDetails)
+        console.log(auctionID)
+        const bids = computed(()=> store.state.bidModule.bids)
+        const userID = computed(()=> store.state.userModule.user?.uid)
+        return{
+            bids,
+            auctionID,
+            userID
+        }
+    },
+    beforeMount(){
+        //store.dispatch('bidModule/getByAuctionId', auctionID)
+        store.dispatch('bidModule/getByAuctionId', this.auctionID)
+    },
     computed:{
         ...mapState('auctionModule', {
-            auctionID: state => state.auctionDetails,
             createButtonClicked: state => state.createBidButtonClicked
+        
         }),
         ...mapState('userModule', {
             isLogin: state => state.isLogin,
-            userID: state => state.user.id
         }),
         ...mapGetters('auctionModule',[
             'getAuctionById',
             'getItemsForAuction',
-            'getBidsForAuction'
         ]),
-        ...mapGetters('bidModule', [
-            'getBidsByAuctionId'
-        ]),
-        
-       
-
     },
+    methods:{
+        ...mapActions('bidModule',['getByAuctionId'])
+    }
+    
 }
 </script>
 

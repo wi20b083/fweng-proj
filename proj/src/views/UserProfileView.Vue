@@ -8,14 +8,14 @@
                 <div class="sticky-top">
                     <AtomButton class="button" type="button" content="Personal Data" @click="loadOrganism('personal')"/><br>
                     <AtomButton class="button" type="button" content="Your Auctions" @click="loadOrganism('auctions')"/><br>
-                    <AtomButton class="button" type="button" content="Your Bids" @click="loadOrganism('bids')"/><br>
+                    <AtomButton class="button" type="button" content="Your Bids" @click="loadOrganism('bids', userID)"/><br>
                 </div>
             </div>
 
             <div class="col-9 border-start border-dark">
                 <div class="p-3">
                     <template v-if="userProfileActiveButton == 'auctions'">
-                        <OrganismAuctionTable/>
+                        <OrganismAuctionTable :auctions="getAuctionsByUserId(userID)"/>
 
                     </template>
                     <template v-if="userProfileActiveButton == 'personal'">
@@ -23,7 +23,7 @@
 
                     </template>
                     <template v-if="userProfileActiveButton == 'bids'">
-                        <OrganismBidTable :bids="getBidsByUserId(userID)"/>
+                        <OrganismBidTable :bids="bids"/>
                     </template>
                 </div>
             </div>
@@ -41,6 +41,8 @@ import AtomButton from '../components/atoms/AtomButton.vue'
 import OrganismAuctionTable from '@/components/organisms/OrganismAuctionTable.vue'
 import{mapActions, mapGetters, mapState} from 'vuex'
 import OrganismBidTable from '@/components/organisms/OrganismBidTable.vue'
+import { useStore } from 'vuex';
+import { computed } from '@vue/reactivity';
 
 export default{
     name:'UserProfileView',
@@ -50,22 +52,32 @@ export default{
         OrganismAuctionTable,
         OrganismBidTable,
     },
+    setup () {
+        const store = useStore()
+        const userID = computed(()=> store.state.userModule.user.uid)
+        const bids = computed(()=> store.state.bidModule.bids)
+        return{
+            bids,
+            userID
+        }
+    },
     computed:{
         ...mapState('userModule', {
             isLogin: state => state.isLogin,
             userProfileActiveButton: state => state.userProfileActiveButton,
-            userID: state => state.user.id,
         }),
-        ...mapGetters('bidModule',[
-            'getBidsByUserId'
+        ...mapGetters('auctionModule',[
+            'getAuctionsByUserId'
         ])
     },
     methods:{
         ...mapActions('userModule',{userProfileLoadOrganism: 'userProfileLoadOrganism'}),
-        loadOrganism(buttonClicked){
+        loadOrganism(buttonClicked, uid){
             this.userProfileLoadOrganism(buttonClicked)
             console.log('activeButton: ' +this.userProfileActiveButton)
-        }
+            this.bids = this.getByUserId(uid)
+        },
+        ...mapActions('bidModule',{getByUserId: 'getByUserId'}),
     }
 }
 

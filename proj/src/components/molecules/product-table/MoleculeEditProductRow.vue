@@ -1,44 +1,43 @@
 <template>
     <tr>
-        <th scope="col" class="align-middle"><AtomText :content=id /></th>
-        <td class="align-middle"><AtomThumbnail :src="imagesource" :alt="alttext"/></td>
-        <td class="align-middle"><AtomText :content=productname /></td>
-        <td class="align-middle"><AtomButton content="Edit" type="link" classname="btn btnColor" @click="loadEditProduct(id)"/></td>
-        <td class="align-middle"><AtomButton content="Delete" type="button" classname="btn btn-danger" @click="deleteProduct(id)"/></td>
-
+        <td class="align-middle"><AtomThumbnail :src="imgLink" :alt="alttext"/></td>
+        <td class="align-middle"><AtomText :content="name" /></td>
+        <td class="align-middle"><AtomText :content="description" /></td>
+        <td class="align-middle">Amount: <input class="form-control priceAmountInput" type="number" min="0" v-model="form.qty" step="1"/></td>
+        <td class="align-middle">Price: <input class="form-control priceAmountInput" type="number" v-model="form.price" min="0"/></td>
+        
+        <td class="align-middle">
+            <div class="form-check">
+                <label class="form-check-label" for="addProduct">
+                    Add
+                </label>
+                <input class="form-check-input" type="checkbox" value="" @click="$emit('addProduct', pid, qty, price, $event.target.checked)" id="addProduct">
+            </div>
+        </td>
     </tr>
 </template>
 
 <script>
 import AtomText from '../../atoms/AtomText.vue'
-import AtomButton from '../../atoms/AtomButton.vue'
 import AtomThumbnail from '../../atoms/AtomThumbnail.vue'
-import router from '@/router'
-import { mapActions } from 'vuex'
 export default {
     name:'MoleculeEditProductRow',
     props:[
-        'id', 'productname', 'imagesource', 'alttext'
+        'pid', 'name', 'imgLink', 'alttext', 'description', 'qty', 'price'
     ],
     components: {
         AtomText,
         AtomThumbnail,
-        AtomButton
     },
-    methods:{
-        ...mapActions('itemsModule', { setProductToEdit : 'setProductToEdit' , delete: 'delete'}),
-        loadEditProduct(id){
-            this.setProductToEdit(id)
-            router.push('editProduct')
-        },
-        deleteProduct(id){
-            this.delete(id)
-            .then(res => {
-                res.error ? this.$toast.error(res.msg) : this.$toast.success(res.msg)
-            })
-
+    data(){
+        return{
+            form:{
+                qty: this.qty,
+                price: this.price,
+                description: this.description
+            }
         }
-
     }
+
 }
 </script>

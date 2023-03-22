@@ -1,114 +1,7 @@
 import axios from "axios"
 
 const state = {
-    bids:[
-        {
-            id: 1,
-            deliveryDate: '15.11.2022',
-            userID: 1,
-            auctionID: 1,
-            status:'open',
-            items:[1, 2, 3],
-        },
-        {
-            id: 2,
-            title: "Bid 2",
-            start: "15.11.2022",
-            end: "30.11.2022",
-            user: "MusterMaxi1",
-            userID: 1,
-            auction: 1,
-            status:'open',
-            details:{
-                bidItems: [1, 2, 3,],
-                total: 10,
-            },
-        },
-        {
-            id: 3,
-            title: "Bid 3",
-            start: "15.11.2022",
-            end: "30.11.2022",
-            user: "MusterMaxi1",
-            userID: 1,
-            auction: 1,
-            status:'declined',
-            details:{
-                bidItems: [1, 2, 3,],
-                total: 10,
-            },
-        },
-        {
-            id: 4,
-            title: "Bid 4",
-            start: "15.11.2022",
-            end: "30.11.2022",
-            user: "MusterMaxi1",
-            userID: 1,
-            auction: 1,
-            status:'declined',
-            details:{
-                bidItems: [1, 2, 3,],
-                total: 10,
-            },
-        },
-        {
-            id: 5,
-            title: "Bid 5",
-            start: "15.11.2022",
-            end: "30.11.2022",
-            user: "MusterMaxi1",
-            userID: 2,
-            auction: 1,
-            status:'accepted',
-            details:{
-                bidItems: [1, 2, 3,],
-                total: 10,
-            },
-        },
-        {
-            id: 6,
-            title: "Bid 6",
-            start: "15.11.2022",
-            end: "30.11.2022",
-            user: "MusterMaxi1",
-            userID: 2,
-            auction: 1,
-            status:'accepted',
-            details:{
-                bidItems: [1, 2, 3,],
-                total: 10,
-            },
-        },
-        {
-            id: 7,
-            title: "Bid 7",
-            start: "15.11.2022",
-            end: "30.11.2022",
-            user: "MusterMaxi1",
-            userID: 1,
-            auction: 1,
-            status:'declined',
-            details:{
-                bidItems: [1, 2, 3,],
-                total: 10,
-            },
-        },
-        {
-            id: 8,
-            title: "Bid 8",
-            start: "15.11.2022",
-            end: "30.11.2022",
-            user: "MusterMaxi1",
-            userID: 2,
-            auction: 1,
-            status:'open',
-            details:{
-                bidItems: [1, 2, 3,],
-                total: 10,
-            },
-        },
-    ],
+    bids:[],
     resObj : {
         error: false,
         msg: ''
@@ -116,24 +9,12 @@ const state = {
 }
 
 const mutations ={
-    // ok
-    update(state, bidUpdated){
-        state.bids.forEach(bid => {
-            if(bid.id === bidUpdated.id){
-                bid = bidUpdated
-            }
-        });
-    },
-    //ok
     getAll(state, bids){
         state.bids = bids
     },
-    //ok
-    create(state, {deliveryDate, userID,items, auctionID}){
-        const bid= {id:9, deliveryDate: deliveryDate, userID: userID, items:items, auctionID:auctionID}
+    create(state, bid){
         state.bids.push(bid)
     },
-    //ok
     delete(state, id){
         const bidListNew = []
         state.bids.forEach(bid =>{
@@ -143,28 +24,33 @@ const mutations ={
         })
         state.bids = bidListNew
     },
-    //ok
-    setRequestError(state, message){
-        state.requestError = message
+    setResponseObj(state, resObj){
+        state.resObj = resObj
+    },
+    update(state, bids){
+        state.bids = bids
     }
-
 }
 
-const config = {
+const config2 = {
     headers:{
         'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        "ngrok-skip-browser-warning": true,
+        'Access-Control-Allow-Origin' : '*',
+        'Access-Control-Allow-Methods':'GET,PUT,POST,DELETE,PATCH,OPTIONS'
     }
-};
-const url = "http://localhost:8081/";
+}
+
+const url = "https://8144-178-115-45-233.eu.ngrok.io/";
 
 const actions = {
-    async getByUserId({commit}){ // brauchen wir ? -> bidsByUserId , bidsByAuctionId
+    async getByUserId({commit}, uid){
         let resObj = {
             error: false,
             msg: ''
         }
         try{
-            const response = await axios.get(url + 'bids/all', config)
+            const response = await axios.get(url + 'users/' + uid + '/bids', config2)
             console.log('getAll: ' + response)
 
             const bidList = response.data
@@ -180,13 +66,13 @@ const actions = {
             return resObj
         }
     },
-    async getByAuctionId({commit}){ // brauchen wir ? -> bidsByUserId , bidsByAuctionId
+    async getByAuctionId({commit}, aid){ 
         let resObj = {
             error: false,
             msg: ''
         }
         try{
-            const response = await axios.get(url + 'bids/all', config)
+            const response = await axios.get(url + 'auctions/'+aid+'/bids', config2)
             console.log('getAll: ' + response)
 
             const bidList = response.data
@@ -203,19 +89,15 @@ const actions = {
         }
     },
 
-    async create({commit}, {deliveryDate, userID, auctionID}){ // what data how to spell ???
+    async create({commit}, bid){ 
         let resObj = {
             error: false,
             msg: ''
         }
-        //const items = []
         try{
-            const response = await axios.post('http://localhost:8080/bids/', {deliveryDate, userID, auctionID},config)
+            const response = await axios.post(url+'bids/create', bid, config2)
             console.log('create: ' + response)
-
-            const bid = response.data 
-
-            commit('update', bid)
+            commit('create', response.data)
             resObj.msg = 'Bid created successfully'
             commit('setResponseObj', resObj)
             return resObj
@@ -225,23 +107,60 @@ const actions = {
             commit('setResponseObj', resObj)
             return resObj
         }
-    }
+    },
+    async chooseWinningBid({commit}, bid){
+        let resObj = {
+            error: false,
+            msg: ''
+        }
+        try{
+            const response = await axios.put(url + 'bids/' + bid, bid,config2)
+            console.log('setWinningBid:' + response)
+            commit('update', response.data)
+    
+            resObj.msg = 'Winning bid chosen successfully'
+            commit('setResponseObj', resObj)
+            return resObj
+        }catch(error){
+            resObj.error = true
+            resObj.msg = error.message
+            commit('setResponseObj', resObj)
+            return resObj
+        }
+    },
+    async rejectAll({commit}, aid){
+        let resObj = {
+            error: false,
+            msg: ''
+        }
+        try{
+            const response = await axios.put(url + 'auctions/' + aid + '/reject-all', aid,config2)
+            console.log('rejectAll:' + response)
+            commit('update', response.data)
+    
+            resObj.msg = 'Bids rejected successfully'
+            commit('setResponseObj', resObj)
+            return resObj
+        }catch(error){
+            resObj.error = true
+            resObj.msg = error.message
+            commit('setResponseObj', resObj)
+            return resObj
+        }
+    },
+
 }
 
-/*brauchen wir nicht, gibt extra call für getByUser/AuctionId 
 const getters = {
-    getBidsByAuctionId: (state) => (id) =>{
-        return state.bids.filter(bid => bid.auction === id)
-    },
-    getBidsByUserId: (state) => (id) =>{
-        return state.bids.filter(bid => bid.userID === id)
+    getAll(state){
+        return state.bids
     }
-}*/
+}
 
 export default{
     namespaced: true,
     state,
     actions,
     mutations,
-    //getters
+    getters
 }

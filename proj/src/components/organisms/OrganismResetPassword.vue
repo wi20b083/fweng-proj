@@ -1,6 +1,6 @@
 <template>
     <div class="ps-5 pe-5 ms-5 me-5">
-        <form @submit.prevent="changePw" class="border rounded p-5 backgroundStyling">
+        <form @submit.prevent="changePw(userID)" class="border rounded p-5 backgroundStyling">
             <div class="row mb-2">
                 <AtomLabel for="pwOld" content="Current Password"/>
                 <input id="pwOld" type="password" class="form-control" v-model="this.form.pwOld" @blur="validate('pwOld')"/>
@@ -47,6 +47,7 @@ export default{
         AtomLabel,
         AtomButton
     },
+    props:['userID'],
     data(){
         return{
             form:{
@@ -55,31 +56,35 @@ export default{
                 pwNewConf: ''
             },
             errors:{
-                pwOld: null,
-                pwNew: null,
-                pwNewConf: null,
-                general: null
+                pwOld: '',
+                pwNew: '',
+                pwNewConf: '',
+                general: ''
             }
         }
     },
     methods:{
-        ...mapActions('userModule', {changePw: 'resetPassword'}),
-        // error because of maxCallStackSize BUT WHY ?????
-        changePw(){
-            const {pwOld, pwNew, pwNewConf} = this.form
-            if(pwOld != '' && pwNew != '' && pwNewConf != ''){
-                if(pwNew ===  pwNewConf){
-                    this.errors.general = null
-                    this.changePw({pwOld, pwNew})
+        ...mapActions('userModule', {resetPw: 'resetPassword'}),
+        changePw(uid){
+            pwResetSchema.validate(this.form, {abortEarly: false})
+            .then(()=>{
+                    console.log('no validation errors')
+                    const pw = {
+                        oldPW: this.form.pwOld,
+                        newPW: this.form.pwNew,
+                    }
+                    console.log(JSON.stringify(pw))
+                    this.resetPw({uid, pw})
                     .then(res => {
-                        res.error ? this.$toast.error(res.msg) : (this.$toast.success(res.msg) && router.push('profile'))
+                        res.error ? this.$toast.error(res.msg) : this.$toast.success(res.msg) && router.push('profile')
                     })
-                }else{
-                    this.errors.general = 'New password and password confirmation must match'
-                }
-            }else{
-                this.errors.general = 'Please fill out the whole form'
-            }
+                
+            }).catch((err)=>{
+                err.inner.forEach((error) =>{
+                    this.errors = {...this.errors, [error.path]: error.message}
+                })
+            }) 
+            
         },
         validate(field){
             pwResetSchema

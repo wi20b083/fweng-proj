@@ -3,11 +3,11 @@
     <div class="row p-3">
         <div class="col">
             <div class="row">
-                {{ user.firstName }}
-                {{ user.lastName }}
+                {{ user.fname }}
+                {{ user.lname }}
             </div>
             <div class="row">
-                {{ user.username }}
+                {{ user.uname }}
             </div>
             <div class="row">
                 {{ user.email }}
@@ -25,7 +25,7 @@
         </div>
     </div>
     <div class="row p-3">
-        <AtomButton class="btn btn-danger" content="Delete Profile" type="button" @click="deleteProfile(user.id)"/>
+        <AtomButton class="btn btn-danger" content="Delete Profile" type="button" @click="deleteProfile(user.uid)"/>
     </div>
 </template>
 
@@ -50,18 +50,16 @@ export default{
     methods:{
         ...mapActions('userModule', {
             setUserToEdit:'setUser',
-            deleteUser: 'deleteUser'
+            deleteUser: 'delete'
         }),
         loadProfileEdit(){
-            //brauchen wir nicht da nur eingeloggter user sich editen kann und daten dafür sind in store.user
-            //this.setUserToEdit(this.user.id)
             router.push('editUserProfile')
         },
         loadPWReset(){
             router.push('pwReset')
         },
-        deleteProfile(id){
-            this.deleteUser(id)
+        deleteProfile(uid){
+            this.deleteUser(uid)
             .then(res => {
                 res.error ? this.$toast.error(res.msg) : (this.$toast.success(res.msg) && router.push('registration'))
             })    

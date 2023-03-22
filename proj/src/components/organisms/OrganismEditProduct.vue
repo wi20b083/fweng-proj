@@ -4,16 +4,20 @@
             <div class="row m-3">
                 <div class="col">
                     <AtomLabel content="Name" for="name"/>
-                    <input class="form-control" id="name" type="text" :value="product.name" required/>
+                    <input class="form-control" id="name" type="text" v-model="form.name"/>
                 </div>
                 <div class="col">
-                    <AtomLabel content="Upload Product Image" for="productImage"/>
-                    <input class="form-control" type="file" accept="image/*" id="productImage" :src="product.imagesource"/>
+                    <AtomLabel content="Description" for="description"/>
+                    <input class="form-control" id="description" type="text" v-model="form.description"/>
                 </div>
             </div>
-            <p v-if="!!error" class="errorMessage">{{error}}</p>
-            <AtomButton type="sumbit" class="btn btnColor" content="Submit"/>
-            
+            <div class="row m-3">
+                <div class="col">
+                    <AtomLabel content="Upload Product Image" for="productImage"/>
+                    <input class="form-control" type="file" accept="image/*" id="productImage" />
+                </div>
+            </div>
+            <AtomButton type="sumbit" class="btn btnColor" content="Submit"/>          
         </form>
     </div>
 </template>
@@ -23,7 +27,12 @@ import AtomLabel from '../atoms/AtomLabel.vue';
 import AtomButton from '../atoms/AtomButton.vue';
 import { mapActions } from 'vuex';
 import router from '@/router';
+import * as Yup from "yup";
 
+const updatedProductSchema = Yup.object().shape({
+    name: Yup.string().required("Name is required"),
+    description: Yup.string().required("Description is required"),
+})
 
 export default{
     name:'OrganismEditProduct',
@@ -34,7 +43,14 @@ export default{
     },
     data(){
         return{
-            error: ''
+            form:{
+                name: this.product.name,
+                description: this.product.description
+            },
+            errors: {
+                name: '',
+                description: ''
+            }
         }
     },
     methods:{
@@ -42,29 +58,40 @@ export default{
             update : 'update'
         }),
         updateProduct(){
-            this.error = ''
-
-            var productName = document.getElementById('name').value
-            var image = require('../../assets/dummyImg.png')
-            //document.getElementById('productImage').value
-            var id = this.product.id
-
-            if(productName != '' && image != ''){
-                console.log(productName + image)
-                this.update({productName, image, id})
+            updatedProductSchema
+            .validate(this.form, { abortEarly: false })
+            .then(() => {
+                console.log("no validation errors");                
+                const item = {
+                    pid: this.product.pid,
+                    name: this.form.name,
+                    description: this.form.description,
+                    imgLink: 'dummy.png',
+                    category: this.product.category
+                };
+                this.update(item)
                 .then(res => {
-                    res.error ? this.$toast.error(res.msg) : this.$toast.success(res.msg)
-                })
-                router.push('products')
-            }else{
-                this.error = 'Please fill out the whole form'
-            }
-
-            
+                    res.error ? this.$toast.error(res.msg) : this.$toast.success(res.msg) && router.push('products')
+                })            
+            })
+            .catch((err) => {
+                err.inner.forEach((error) => {
+                    this.errors = { ...this.errors, [error.path]: error.message };
+                });
+            });
         }
     },
-    
-    
+    validate(field) {
+        updatedProductSchema
+            .validateAt(field, this.form)
+            .then(() => {
+            this.errors[field] = null;
+            })
+            .catch((error) => {
+            console.log(error);
+            this.errors[field] = error.message;
+            });
+    }, 
 }
 
 </script>
